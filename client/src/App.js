@@ -23,6 +23,7 @@ class App extends Component {
                      <Switch>
                         <Route exact path="/" render={() => <Redirect to="/home"/>}/>
                         <Route exact path="/login" render={() => <Redirect to="/"/>} />
+                        <ProtectedRoute exact path="/home" component={() => <h1>Home</h1>} auth={this.state.authenticated} />
                         <ProtectedRoute exact path="/dentalrecords" component={() => <h1>Dental Records</h1>} auth={this.state.authenticated} />
                         <ProtectedRoute exact  path="/useraccounts" component={() => <h1>User Accounts</h1>} auth={this.state.authenticated} />
                      </Switch>
