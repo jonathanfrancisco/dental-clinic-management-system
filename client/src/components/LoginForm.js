@@ -12,7 +12,7 @@ import {
                const result = this.props.handleLogin(values);
                if(result.errors)
                   Modal.error({
-                     title: 'Authentication error:',
+                     title: 'System Message',
                      content: 'Incorrect username or password!',
                   });
             }  

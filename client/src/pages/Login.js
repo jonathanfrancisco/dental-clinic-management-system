@@ -6,7 +6,7 @@ import LoginForm from '../components/LoginForm';
 class Login extends React.Component {
    render() {
       return (
-         <Row type="flex" align="middle" style={{minHeight: '100vh', background: '#5cdbd3'}}>
+         <Row type="flex" align="middle" style={{minHeight: '100vh', background: '#69c0ff'}}>
             <Col md={{span: 8, offset: 8}} sm={{span: 16, offset: 4}} xs={{span: 22, offset: 1}}>
                <Card bordered={true}>
                   <h2 style={{textAlign: 'center'}}>
