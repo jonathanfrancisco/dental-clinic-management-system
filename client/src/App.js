@@ -2,15 +2,12 @@ import React, { Component } from 'react';
 import 'antd/dist/antd.css';
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
 import ProtectedRoute from './components/hoc/ProtectedRoute';
-import { Layout, Menu, Icon, Button} from 'antd';
+import { Layout, Menu, Icon, Table} from 'antd';
 
 // PAGES
 import Login from './pages/Login';
 
-import { Table } from 'antd';
-
-
-const {Content, Sider} = Layout;
+const {Content, Sider, Header} = Layout;
 
 
 function Home() {
@@ -66,7 +63,9 @@ class App extends Component {
 
    state = {
       authenticated: true,
-      leftContentMargin: 200
+      collapsedWidth: 80,
+      collapsed: false,
+      leftMargin: 200, 
    };
 
    handleLogin = (formValues) => {
@@ -75,6 +74,17 @@ class App extends Component {
          errors: ['yow']
       }
    }
+
+   // TOGGLE FOR NAVIGATION
+   toggle = () => {
+      const newMargin = this.state.leftMargin === 200 && this.state.collapsedWidth === 80 ? 80 
+      : this.state.leftMargin === 200 && this.state.collapsedWidth === 0 ? 0 
+      : 200;
+      this.setState({
+        collapsed: !this.state.collapsed,
+        leftMargin: newMargin
+      });
+    }
 
    render() {
    
@@ -88,182 +98,47 @@ class App extends Component {
                         <Route render={() => <Redirect to="/login"/>}/>
                      </Switch>
                   ) : (
-                     <Layout style={{minHeight: '100vh'}}>
+                     <Layout>
                         <Sider
-                           breakpoint="md"
-                           collapsedWidth="0"
-                           onBreakpoint={(broken) => { console.log(broken); }}
-                           onCollapse={(collapsed, type) => { 
-                                const margin = this.state.leftContentMargin === 200 ? 0 : 200;
-                                this.setState({leftContentMargin: margin});
-                              }
-                           }
-                           style={{overflow: 'auto', height: '100vh', position: 'fixed'}}
+                           trigger={null}
+                           collapsed={this.state.collapsed}
+                           breakpoint="sm"
+                           onBreakpoint={(broken) => {
+                              if(broken)
+                                 this.setState({collapsedWidth: 0, collapsed: true, leftMargin: 0});
+                              else 
+                                 this.setState({collapsedWidth: 80, collapsed: false})
+                              console.log(broken, this.state.collapsedWidth);
+                           }}
+                           collapsedWidth={this.state.collapsedWidth}
+                           style={{minHeight: '100vh', position: 'fixed', zIndex: 100}}
                         >
-                           <Button type="primary" style={{ marginBottom: 16 }}>
-                              <Icon type='menu-fold' />
-                           </Button>
                            <div className="logo" />
-                           {/* <h3 style={{color: '#fff', textAlign: 'center', margin: '4px 16px 4px 0px'}}>Andres Dental Clinic Management System</h3> */}
                            <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
                               <Menu.Item key="1">
                                  <Icon type="user" />
-                                 <span className="nav-text">Home</span>
+                                 <span>Home</span>
                               </Menu.Item>
                               <Menu.Item key="2">
                                  <Icon type="video-camera" />
-                                 <span className="nav-text">Dental Records</span>
+                                 <span>Dental Records</span>
                               </Menu.Item>
                               <Menu.Item key="3">
                                  <Icon type="upload" />
-                                 <span className="nav-text">Appointments</span>
-                              </Menu.Item>
-                              <Menu.Item key="4">
-                                 <Icon type="user" />
-                                 <span className="nav-text">SMS Text Messaging</span>
-                              </Menu.Item>
-                              <Menu.Item key="2">
-                                 <Icon type="video-camera" />
-                                 <span className="nav-text">Dental Records</span>
-                              </Menu.Item>
-                              <Menu.Item key="3">
-                                 <Icon type="upload" />
-                                 <span className="nav-text">Appointments</span>
-                              </Menu.Item>
-                              <Menu.Item key="4">
-                                 <Icon type="user" />
-                                 <span className="nav-text">SMS Text Messaging</span>
-                              </Menu.Item>
-                              <Menu.Item key="2">
-                                 <Icon type="video-camera" />
-                                 <span className="nav-text">Dental Records</span>
-                              </Menu.Item>
-                              <Menu.Item key="3">
-                                 <Icon type="upload" />
-                                 <span className="nav-text">Appointments</span>
-                              </Menu.Item>
-                              <Menu.Item key="4">
-                                 <Icon type="user" />
-                                 <span className="nav-text">SMS Text Messaging</span>
-                              </Menu.Item>
-                              <Menu.Item key="2">
-                                 <Icon type="video-camera" />
-                                 <span className="nav-text">Dental Records</span>
-                              </Menu.Item>
-                              <Menu.Item key="3">
-                                 <Icon type="upload" />
-                                 <span className="nav-text">Appointments</span>
-                              </Menu.Item>
-                              <Menu.Item key="4">
-                                 <Icon type="user" />
-                                 <span className="nav-text">SMS Text Messaging</span>
-                              </Menu.Item>
-                              <Menu.Item key="2">
-                                 <Icon type="video-camera" />
-                                 <span className="nav-text">Dental Records</span>
-                              </Menu.Item>
-                              <Menu.Item key="3">
-                                 <Icon type="upload" />
-                                 <span className="nav-text">Appointments</span>
-                              </Menu.Item>
-                              <Menu.Item key="4">
-                                 <Icon type="user" />
-                                 <span className="nav-text">SMS Text Messaging</span>
-                              </Menu.Item>
-                              <Menu.Item key="2">
-                                 <Icon type="video-camera" />
-                                 <span className="nav-text">Dental Records</span>
-                              </Menu.Item>
-                              
-                              <Menu.Item key="3">
-                                 <Icon type="upload" />
-                                 <span className="nav-text">Appointments</span>
-                              </Menu.Item>
-                              <Menu.Item key="4">
-                                 <Icon type="user" />
-                                 <span className="nav-text">SMS Text Messaging</span>
-                              </Menu.Item>
-                              <Menu.Item key="2">
-                                 <Icon type="video-camera" />
-                                 <span className="nav-text">Dental Records</span>
-                              </Menu.Item>
-                              <Menu.Item key="3">
-                                 <Icon type="upload" />
-                                 <span className="nav-text">Appointments</span>
-                              </Menu.Item>
-                              <Menu.Item key="4">
-                                 <Icon type="user" />
-                                 <span className="nav-text">SMS Text Messaging</span>
-                              </Menu.Item>
-                              <Menu.Item key="2">
-                                 <Icon type="video-camera" />
-                                 <span className="nav-text">Dental Records</span>
-                              </Menu.Item>
-                              <Menu.Item key="3">
-                                 <Icon type="upload" />
-                                 <span className="nav-text">Appointments</span>
-                              </Menu.Item>
-                              <Menu.Item key="4">
-                                 <Icon type="user" />
-                                 <span className="nav-text">SMS Text Messaging</span>
-                              </Menu.Item>
-                              <Menu.Item key="2">
-                                 <Icon type="video-camera" />
-                                 <span className="nav-text">Dental Records</span>
-                              </Menu.Item>
-                              <Menu.Item key="3">
-                                 <Icon type="upload" />
-                                 <span className="nav-text">Appointments</span>
-                              </Menu.Item>
-                              <Menu.Item key="4">
-                                 <Icon type="user" />
-                                 <span className="nav-text">SMS Text Messaging</span>
-                              </Menu.Item>
-                              <Menu.Item key="2">
-                                 <Icon type="video-camera" />
-                                 <span className="nav-text">Dental Records</span>
-                              </Menu.Item>
-                              <Menu.Item key="3">
-                                 <Icon type="upload" />
-                                 <span className="nav-text">Appointments</span>
-                              </Menu.Item>
-                              <Menu.Item key="4">
-                                 <Icon type="user" />
-                                 <span className="nav-text">SMS Text Messaging</span>
-                              </Menu.Item>
-                              <Menu.Item key="2">
-                                 <Icon type="video-camera" />
-                                 <span className="nav-text">Dental Records</span>
-                              </Menu.Item>
-                              <Menu.Item key="3">
-                                 <Icon type="upload" />
-                                 <span className="nav-text">Appointments</span>
-                              </Menu.Item>
-                              <Menu.Item key="4">
-                                 <Icon type="user" />
-                                 <span className="nav-text">SMS Text Messaging</span>
-                              </Menu.Item>
-                              <Menu.Item key="2">
-                                 <Icon type="video-camera" />
-                                 <span className="nav-text">Dental Records</span>
-                              </Menu.Item>
-                              <Menu.Item key="3">
-                                 <Icon type="upload" />
-                                 <span className="nav-text">Appointments</span>
-                              </Menu.Item>
-                              <Menu.Item key="4">
-                                 <Icon type="user" />
-                                 <span className="nav-text">SMS Text Messaging</span>
-                              </Menu.Item>
-                              <Menu.Item key="2">
-                                 <Icon type="video-camera" />
-                                 <span className="nav-text">Dental Records</span>
+                                 <span>User Accounts</span>
                               </Menu.Item>
                            </Menu>
                         </Sider>
-                        <Layout style={{marginLeft: this.state.leftContentMargin}}>
-                           <Content style={{ margin: '24px 16px 0'}}>
-                              <div style={{padding: 24, background: '#fff'}}>
+                        <Layout>
+                           <Header style={{marginLeft: this.state.leftMargin, background: '#fff', padding: 0, position: 'fixed', zIndex: 1, width: '100%'}}>
+                              <Icon
+                                 className="trigger"
+                                 type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+                                 onClick={this.toggle}
+                                 />
+                           </Header>
+                           <Layout style={{marginLeft: this.state.leftMargin, marginTop: 64}}>
+                              <Content style={{margin: '24px 16px', padding: 24, background: '#fff'}}>
                                  <Switch>
                                     <Route exact path="/" render={() => <Redirect to="/home"/>}/>
                                     <Route exact path="/login" render={() => <Redirect to="/"/>} />
@@ -271,8 +146,8 @@ class App extends Component {
                                     <ProtectedRoute exact path="/dentalrecords" component={() => <h1>Dental Records</h1>} auth={this.state.authenticated} />
                                     <ProtectedRoute exact  path="/useraccounts" component={() => <h1>User Accounts</h1>} auth={this.state.authenticated} />
                                  </Switch>     
-                              </div>
-                           </Content>
+                              </Content>
+                           </Layout>
                         </Layout>
                      </Layout>
                   )}
