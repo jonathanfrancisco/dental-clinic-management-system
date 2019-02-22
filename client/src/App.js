@@ -14,7 +14,7 @@ function Home() {
    const columns = [{
       title: 'Name',
       dataIndex: 'name',
-      render: text => <a href="javascript:;">{text}</a>,
+      // render: text => <a href="javascript:;">{text}</a>,
       }, {
       title: 'Age',
       dataIndex: 'age',
@@ -116,16 +116,24 @@ class App extends Component {
                            <div className="logo" />
                            <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
                               <Menu.Item key="1">
-                                 <Icon type="user" />
-                                 <span>Home</span>
+                                 <Icon type="dashboard" />
+                                 <span>Dashboard</span>
                               </Menu.Item>
                               <Menu.Item key="2">
-                                 <Icon type="video-camera" />
+                                 <Icon type="idcard" />
                                  <span>Dental Records</span>
                               </Menu.Item>
                               <Menu.Item key="3">
-                                 <Icon type="upload" />
-                                 <span>User Accounts</span>
+                                 <Icon type="calendar" />
+                                 <span>Appointments</span>
+                              </Menu.Item>
+                              <Menu.Item key="4">
+                                 <Icon type="message" />
+                                 <span>SMS Text Messaging</span>
+                              </Menu.Item>
+                              <Menu.Item key="5">
+                                 <Icon type="team" />
+                                 <span>Accounts</span>
                               </Menu.Item>
                            </Menu>
                         </Sider>
