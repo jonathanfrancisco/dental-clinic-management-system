@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'antd/dist/antd.css';
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
 import ProtectedRoute from './components/hoc/ProtectedRoute';
-import { Layout, Menu, Icon, Table} from 'antd';
+import { Layout, Menu, Icon, Table, Row, Col, Dropdown} from 'antd';
 
 // PAGES
 import Login from './pages/Login';
@@ -134,6 +134,10 @@ class App extends Component {
                               <Menu.Item key="5">
                                  <Icon type="team" />
                                  <span>Accounts</span>
+                              </Menu.Item>
+                              <Menu.Item key="6">
+                                 <Icon type="logout" />
+                                 <span>Log out</span>
                               </Menu.Item>
                            </Menu>
                         </Sider>
