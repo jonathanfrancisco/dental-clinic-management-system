@@ -106,8 +106,8 @@ class App extends Component {
                            onBreakpoint={(broken) => {
                               if(broken)
                                  this.setState({collapsedWidth: 0, collapsed: true, leftMargin: 0});
-                              else 
-                                 this.setState({collapsedWidth: 80, collapsed: false})
+                              else
+                                 this.setState({collapsedWidth: 80, collapsed: false, leftMargin: 200});
                               console.log(broken, this.state.collapsedWidth);
                            }}
                            collapsedWidth={this.state.collapsedWidth}
