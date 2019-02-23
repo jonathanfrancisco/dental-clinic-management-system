@@ -1,0 +1,47 @@
+import React from 'react';
+import {Menu, Icon} from 'antd';
+import {Link, withRouter} from 'react-router-dom';
+
+const SiderNavigation = withRouter((props) => {
+
+   // get the basepath of the current url
+   // to use as a selected key to correspond with the menu
+   const selectedItem = `/${props.location.pathname.split('/')[1]}`; 
+  
+   return (
+      <Menu theme="dark" mode="inline" selectedKeys={[selectedItem]}>
+         <Menu.Item key="/dashboard">
+            <Icon type="dashboard" />
+            <span>Dashboard</span>
+            <Link to="/dashboard">Dashboard</Link>
+         </Menu.Item>
+         <Menu.Item key="/dentalrecords">
+            <Icon type="idcard" />
+            <span>Dental Records</span>
+            <Link to="/dentalrecords">Dental Records</Link>
+         </Menu.Item>
+         <Menu.Item key="/appointments">
+            <Icon type="calendar" />
+            <span>Appointments</span>
+            <Link to="/appointments">Appointments</Link>
+         </Menu.Item>
+         <Menu.Item key="/sms">
+            <Icon type="message" />
+            <span>SMS Text Messaging</span>
+            <Link to="/sms">SMS Text Messaging</Link>
+         </Menu.Item>
+         <Menu.Item key="/accounts">
+            <Icon type="team" />
+            <span>Accounts</span>
+            <Link to="/accounts">Accounts</Link>
+         </Menu.Item>
+         <Menu.Item key="/logout">
+            <Icon type="logout" />
+            <span>Log out</span>
+            <Link to="/logout">Log out</Link>
+         </Menu.Item>
+      </Menu>
+   );
+});
+
+export default SiderNavigation;
