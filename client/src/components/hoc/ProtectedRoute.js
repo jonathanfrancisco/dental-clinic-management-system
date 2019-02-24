@@ -1,15 +1,30 @@
 import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
+import axios from 'axios';
 
 
 class ProtectedRoute extends React.Component {
+   
+   state = {
+      redirect: false
+   };
+
+   componentDidMount() {
+      axios.get('/api/user/checkToken')
+      .then((response) => {
+         if(response.status === 200)
+            this.setState({redirect: false});
+      }).catch((err) => {
+         console.log(err);
+         this.setState({redirect: true});
+      });
+   }
+
    render() {
-
-      const {component: Component, auth, ...rest} = this.props;
-
+      const {component: Component,...rest} = this.props;
       return (
          <Route {...rest} render={(props) => {
-            if(auth)
+            if(!this.state.redirect)
                return <Component {...props}/>
             return (
                <Redirect to={

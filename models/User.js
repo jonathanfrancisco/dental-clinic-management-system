@@ -52,6 +52,10 @@ class User extends Model {
 
    }
 
+   async isPasswordCorrect(password) {
+     return await bcrypt.compare(password, this.password).then((res) => res);
+   }
+
 }
 
 module.exports = User;

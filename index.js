@@ -1,10 +1,12 @@
 const express = require('express'),
       morgan = require('morgan');
-      bodyParser = require('body-parser');
+      bodyParser = require('body-parser')
+      cookieParser = require('cookie-parser');
 const app = express();
 
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use('/api/user', require('./routes/user'));
 
 // PRODDUCTION

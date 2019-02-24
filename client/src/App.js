@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'antd/dist/antd.css';
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
-import { Layout, Icon} from 'antd';
+import { Layout, Icon, notification} from 'antd';
 
 // MY COMPONENTS
 import ProtectedRoute from './components/hoc/ProtectedRoute';
@@ -10,23 +10,45 @@ import SiderNavigation from './components/SiderNavigation';
 // PAGES
 import Login from './pages/Login';
 
+//
+import axios from 'axios';
+
 const {Content, Sider, Header} = Layout;
 
 
 class App extends Component {
 
    state = {
-      authenticated: true,
+      authenticated: false,
       collapsedWidth: 80,
       collapsed: false,
       leftMargin: 200, 
    };
 
+   componentDidMount() {
+      axios.get('/api/user/checkToken')
+      .then((response) => {
+         if(response.status === 200)
+            this.setState({authenticated: true});
+      }).catch((err) => {
+         this.setState({authenticated: false});
+      });
+   }
+
    handleLogin = (formValues) => {
-      console.log(formValues);
-      return {
-         errors: ['yow']
-      }
+      return axios.post('/api/user/login', formValues)
+      .then((response) => {
+         
+         if(response.data.error) 
+            return response.data;
+   
+         this.setState({authenticated: true})
+         notification['success']({
+            message: 'System Message',
+            description: 'Logged-in successfully!',
+         });
+     
+      });
    }
 
    // TOGGLE FOR NAVIGATION
@@ -41,7 +63,6 @@ class App extends Component {
     }
 
    render() {
-   
       return (
          <div className="App">
             <Router>
@@ -82,11 +103,11 @@ class App extends Component {
                                  <Switch>
                                     <Route exact path="/" render={() => <Redirect to="/dashboard"/>}/>
                                     <Route exact path="/login" render={() => <Redirect to="/"/>} />
-                                    <ProtectedRoute exact path="/dashboard" component={() => <h1>Dashboard</h1>} auth={this.state.authenticated} />
-                                    <ProtectedRoute exact path="/dentalrecords" component={() => <h1>Dental Records</h1>} auth={this.state.authenticated} />  
-                                    <ProtectedRoute exact path="/appointments" component={() => <h1>Apppointments</h1>} auth={this.state.authenticated} />
-                                    <ProtectedRoute exact path="/sms" component={() => <h1>SMS Text Messaging</h1>} auth={this.state.authenticated} />
-                                    <ProtectedRoute exact path="/accounts" component={() => <h1>Accounts</h1>} auth={this.state.authenticated} /> 
+                                    <ProtectedRoute exact path="/dashboard" component={() => <h1>Dashboard</h1>} />
+                                    <ProtectedRoute exact path="/dentalrecords" component={() => <h1>Dental Records</h1>}  />  
+                                    <ProtectedRoute exact path="/appointments" component={() => <h1>Apppointments</h1>}  />
+                                    <ProtectedRoute exact path="/sms" component={() => <h1>SMS Text Messaging</h1>}  />
+                                    <ProtectedRoute exact path="/accounts" component={() => <h1>Accounts</h1>} /> 
                                  </Switch>     
                               </Content>
                            </Layout>

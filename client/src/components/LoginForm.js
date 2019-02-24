@@ -9,12 +9,22 @@ import {
       e.preventDefault();
          this.props.form.validateFields((err, values) => {
             if (!err) {
-               const result = this.props.handleLogin(values);
-               if(result.errors)
+               this.props.handleLogin(values)
+               .then((result) => {
+                  console.log('Result', result);
+                  if(result.error)
+                     Modal.error({
+                        title: 'System Message',
+                        content: result.error,
+                     });
+               })
+               .catch((err) => {
+                  console.log(err);
                   Modal.error({
                      title: 'System Message',
-                     content: 'Incorrect username or password!',
+                     content: 'Internal server error',
                   });
+               });
             }  
       });
    }
