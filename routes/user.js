@@ -4,6 +4,7 @@ const withAuth = require('../services/withAuth');
 
 Router.post('/create', userController.create);
 Router.post('/login', userController.login);
+Router.post('/logout', userController.logout);
 Router.get('/checkToken', withAuth, (req, res) => {
    res.sendStatus(200);
 });

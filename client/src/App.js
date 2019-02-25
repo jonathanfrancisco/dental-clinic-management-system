@@ -10,7 +10,6 @@ import SiderNavigation from './components/SiderNavigation';
 // PAGES
 import Login from './pages/Login';
 
-//
 import axios from 'axios';
 
 const {Content, Sider, Header} = Layout;
@@ -48,7 +47,17 @@ class App extends Component {
          }
          return response;
       })
-      
+   }
+
+   handleLogout = () => {
+      axios.post('/api/user/logout')
+      .then((response) => {
+         if(response.status === 200)
+            this.setState({authenticated: false});
+      })
+      .catch((err) => {
+         console.log(err);
+      });
    }
 
    // TOGGLE FOR NAVIGATION
@@ -88,7 +97,7 @@ class App extends Component {
                            style={{minHeight: '100vh', position: 'fixed', zIndex: 100}}
                         >
                            <div className="logo" />
-                           <SiderNavigation />
+                           <SiderNavigation handleLogout={this.handleLogout}/>
                         </Sider>
                         <Layout>
                            <Header style={{boxShadow: '0px -1px 3px rgba(0, 0, 0, 1)', marginLeft: this.state.leftMargin, background: '#fff', padding: 0, position: 'fixed', zIndex: 1, width: '100%'}}>
@@ -107,7 +116,6 @@ class App extends Component {
                                     <ProtectedRoute exact path="/appointments" component={() => <h1>Apppointments</h1>}  />
                                     <ProtectedRoute exact path="/sms" component={() => <h1>SMS Text Messaging</h1>}  />
                                     <ProtectedRoute exact path="/accounts" component={() => <h1>Accounts</h1>} /> 
-                                  
                                  </Switch>     
                               </Content>
                            </Layout>

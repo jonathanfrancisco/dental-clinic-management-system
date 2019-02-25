@@ -1,13 +1,15 @@
 import React from 'react';
-import {Menu, Icon} from 'antd';
+import {Menu, Icon, Modal} from 'antd';
 import {Link, withRouter} from 'react-router-dom';
+const {confirm} = Modal;
+
 
 const SiderNavigation = withRouter((props) => {
 
    // get the basepath of the current url
    // to use as a selected key to correspond with the menu
    const selectedItem = `/${props.location.pathname.split('/')[1]}`; 
-  
+
    return (
       <Menu theme="dark" mode="inline" selectedKeys={[selectedItem]}>
          <Menu.Item key="/dashboard">
@@ -35,10 +37,23 @@ const SiderNavigation = withRouter((props) => {
             <span>Accounts</span>
             <Link to="/accounts">Accounts</Link>
          </Menu.Item>
-         <Menu.Item key="/logout">
+         <Menu.Item key="/logout" onClick={() => {
+            confirm({
+               title: 'System Message',
+               content: 'Are you sure you want to Logout?!',
+               okText: 'Yes',
+               okType: 'danger',
+               cancelText: 'No',
+               onOk() {
+                  props.handleLogout();
+               },
+               onCancel() {
+                  
+               },
+            });
+         }}>
             <Icon type="logout" />
             <span>Log out</span>
-            <Link to="/logout">Log out</Link>
          </Menu.Item>
       </Menu>
    );
