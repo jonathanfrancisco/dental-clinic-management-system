@@ -108,7 +108,7 @@ class App extends Component {
                                  onClick={this.toggle}
                                  />
                            </Header>
-                           <Layout style={{marginLeft: this.state.leftMargin, marginTop: 64}}>
+                           <Layout style={{marginLeft: this.state.leftMargin, marginTop: 64, minHeight: '100vh'}}>
                               <Content style={{margin: '24px 16px', padding: 24, background: '#fff'}}>
                                  <Switch>
                                     <Route exact path={["/","/login"]}  render={(props) => <Redirect to="/dashboard"/>}/>
