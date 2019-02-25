@@ -10,16 +10,16 @@ import {
          this.props.form.validateFields((err, values) => {
             if (!err) {
                this.props.handleLogin(values)
-               .then((result) => {
-                  console.log('Result', result);
-                  if(result.error)
+               .then((response) => {
+                  if(response.data.error) {
                      Modal.error({
                         title: 'System Message',
-                        content: result.error,
+                        content: response.data.error,
                      });
+                  }
                })
                .catch((err) => {
-                  console.log(err);
+                  console.log('Error inside catch LoginForm',err);
                   Modal.error({
                      title: 'System Message',
                      content: 'Internal server error',

@@ -31,24 +31,24 @@ class App extends Component {
          if(response.status === 200)
             this.setState({authenticated: true});
       }).catch((err) => {
-         this.setState({authenticated: false});
+         if(err)
+            this.setState({authenticated: false});
       });
    }
 
    handleLogin = (formValues) => {
       return axios.post('/api/user/login', formValues)
-      .then((response) => {
-         
-         if(response.data.error) 
-            return response.data;
-   
-         this.setState({authenticated: true})
-         notification['success']({
-            message: 'System Message',
-            description: 'Logged-in successfully!',
-         });
-     
-      });
+      .then((response) => {   
+         if(response.data.error === undefined) {
+            this.setState({authenticated: true})
+            notification['success']({
+               message: 'System Message',
+               description: 'Logged-in successfully!',
+            });
+         }
+         return response;
+      })
+      
    }
 
    // TOGGLE FOR NAVIGATION
@@ -101,13 +101,13 @@ class App extends Component {
                            <Layout style={{marginLeft: this.state.leftMargin, marginTop: 64, minHeight: '100vh'}}>
                               <Content style={{margin: '24px 16px', padding: 24, background: '#fff'}}>
                                  <Switch>
-                                    <Route exact path="/" render={() => <Redirect to="/dashboard"/>}/>
-                                    <Route exact path="/login" render={() => <Redirect to="/"/>} />
+                                    <Route exact path={["/","/login"]}  render={(props) => <Redirect to="/dashboard"/>}/>
                                     <ProtectedRoute exact path="/dashboard" component={() => <h1>Dashboard</h1>} />
                                     <ProtectedRoute exact path="/dentalrecords" component={() => <h1>Dental Records</h1>}  />  
                                     <ProtectedRoute exact path="/appointments" component={() => <h1>Apppointments</h1>}  />
                                     <ProtectedRoute exact path="/sms" component={() => <h1>SMS Text Messaging</h1>}  />
                                     <ProtectedRoute exact path="/accounts" component={() => <h1>Accounts</h1>} /> 
+                                  
                                  </Switch>     
                               </Content>
                            </Layout>

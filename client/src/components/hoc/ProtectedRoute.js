@@ -15,8 +15,8 @@ class ProtectedRoute extends React.Component {
          if(response.status === 200)
             this.setState({redirect: false});
       }).catch((err) => {
-         console.log(err);
-         this.setState({redirect: true});
+         if(err)
+            this.setState({redirect: true});
       });
    }
 
