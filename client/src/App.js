@@ -9,6 +9,7 @@ import SiderNavigation from './components/SiderNavigation';
 
 // PAGES
 import Login from './pages/Login';
+import Accounts from './pages/Accounts';
 
 import axios from 'axios';
 
@@ -115,7 +116,7 @@ class App extends Component {
                                     <ProtectedRoute exact path="/dentalrecords" component={() => <h1>Dental Records</h1>}  />  
                                     <ProtectedRoute exact path="/appointments" component={() => <h1>Apppointments</h1>}  />
                                     <ProtectedRoute exact path="/sms" component={() => <h1>SMS Text Messaging</h1>}  />
-                                    <ProtectedRoute exact path="/accounts" component={() => <h1>Accounts</h1>} /> 
+                                    <ProtectedRoute exact path="/accounts" component={Accounts} /> 
                                  </Switch>     
                               </Content>
                            </Layout>
