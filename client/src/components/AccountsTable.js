@@ -11,21 +11,13 @@ class AccountsTable extends React.Component {
 
       const columns = [
          {
-            title: 'Firstname',
-            dataIndex: 'first_name'
+            title: 'Fullname',
+            dataIndex: 'full_name'
          }, 
-         {
-            title: 'Middlename',
-            dataIndex: 'middle_name'
-         }, 
-         {
-            title: 'Lastname',
-            dataIndex: 'last_name'
-         },
          {
             title: 'Role',
             dataIndex: 'role'
-         },
+         }, 
          {
             title: 'Actions',
             dataIndex: 'actions',
@@ -44,73 +36,28 @@ class AccountsTable extends React.Component {
       const data = [
          {
             key: '1',
-            first_name: 'Cathleen',
-            middle_name: 'Buted? ahaha',
-            last_name: 'Tolentino',
+            full_name: 'Cathleen B. Tolentino',
             role: 'Documentation'
          },
          {
             key: '2',
-            first_name: 'Patricia Dane',
-            middle_name: 'Ruiz',
-            last_name: 'Miguel',
-            role: 'Documentation'
+            full_name: 'Jonathan B. Francisco',
+            role: 'Software Engineer / Programmer'
          },
          {
             key: '3',
-            first_name: 'Jonathan',
-            middle_name: 'Buted',
-            last_name: 'Francisco',
-            role: 'Software Engineer'
+            full_name: 'Patricia Dane R. Miguel',
+            role: 'Documentation'
          },
          {
             key: '4',
-            first_name: 'Joecel',
-            middle_name: 'Jakammu',
-            last_name: 'Pergis',
-            role: 'Taga print'
+            full_name: 'Joecel Pergis',
+            role: 'Human Printer'
          },
          {
             key: '5',
-            first_name: 'Frances Deanne',
-            middle_name: 'Jakammu',
-            last_name: 'Medina',
-            role: 'Pancit canton kuma'
-         },
-         {
-            key: '6',
-            first_name: 'Christopher',
-            middle_name: 'Hackerman',
-            last_name: 'Dugay',
-            role: 'Documentation'
-         },
-         {
-            key: '7',
-            first_name: 'April Joyce',
-            middle_name: 'Hmm',
-            last_name: 'Guillermo',
-            role: 'Documentation'
-         },
-         {
-            key: '8',
-            first_name: 'Jonathan',
-            middle_name: 'Buted',
-            last_name: 'Francisco',
-            role: 'Software Engineer'
-         },
-         {
-            key: '9',
-            first_name: 'Joecel',
-            middle_name: 'Jakammu',
-            last_name: 'Pergis',
-            role: 'Taga print'
-         },
-         {
-            key: '10',
-            first_name: 'Czar Emman',
-            middle_name: 'Jakammu',
-            last_name: 'Alejandro',
-            role: 'Pancit canton kuma'
+            full_name: 'Czar Emman Alejandro',
+            role: 'Housekeeper?'
          }
       ];
        
