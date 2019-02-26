@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button, Divider, Icon} from 'antd';
+import { Table, Button, Divider, Icon, Tooltip} from 'antd';
 
 class AccountsTable extends React.Component {
 
@@ -23,11 +23,17 @@ class AccountsTable extends React.Component {
             dataIndex: 'actions',
             render: () => (
                <React.Fragment>
-                  <Button type="primary"><Icon type="profile" />View</Button>
+                  <Tooltip title="View Account Info">
+                     <Button type="primary"><Icon type="profile" /></Button>
+                  </Tooltip>
                   <Divider type="vertical" />
-                  <Button><Icon type="edit" />Edit</Button>
+                  <Tooltip title="Edit Account">
+                     <Button><Icon type="profile" /></Button>
+                  </Tooltip>
                   <Divider type="vertical" />
-                  <Button type="danger"><Icon type="delete" />Delete</Button>
+                  <Tooltip title="Deleta account">
+                     <Button type="danger"><Icon type="delete" /></Button>
+                  </Tooltip>
                </React.Fragment>
             )
          }
