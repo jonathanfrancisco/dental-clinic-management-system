@@ -3,8 +3,36 @@ import {Modal, Form, Input, Radio, Row, Col, DatePicker} from 'antd';
 
 const CreateAccountModalForm = Form.create()(
    class extends React.Component {
+
+      state = {
+         confirmDirty: false
+       };
+
+      handleConfirmBlur = (e) => {
+         const value = e.target.value;
+         this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+       }
+
+      compareToFirstPassword = (rule, value, callback) => {
+         const form = this.props.form;
+         if (value && value !== form.getFieldValue('password')) {
+           callback('Two passwords that you enter is inconsistent!');
+         } else {
+           callback();
+         }
+       }
+     
+
+      validateToNextPassword = (rule, value, callback) => {
+         const form = this.props.form;
+         if (value && this.state.confirmDirty) {
+           form.validateFields(['confirm_password'], { force: true });
+         }
+         callback();
+      }
+     
+
       render() {
-         console.log(this.props.visible);
          const {visible, onCancel, onCreate, form} = this.props;
          const { getFieldDecorator } = form;
          return (
@@ -71,7 +99,10 @@ const CreateAccountModalForm = Form.create()(
                   <Col span={12}>
                      <Form.Item label="Password">
                         {getFieldDecorator('password', {
-                           rules: [{ required: true, message: 'Password is required' }],
+                           rules: [
+                              { required: true, message: 'Password is required' },
+                              {validator: this.validateToNextPassword}
+                           ],
                         })(
                         <Input.Password />
                         )}
@@ -80,7 +111,10 @@ const CreateAccountModalForm = Form.create()(
                   <Col span={12}>
                      <Form.Item label="Confirm Password">
                         {getFieldDecorator('confirm_password', {
-                           rules: [{ required: true, message: 'Confirm Password is required' }],
+                           rules: [
+                              { required: true, message: 'Please confirm your password' },
+                              { validator: this.compareToFirstPassword}
+                           ],
                         })(
                         <Input.Password />
                         )}
