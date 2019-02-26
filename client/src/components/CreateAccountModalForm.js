@@ -1,5 +1,6 @@
 import React from 'react';
-import {Modal, Form, Input, Radio, Row, Col, DatePicker} from 'antd';
+import {Modal, Form, Input,Row, Col, DatePicker, Select} from 'antd';
+const {Option} = Select;
 
 const CreateAccountModalForm = Form.create()(
    class extends React.Component {
@@ -65,7 +66,7 @@ const CreateAccountModalForm = Form.create()(
                   </Col>
                   <Col span={8}>
                      <Form.Item label="Lastname">
-                        {getFieldDecorator('lastname', {
+                        {getFieldDecorator('last_name', {
                            rules: [{ required: true, message: 'Lastname is required' }],
                         })(
                         <Input />
@@ -73,8 +74,17 @@ const CreateAccountModalForm = Form.create()(
                      </Form.Item>
                   </Col>
                </Row>
-               <Row>
-                  <Col>
+               <Row gutter={8}>
+                  <Col span={12}>
+                     <Form.Item label="Address">
+                        {getFieldDecorator('address', {
+                           rules: [{ required: true, message: 'Address is required' }],
+                        })(
+                        <Input />
+                        )}
+                     </Form.Item>
+                  </Col>
+                  <Col span={12}>
                      <Form.Item label="Birthday">
                         {getFieldDecorator('birthday', {
                            rules: [{ required: true, message: 'Birthday is required' }],
@@ -83,9 +93,10 @@ const CreateAccountModalForm = Form.create()(
                         )}
                      </Form.Item>
                   </Col>
-               </Row>       
-               <Row>
-                  <Col>
+               </Row>      
+                
+               <Row gutter={8}>
+                  <Col span={12}>
                      <Form.Item label="Username">
                         {getFieldDecorator('username', {
                            rules: [{ required: true, message: 'Username is required' }],
@@ -94,6 +105,23 @@ const CreateAccountModalForm = Form.create()(
                         )}
                      </Form.Item>
                   </Col>
+
+                  <Col span={12}>
+                     <Form.Item label="Role">
+                        {getFieldDecorator('role', {
+                           rules: [{ required: true, message: 'Role is required' }],
+                           initialValue: 'dentalaide'
+                        })(
+                        <Select>
+                           <Option value="dentalaide">Dental Aide</Option>
+                           <Option value="dentist">Dentist</Option>
+                        </Select>
+                        )}
+                     </Form.Item>
+                  </Col>
+
+
+                
                </Row>       
                <Row gutter={8}>
                   <Col span={12}>

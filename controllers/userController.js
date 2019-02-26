@@ -1,17 +1,18 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const secret = require('../config').secret;
-
+const moment = require('moment');
 
 module.exports.create = async (req, res) => {
 
    const newUser = req.body;
-
    try {
+      console.log('Before moment:  ', newUser.birthday);
+      if(newUser.password !== newUser.confirm_password)
+         return res.status(500).send({error: 'Internal server error'});
+      delete newUser['confirm_password'];
       const result = await User.register(newUser);
-      res.send({
-         result
-      });
+      return res.sendStatus(200);
    } catch(err) {
       if(err.name ==='ValidationError')
          return res.send({errors: err.data});

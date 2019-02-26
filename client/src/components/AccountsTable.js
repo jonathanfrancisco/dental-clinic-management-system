@@ -1,5 +1,6 @@
 import React from 'react';
-import { Table, Button, Divider, Icon, Tooltip, Row, Col} from 'antd';
+import { Table, Button, Divider, Icon, Tooltip, Row, Col, message} from 'antd';
+import axios from 'axios';
 import CreateAccountModalForm from './CreateAccountModalForm';
 
 class AccountsTable extends React.Component {
@@ -14,9 +15,23 @@ class AccountsTable extends React.Component {
       form.validateFields((err, values) => {
          if(err)
             return
-         console.log('Received values of form: ', values);
-         form.resetFields();
-         this.setState({visibleCreateModal: false});
+         const hide = message.loading('Creating new account...', 0);
+         values.birthday = values.birthday.format('YYYY-MM-DD');
+         axios.post('/api/user/create', values)
+         .then((response) => {
+            if(response.status === 200) {
+               hide();
+               message.success('Account created');
+               form.resetFields();
+               this.setState({visibleCreateModal: false});
+            }
+         })
+         .catch((err) => {
+            console.log(err);
+            hide();
+            message.error('Something went wrong! Please, try again.');
+         });
+
       });
    }
 
