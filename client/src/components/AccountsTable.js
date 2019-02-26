@@ -1,11 +1,34 @@
 import React from 'react';
 import { Table, Button, Divider, Icon, Tooltip, Row, Col} from 'antd';
+import CreateAccountModalForm from './CreateAccountModalForm';
 
 class AccountsTable extends React.Component {
 
    state ={
-      loading: false
+      loading: false,
+      visibleCreateModal: false
    };
+
+   handleCreate = () => {
+      const {form} = this.createFormRef.props;
+      form.validateFields((err, values) => {
+         if(err)
+            return
+         console.log('Received values of form: ', values);
+         form.resetFields();
+         this.setState({visibleCreateModal: false});
+      });
+   }
+
+   showCreateModal = () => {
+      this.setState({visibleCreateModal: true});
+   }
+
+   handleCreateModalCancel = () => {
+      const {form} = this.createFormRef.props;
+      form.resetFields();
+      this.setState({visibleCreateModal: false});
+   }
 
    render() {
 
@@ -75,7 +98,13 @@ class AccountsTable extends React.Component {
                      <h1 style={{margin: 0}} >Accounts</h1>
                   </Col>
                   <Col align="right" span={12}>
-                     <Button type="primary"><Icon type="usergroup-add" />Add New Account</Button>
+                     <Button type="primary" onClick={this.showCreateModal}><Icon type="usergroup-add" />Create New Account</Button>
+                     <CreateAccountModalForm
+                        wrappedComponentRef={(form) => this.createFormRef = form}
+                        visible={this.state.visibleCreateModal}
+                        onCreate={this.handleCreate}
+                        onCancel={this.handleCreateModalCancel}
+                     />
                   </Col>
                </Row>
              
