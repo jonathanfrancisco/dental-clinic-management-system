@@ -9,6 +9,10 @@ import SiderNavigation from './components/SiderNavigation';
 
 // PAGES
 import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import DentalRecords from './pages/DentalRecords';
+import Appointments from './pages/Appointments';
+import SMSTextMessaging from './pages/SMSTextMessaging';
 import Accounts from './pages/Accounts';
 
 import axios from 'axios';
@@ -112,10 +116,10 @@ class App extends Component {
                               <Content style={{margin: '24px 16px', padding: 24, background: '#fff'}}>
                                  <Switch>
                                     <Route exact path={["/","/login"]}  render={(props) => <Redirect to="/dashboard"/>}/>
-                                    <ProtectedRoute exact path="/dashboard" component={() => <h1>Dashboard</h1>} />
-                                    <ProtectedRoute exact path="/dentalrecords" component={() => <h1>Dental Records</h1>}  />  
-                                    <ProtectedRoute exact path="/appointments" component={() => <h1>Apppointments</h1>}  />
-                                    <ProtectedRoute exact path="/sms" component={() => <h1>SMS Text Messaging</h1>}  />
+                                    <ProtectedRoute exact path="/dashboard" component={Dashboard} />
+                                    <ProtectedRoute exact path="/dentalrecords" component={DentalRecords}  />  
+                                    <ProtectedRoute exact path="/appointments" component={Appointments}  />
+                                    <ProtectedRoute exact path="/sms" component={SMSTextMessaging}  />
                                     <ProtectedRoute exact path="/accounts" component={Accounts} /> 
                                  </Switch>     
                               </Content>
