@@ -3,7 +3,7 @@ import {Spin, Row, Col} from 'antd';
 
 const CenteredSpinner = () => {
    return (
-      <Row type="flex" align="middle" style={{height: '100%'}}>
+      <Row type="flex" align="middle" style={{minHeight: '100vh'}}>
          <Col md={{span: 8, offset: 12}}>
             <Spin size="large"/>
          </Col>
