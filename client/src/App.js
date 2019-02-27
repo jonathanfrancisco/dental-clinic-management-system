@@ -24,6 +24,7 @@ class App extends Component {
 
    state = {
       authenticated: false,
+      user: '',
       collapsedWidth: 80,
       collapsed: false,
       leftMargin: 200, 
@@ -32,8 +33,9 @@ class App extends Component {
    componentDidMount() {
       axios.get('/api/user/checkToken')
       .then((response) => {
-         if(response.status === 200)
-            this.setState({authenticated: true});
+         if(response.status === 200) {
+            this.setState({authenticated: true, user: response.data.user});
+         }
       }).catch((err) => {
          if(err)
             this.setState({authenticated: false});
@@ -100,7 +102,8 @@ class App extends Component {
                            }}
                            collapsedWidth={this.state.collapsedWidth}
                            style={{minHeight: '100vh', position: 'fixed', zIndex: 100}}
-                        >
+                        > 
+                           <h4 style={{textAlign: 'center', margin: 0, padding: '12px 12px 0 12px', color: 'rgba(255,255,255,0.65)'}}>Logged in as {this.state.user.first_name}</h4>
                            <div className="logo" />
                            <SiderNavigation handleLogout={this.handleLogout}/>
                         </Sider>

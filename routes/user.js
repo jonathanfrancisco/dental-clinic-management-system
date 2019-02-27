@@ -7,7 +7,7 @@ Router.delete('/delete', userController.delete);
 Router.post('/login', userController.login);
 Router.post('/logout', userController.logout);
 Router.get('/checkToken', withAuth, (req, res) => {
-   res.sendStatus(200);
+   res.status(200).send({user: req.user});
 });
 
 
