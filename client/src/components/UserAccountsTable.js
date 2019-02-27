@@ -1,7 +1,9 @@
 import React from 'react';
-import { Table, Button, Divider, Icon, Tooltip, Row, Col, message} from 'antd';
+import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message} from 'antd';
 import axios from 'axios';
 import CreateAccountModalForm from './CreateAccountModalForm';
+
+const {confirm} = Modal;
 
 class UserAccountsTable extends React.Component {
 
@@ -30,7 +32,7 @@ class UserAccountsTable extends React.Component {
       form.validateFields((err, values) => {
          if(err)
             return
-         const hide = message.loading('Creating new Account...', 0);
+         const hide = message.loading('Creating New Account...', 0);
          values.birthday = values.birthday.format('YYYY-MM-DD');
          axios.post('/api/user/create', values)
          .then((response) => {
@@ -61,6 +63,39 @@ class UserAccountsTable extends React.Component {
       this.setState({visibleCreateModal: false});
    }
 
+   handleDelete(id) {
+      const hide = message.loading('Deleting Acccount...', 0);
+      axios.delete('/api/user/delete', {data: {id}})
+      .then((response) => {
+         if(response.status === 200) {
+            hide();
+            message.success('Account deleted successfully');
+            this.getUsers();
+         }
+      })
+      .catch((err) => {
+         console.log(err);
+         hide();
+         message.error('Something went wrong! Please, try again.');
+      });
+   }
+
+   showDeleteConfirm = (id) => {
+      confirm({
+         title: 'System Message',
+         content: 'Are you sure you want to delete this account?',
+         okText: 'Yes',
+         okType: 'danger',
+         cancelText: 'No',
+         onOk: () => {
+           this.handleDelete(id);
+         },
+         onCancel() {
+
+         },
+       });
+   }
+
    render() {
 
       const columns = [
@@ -81,7 +116,7 @@ class UserAccountsTable extends React.Component {
          {
             title: 'Actions',
             dataIndex: 'actions',
-            render: () => (
+            render: (text, record) => (
                <React.Fragment>
                   <Tooltip title="View Account">
                      <Button type="primary"><Icon type="profile" /></Button>
@@ -92,7 +127,7 @@ class UserAccountsTable extends React.Component {
                   </Tooltip>
                   <Divider type="vertical" />
                   <Tooltip title="Delete Account">
-                     <Button type="danger"><Icon type="delete" /></Button>
+                     <Button type="danger" onClick={() => this.showDeleteConfirm(record.id)}><Icon type="delete" /></Button>
                   </Tooltip>
                </React.Fragment>
             )
@@ -129,6 +164,7 @@ class UserAccountsTable extends React.Component {
                title={TableTitle}
                scroll={{x: 300}}
                loading={this.state.loading}
+               rowKey={(record) => record.id}
                pagination={
                   {
                      defaultCurrent: 1,

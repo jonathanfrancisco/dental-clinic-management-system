@@ -31,6 +31,19 @@ module.exports.create = async (req, res) => {
    
 }
 
+module.exports.delete = async (req, res) => {
+
+   try {
+      const result = await User.query().deleteById(req.body.id);
+      if(result)
+         res.sendStatus(200);
+   } catch(err) {
+      console.error(err);
+      return res.status(500).send({error: 'Internal server error'});
+   }
+ 
+}
+
 module.exports.login = async (req, res) => {
 
    try {

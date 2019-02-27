@@ -40,7 +40,6 @@ const CreateAccountModalForm = Form.create()(
             <Modal
                visible={visible}
                title="Create a new account"
-               cancelButtonProps={{type: 'danger'}}
                okText="Create"
                onCancel={onCancel}
                onOk={onCreate}
