@@ -3,7 +3,7 @@ import { Table, Button, Divider, Icon, Tooltip, Row, Col, message} from 'antd';
 import axios from 'axios';
 import CreateAccountModalForm from './CreateAccountModalForm';
 
-class AccountsTable extends React.Component {
+class UserAccountsTable extends React.Component {
 
    state ={
       loading: false,
@@ -30,13 +30,13 @@ class AccountsTable extends React.Component {
       form.validateFields((err, values) => {
          if(err)
             return
-         const hide = message.loading('Creating new account...', 0);
+         const hide = message.loading('Creating new Account...', 0);
          values.birthday = values.birthday.format('YYYY-MM-DD');
          axios.post('/api/user/create', values)
          .then((response) => {
             if(response.status === 200) {
                hide();
-               message.success('Account created');
+               message.success('Account created successfully');
                form.resetFields();
                this.setState({visibleCreateModal: false});
                this.getUsers();
@@ -83,7 +83,7 @@ class AccountsTable extends React.Component {
             dataIndex: 'actions',
             render: () => (
                <React.Fragment>
-                  <Tooltip title="View Account Info">
+                  <Tooltip title="View Account">
                      <Button type="primary"><Icon type="profile" /></Button>
                   </Tooltip>
                   <Divider type="vertical" />
@@ -91,7 +91,7 @@ class AccountsTable extends React.Component {
                      <Button><Icon type="form" /></Button>
                   </Tooltip>
                   <Divider type="vertical" />
-                  <Tooltip title="Delete account">
+                  <Tooltip title="Delete Account">
                      <Button type="danger"><Icon type="delete" /></Button>
                   </Tooltip>
                </React.Fragment>
@@ -104,7 +104,7 @@ class AccountsTable extends React.Component {
             <React.Fragment>
                <Row>
                   <Col span={12}>
-                     <h1 style={{margin: 0}} >Accounts</h1>
+                     <h1 style={{margin: 0}} >User Accounts</h1>
                   </Col>
                   <Col align="right" span={12}>
                      <Button type="primary" onClick={this.showCreateModal}><Icon type="usergroup-add" />Create New Account</Button>
@@ -148,4 +148,4 @@ class AccountsTable extends React.Component {
  
 }
 
-export default AccountsTable;
+export default UserAccountsTable;

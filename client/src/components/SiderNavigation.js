@@ -32,10 +32,10 @@ const SiderNavigation = withRouter((props) => {
             <span>SMS Text Messaging</span>
             <Link to="/sms">SMS Text Messaging</Link>
          </Menu.Item>
-         <Menu.Item key="/accounts">
+         <Menu.Item key="/useraccounts">
             <Icon type="team" />
-            <span>Accounts</span>
-            <Link to="/accounts">Accounts</Link>
+            <span>User Accounts</span>
+            <Link to="/useraccounts">User Accounts</Link>
          </Menu.Item>
          <Menu.Item key="/logout" onClick={() => {
             confirm({

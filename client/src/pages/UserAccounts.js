@@ -1,8 +1,8 @@
 import React from 'react';
 import CenteredSpinner from '../components/CenteredSpinner';
-import AccountsTable from '../components/AccountsTable';
+import UserAccountsTable from '../components/UserAccountsTable';
 
-class Accounts extends React.Component {
+class UserAccounts extends React.Component {
 
    state = {
       loading: true
@@ -20,10 +20,10 @@ class Accounts extends React.Component {
             <CenteredSpinner />
          );
       return (
-         <AccountsTable />
+         <UserAccountsTable />
       );
    }
    
 }
 
-export default Accounts;
+export default UserAccounts;

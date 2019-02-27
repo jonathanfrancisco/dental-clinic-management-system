@@ -13,7 +13,7 @@ import Dashboard from './pages/Dashboard';
 import DentalRecords from './pages/DentalRecords';
 import Appointments from './pages/Appointments';
 import SMSTextMessaging from './pages/SMSTextMessaging';
-import Accounts from './pages/Accounts';
+import UserAccounts from './pages/UserAccounts';
 
 import axios from 'axios';
 
@@ -120,7 +120,7 @@ class App extends Component {
                                     <ProtectedRoute exact path="/dentalrecords" component={DentalRecords}  />  
                                     <ProtectedRoute exact path="/appointments" component={Appointments}  />
                                     <ProtectedRoute exact path="/sms" component={SMSTextMessaging}  />
-                                    <ProtectedRoute exact path="/accounts" component={Accounts} /> 
+                                    <ProtectedRoute exact path="/useraccounts" component={UserAccounts} /> 
                                  </Switch>     
                               </Content>
                            </Layout>
