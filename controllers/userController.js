@@ -3,6 +3,11 @@ const jwt = require('jsonwebtoken');
 const secret = require('../config').secret;
 const moment = require('moment');
 
+module.exports.users = async (req, res) => {
+   const users = await User.query().orderBy('id', 'desc');
+   return res.send({users});
+}
+
 module.exports.create = async (req, res) => {
 
    const newUser = req.body;
@@ -14,8 +19,10 @@ module.exports.create = async (req, res) => {
       const result = await User.register(newUser);
       return res.sendStatus(200);
    } catch(err) {
-      if(err.name ==='ValidationError')
+      if(err.name ==='ValidationError') {
+         console.log(err);
          return res.send({errors: err.data});
+      }
       else {
          console.error(err);
          return res.status(500).send({error: 'Internal server error'});

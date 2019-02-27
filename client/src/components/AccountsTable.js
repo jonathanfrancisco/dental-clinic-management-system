@@ -7,8 +7,23 @@ class AccountsTable extends React.Component {
 
    state ={
       loading: false,
-      visibleCreateModal: false
+      visibleCreateModal: false,
+      users: []
    };
+
+   componentDidMount() {
+      this.getUsers();
+   }
+
+   getUsers() {
+      axios.get('/api/user/')
+      .then((response) => {
+         this.setState({users: response.data.users});
+      })
+      .catch((err) => {
+         console.log(err);
+      }) ;
+   }
 
    handleCreate = () => {
       const {form} = this.createFormRef.props;
@@ -24,6 +39,7 @@ class AccountsTable extends React.Component {
                message.success('Account created');
                form.resetFields();
                this.setState({visibleCreateModal: false});
+               this.getUsers();
             }
          })
          .catch((err) => {
@@ -50,11 +66,17 @@ class AccountsTable extends React.Component {
       const columns = [
          {
             title: 'Fullname',
-            dataIndex: 'full_name'
+            dataIndex: 'full_name',
+            render: (text, record) => {
+               return `${record.first_name} ${record.middle_name || ''} ${record.last_name}`;
+            }
          }, 
          {
             title: 'Role',
-            dataIndex: 'role'
+            dataIndex: 'role',
+            render: (text, record) => {
+               return record.role === 'dentist' ? 'Dentist' : 'Dental Aide';
+            }
          }, 
          {
             title: 'Actions',
@@ -77,34 +99,6 @@ class AccountsTable extends React.Component {
          }
       ];
    
-      const data = [
-         {
-            key: '1',
-            full_name: 'Cathleen B. Tolentino',
-            role: 'Documentation'
-         },
-         {
-            key: '2',
-            full_name: 'Jonathan B. Francisco',
-            role: 'Software Engineer / Programmer'
-         },
-         {
-            key: '3',
-            full_name: 'Patricia Dane R. Miguel',
-            role: 'Documentation'
-         },
-         {
-            key: '4',
-            full_name: 'Joecel Pergis',
-            role: 'Human Printer'
-         },
-         {
-            key: '5',
-            full_name: 'Czar Emman Alejandro',
-            role: 'Housekeeper?'
-         }
-      ];
-
       const TableTitle = () => {
          return (
             <React.Fragment>
@@ -122,8 +116,6 @@ class AccountsTable extends React.Component {
                      />
                   </Col>
                </Row>
-             
-              
             </React.Fragment>
          );
       }
@@ -132,7 +124,7 @@ class AccountsTable extends React.Component {
          <React.Fragment>
             <Table
                columns={columns}
-               dataSource={data}
+               dataSource={this.state.users}
                bordered
                title={TableTitle}
                scroll={{x: 300}}
