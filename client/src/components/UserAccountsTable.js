@@ -158,6 +158,7 @@ class UserAccountsTable extends React.Component {
       return (
          <React.Fragment>
             <Table
+               size="small"
                columns={columns}
                dataSource={this.state.users}
                bordered
