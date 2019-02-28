@@ -61,7 +61,7 @@ module.exports.login = async (req, res) => {
             last_name: user.last_name
          };
          const token = jwt.sign(payload, secret);
-         res.cookie('token', token, {httpOnly: true}).sendStatus(200);
+         res.cookie('token', token, {httpOnly: true}).status(200).send({user: payload});
       }
       else 
          return res.send({error: 'Invalid username or password'});

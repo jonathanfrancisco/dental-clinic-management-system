@@ -46,7 +46,7 @@ class App extends Component {
       return axios.post('/api/user/login', formValues)
       .then((response) => {   
          if(response.data.error === undefined) {
-            this.setState({authenticated: true})
+            this.setState({authenticated: true, user: response.data.user});
             notification['success']({
                message: 'System Message',
                description: 'Logged-in successfully!',
@@ -60,7 +60,7 @@ class App extends Component {
       axios.post('/api/user/logout')
       .then((response) => {
          if(response.status === 200)
-            this.setState({authenticated: false});
+            this.setState({authenticated: false, user: ''});
       })
       .catch((err) => {
          console.log(err);
