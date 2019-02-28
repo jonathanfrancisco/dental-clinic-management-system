@@ -103,7 +103,9 @@ class App extends Component {
                            collapsedWidth={this.state.collapsedWidth}
                            style={{minHeight: '100vh', position: 'fixed', zIndex: 100}}
                         > 
-                           <h4 style={{textAlign: 'center', margin: 0, padding: '12px 12px 0 12px', color: 'rgba(255,255,255,0.65)'}}>Logged in as {this.state.user.first_name}</h4>
+                           <h4 style={{textAlign: 'center', margin: 0, padding: '12px 12px 0 12px', color: 'rgba(255,255,255,0.65)'}}>
+                              Logged in as <span style={{fontWeight: 'bold'}}>{this.state.user.first_name} </span>
+                           </h4>
                            <div className="logo" />
                            <SiderNavigation handleLogout={this.handleLogout}/>
                         </Sider>
