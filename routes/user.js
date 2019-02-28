@@ -9,6 +9,8 @@ Router.post('/logout', userController.logout);
 Router.get('/checkToken', withAuth, (req, res) => {
    res.status(200).send({user: req.user});
 });
+Router.get('/:id', userController.getUserById);
+
 
 
 module.exports = Router;

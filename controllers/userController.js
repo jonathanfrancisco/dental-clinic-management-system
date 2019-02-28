@@ -1,11 +1,17 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const secret = require('../config').secret;
-const moment = require('moment');
+const bcrypt = require('bcrypt');
 
 module.exports.users = async (req, res) => {
    const users = await User.query().orderBy('id', 'desc');
    return res.send({users});
+}
+
+module.exports.getUserById = async (req, res) => {
+   const id = req.params.id;
+   const user = await User.query().findById(id);
+   return res.send({user});
 }
 
 module.exports.create = async (req, res) => {

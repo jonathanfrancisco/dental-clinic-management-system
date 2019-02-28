@@ -2,6 +2,7 @@ import React from 'react';
 import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message} from 'antd';
 import axios from 'axios';
 import CreateAccountModalForm from './CreateAccountModalForm';
+import ViewAccountModal from './ViewAccountModal';
 
 const {confirm} = Modal;
 
@@ -10,6 +11,8 @@ class UserAccountsTable extends React.Component {
    state ={
       loading: false,
       visibleCreateModal: false,
+      visibleViewModal: false,
+      selectedAccountViewModal: {},
       users: []
    };
 
@@ -61,6 +64,26 @@ class UserAccountsTable extends React.Component {
       const {form} = this.createFormRef.props;
       form.resetFields();
       this.setState({visibleCreateModal: false});
+   }
+
+   getUser(id) {
+      axios.get(`/api/user/${id}`)
+      .then((response) => {
+         if(response.status === 200)
+            this.setState({selectedAccountViewModal: response.data.user});
+      })
+      .catch((err) => {
+         console.log(err);
+      });
+   }
+
+   showViewModal = (id) => {
+      this.getUser(id);
+      this.setState({visibleViewModal: true});
+   }
+
+   handleViewModalCancel = () => {
+      this.setState({selectedAccountViewModal: {}, visibleViewModal: false});
    }
 
    handleDelete(id) {
@@ -119,7 +142,7 @@ class UserAccountsTable extends React.Component {
             render: (text, record) => (
                <React.Fragment>
                   <Tooltip title="View Account">
-                     <Button type="primary"><Icon type="profile" /></Button>
+                     <Button type="primary" onClick={() => this.showViewModal(record.id)}><Icon type="profile" /></Button>
                   </Tooltip>
                   <Divider type="vertical" />
                   <Tooltip title="Edit Account">
@@ -157,6 +180,7 @@ class UserAccountsTable extends React.Component {
        
       return (
          <React.Fragment>
+            <ViewAccountModal account={this.state.selectedAccountViewModal} onCancel={this.handleViewModalCancel} visible={this.state.visibleViewModal} />
             <Table
                size="small"
                columns={columns}
