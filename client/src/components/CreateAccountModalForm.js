@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, Form, Input,Row, Col, DatePicker, Select} from 'antd';
+import {Modal, Form, Input,Row, Col, DatePicker, Select, Button} from 'antd';
 const {Option} = Select;
 
 const CreateAccountModalForm = Form.create()(
@@ -31,10 +31,15 @@ const CreateAccountModalForm = Form.create()(
          }
          callback();
       }
+
+      handleSubmit = (e) => {
+         e.preventDefault();
+         this.props.onCreate();
+      }
      
 
       render() {
-         const {visible, onCancel, onCreate, form} = this.props;
+         const {visible, onCancel, form} = this.props;
          const { getFieldDecorator } = form;
          return (
             <Modal
@@ -42,10 +47,9 @@ const CreateAccountModalForm = Form.create()(
                title="Create a new account"
                okText="Create"
                onCancel={onCancel}
-               onOk={onCreate}
+               onOk={this.handleSubmit}
             >
-            <Form layout="vertical">
-               
+            <Form layout="vertical" onSubmit={this.handleSubmit}>
                <Row gutter={8}>
                   <Col span={8}>
                      <Form.Item label="Firstname">
@@ -118,9 +122,6 @@ const CreateAccountModalForm = Form.create()(
                         )}
                      </Form.Item>
                   </Col>
-
-
-                
                </Row>       
                <Row gutter={8}>
                   <Col span={12}>
@@ -148,7 +149,7 @@ const CreateAccountModalForm = Form.create()(
                      </Form.Item>
                   </Col>
                </Row>
-                           
+               <Button hidden htmlType="submit"></Button>
             </Form>
             </Modal>
          );
@@ -158,49 +159,3 @@ const CreateAccountModalForm = Form.create()(
 
 export default CreateAccountModalForm;
 
- 
-//  class CollectionsPage extends React.Component {
-//    state = {
-//      visible: false,
-//    };
- 
-//    showModal = () => {
-//      this.setState({ visible: true });
-//    }
- 
-//    handleCancel = () => {
-//      this.setState({ visible: false });
-//    }
- 
-//    handleCreate = () => {
-//      const form = this.formRef.props.form;
-//      form.validateFields((err, values) => {
-//        if (err) {
-//          return;
-//        }
- 
-//        console.log('Received values of form: ', values);
-//        form.resetFields();
-//        this.setState({ visible: false });
-//      });
-//    }
- 
-//    saveFormRef = (formRef) => {
-//      this.formRef = formRef;
-//    }
- 
-//    render() {
-//      return (
-//        <div>
-//          <Button type="primary" onClick={this.showModal}>New Collection</Button>
-//          <CollectionCreateForm
-//            wrappedComponentRef={this.saveFormRef}
-//            visible={this.state.visible}
-//            onCancel={this.handleCancel}
-//            onCreate={this.handleCreate}
-//          />
-//        </div>
-//      );
-//    }
-//  }
- 
