@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message} from 'antd';
 import axios from 'axios';
-import CreateAccountModalForm from './CreateAccountModalForm';
+import CreateAccountModal from './CreateAccountModal';
 import ViewAccountModal from './ViewAccountModal';
 
 const {confirm} = Modal;
@@ -10,7 +10,6 @@ class UserAccountsTable extends React.Component {
 
    state ={
       loading: false,
-      visibleCreateModal: false,
       visibleViewModal: false,
       selectedAccountViewModal: {},
       users: []
@@ -32,40 +31,23 @@ class UserAccountsTable extends React.Component {
       }) ;
    }
 
-   handleCreate = () => {
-      const {form} = this.createFormRef.props;
-      form.validateFields((err, values) => {
-         if(err)
-            return
-         const hide = message.loading('Creating New Account...', 0);
-         values.birthday = values.birthday.format('YYYY-MM-DD');
-         axios.post('/api/user/create', values)
-         .then((response) => {
-            if(response.status === 200) {
-               hide();
-               message.success('Account created successfully');
-               form.resetFields();
-               this.setState({visibleCreateModal: false});
-               this.getUsers();
-            }
-         })
-         .catch((err) => {
-            console.log(err);
+   handleCreate = (values) => {
+      const hide = message.loading('Creating New Account...', 0);
+      values.birthday = values.birthday.format('YYYY-MM-DD');
+      axios.post('/api/user/create', values)
+      .then((response) => {
+         if(response.status === 200) {
             hide();
-            message.error('Something went wrong! Please, try again.');
-         });
-
+            message.success('Account created successfully');
+            this.getUsers();
+         }
+      })
+      .catch((err) => {
+         console.log(err);
+         hide();
+         message.error('Something went wrong! Please, try again.');
       });
-   }
-
-   showCreateModal = () => {
-      this.setState({visibleCreateModal: true});
-   }
-
-   handleCreateModalCancel = () => {
-      const {form} = this.createFormRef.props;
-      form.resetFields();
-      this.setState({visibleCreateModal: false});
+      
    }
 
    getUser(id) {
@@ -167,13 +149,7 @@ class UserAccountsTable extends React.Component {
                      <h1 style={{margin: 0}} >User Accounts</h1>
                   </Col>
                   <Col align="right" span={12}>
-                     <Button type="primary" onClick={this.showCreateModal}><Icon type="usergroup-add" />Create New Account</Button>
-                     <CreateAccountModalForm
-                        wrappedComponentRef={(form) => this.createFormRef = form}
-                        visible={this.state.visibleCreateModal}
-                        onCreate={this.handleCreate}
-                        onCancel={this.handleCreateModalCancel}
-                     />
+                     <CreateAccountModal onCreate={this.handleCreate} />
                   </Col>
                </Row>
             </React.Fragment>
