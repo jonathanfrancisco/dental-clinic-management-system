@@ -21,9 +21,11 @@ class UserAccountsTable extends React.Component {
    }
 
    getUsers() {
+      this.setState({loading: true});
+      console.log('LOADING!!!');
       axios.get('/api/user/')
       .then((response) => {
-         this.setState({users: response.data.users});
+         this.setState({users: response.data.users, loading: false});
       })
       .catch((err) => {
          console.log(err);
@@ -195,10 +197,8 @@ class UserAccountsTable extends React.Component {
                      defaultCurrent: 1,
                      pageSize: 4,
                      onChange: (page, pageSize) => {
-                        this.setState({loading: true});
-                        setTimeout(() => {
-                           this.setState({loading: false});
-                        }, 500);
+                        this.getUsers();
+                       
                      }
                   }
                }
