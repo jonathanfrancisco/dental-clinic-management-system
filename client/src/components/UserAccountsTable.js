@@ -85,7 +85,7 @@ class UserAccountsTable extends React.Component {
    }
 
    handleViewModalCancel = () => {
-      this.setState({selectedAccountViewModal: {}, visibleViewModal: false});
+      this.setState({visibleViewModal: false});
    }
 
    handleDelete(id) {
