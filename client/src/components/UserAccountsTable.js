@@ -126,7 +126,7 @@ class UserAccountsTable extends React.Component {
             render: (text, record) => (
                <React.Fragment>
                   <Tooltip title="View Account">
-                     <Button type="primary" onClick={() => this.showViewModal(record.id)}><Icon type="profile" /></Button>
+                     <ViewAccountModal account={record} />
                   </Tooltip>
                   <Divider type="vertical" />
                   <Tooltip title="Edit Account">
@@ -158,7 +158,6 @@ class UserAccountsTable extends React.Component {
        
       return (
          <React.Fragment>
-            <ViewAccountModal account={this.state.selectedAccountViewModal} onCancel={this.handleViewModalCancel} visible={this.state.visibleViewModal} />
             <Table
                size="small"
                columns={columns}
