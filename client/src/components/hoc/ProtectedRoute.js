@@ -28,7 +28,6 @@ class ProtectedRoute extends React.Component {
       const {pathname} = this.props.location;
       return (
          <Route {...rest} render={(props) => {
-            console.log('From: ',props.location);
             if(!this.state.redirect 
                && this.state.role === 'dentalaide' && 
                (pathname === '/useraccounts' || pathname === '/dashboard')) {
