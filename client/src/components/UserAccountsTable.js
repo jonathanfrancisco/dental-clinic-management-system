@@ -139,7 +139,7 @@ class UserAccountsTable extends React.Component {
       const TableTitle = () => {
          return (
             <React.Fragment>
-               <Row>
+               <Row type="flex" align="middle">
                   <Col span={12}>
                      <h1 style={{margin: 0}} >User Accounts</h1>
                   </Col>
