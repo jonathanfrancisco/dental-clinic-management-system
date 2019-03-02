@@ -3,6 +3,7 @@ const userController = require('../controllers/userController');
 const withAuth = require('../services/withAuth');
 Router.get('/', withAuth,  userController.users);
 Router.post('/create', withAuth, userController.create);
+Router.patch('/:id/update', withAuth, userController.update);
 Router.delete('/delete', withAuth, userController.delete);
 Router.post('/login', userController.login);
 Router.post('/logout', userController.logout);

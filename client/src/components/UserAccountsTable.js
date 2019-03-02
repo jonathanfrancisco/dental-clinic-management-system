@@ -3,6 +3,7 @@ import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message} from '
 import axios from 'axios';
 import CreateAccountModal from './CreateAccountModal';
 import ViewAccountModal from './ViewAccountModal';
+import UpdateAccountModal from './UpdateAccountModal';
 
 const {confirm} = Modal;
 
@@ -35,7 +36,7 @@ class UserAccountsTable extends React.Component {
       .then((response) => {
          if(response.status === 200) {
             hide();
-            message.success('Account created successfully');
+            message.success('Account Created Successfully');
             this.getUsers();
          }
       })
@@ -44,7 +45,24 @@ class UserAccountsTable extends React.Component {
          hide();
          message.error('Something went wrong! Please, try again.');
       });
-      
+   }
+
+   handleUpdate = (id, values) => {
+      const hide = message.loading('Updating Account...', 0);
+      values.birthday = values.birthday.format('YYYY-MM-DD');
+      axios.patch(`/api/user/${id}/update`, values)
+      .then((response) => {
+         if(response.status === 200) {
+            hide();
+            message.success('Account Updated Successfully');
+            this.getUsers();
+         }
+      })
+      .catch((err) => {
+         console.log(err);
+         hide();
+         message.error('Something went wrong! Please, try again.');
+      });
    }
 
    handleDelete(id) {
@@ -106,8 +124,8 @@ class UserAccountsTable extends React.Component {
                      <ViewAccountModal account={record} />
                   </Tooltip>
                   <Divider type="vertical" />
-                  <Tooltip title="Edit Account">
-                     <Button><Icon type="form" /></Button>
+                  <Tooltip title="Update Account">
+                     <UpdateAccountModal onUpdate={this.handleUpdate}account={record}/>
                   </Tooltip>
                   <Divider type="vertical" />
                   <Tooltip title="Delete Account">

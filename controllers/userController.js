@@ -18,7 +18,7 @@ module.exports.create = async (req, res) => {
 
    const newUser = req.body;
    try {
-      console.log('Before moment:  ', newUser.birthday);
+   
       if(newUser.password !== newUser.confirm_password)
          return res.status(500).send({error: 'Internal server error'});
       delete newUser['confirm_password'];
@@ -35,6 +35,50 @@ module.exports.create = async (req, res) => {
       }
    }
    
+}
+
+module.exports.update = async (req, res) => {
+
+   const id = req.params.id;
+   let patchUser;
+
+   if(req.body.password && req.body.confirm_password) {
+      if(req.body.password !== req.body.confirm_password)
+         return res.status(500).send({error: 'Internal server error'});
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(req.body.password, saltRounds).then(hash => hash)
+      patchUser = {
+         first_name: req.body.first_name,
+         middle_name: req.body.middle_name || '',
+         last_name: req.body.last_name,
+         address: req.body.address,
+         birthday: req.body.birthday,
+         role: req.body.role,
+         username: req.body.username,
+         password: hashedPassword
+      };
+   }
+   
+   else {
+      patchUser = {
+         first_name: req.body.first_name,
+         middle_name: req.body.middle_name || '',
+         last_name: req.body.last_name,
+         address: req.body.address,
+         birthday: req.body.birthday,
+         username: req.body.username,
+         role: req.body.role
+      };
+   }
+
+   try {
+      const result = await User.query().patchAndFetchById(id, patchUser);
+      return res.sendStatus(200);
+   } catch(err) {
+      console.log(err);
+      return res.status(500).send({error: 'Internal server error'});
+   }
+
 }
 
 module.exports.delete = async (req, res) => {
