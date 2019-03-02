@@ -10,8 +10,6 @@ class UserAccountsTable extends React.Component {
 
    state ={
       loading: false,
-      visibleViewModal: false,
-      selectedAccountViewModal: {},
       users: []
    };
 
@@ -21,7 +19,6 @@ class UserAccountsTable extends React.Component {
 
    getUsers() {
       this.setState({loading: true});
-      console.log('LOADING!!!');
       axios.get('/api/user/')
       .then((response) => {
          this.setState({users: response.data.users, loading: false});
@@ -48,26 +45,6 @@ class UserAccountsTable extends React.Component {
          message.error('Something went wrong! Please, try again.');
       });
       
-   }
-
-   getUser(id) {
-      axios.get(`/api/user/${id}`)
-      .then((response) => {
-         if(response.status === 200)
-            this.setState({selectedAccountViewModal: response.data.user});
-      })
-      .catch((err) => {
-         console.log(err);
-      });
-   }
-
-   showViewModal = (id) => {
-      this.getUser(id);
-      this.setState({visibleViewModal: true});
-   }
-
-   handleViewModalCancel = () => {
-      this.setState({visibleViewModal: false});
    }
 
    handleDelete(id) {
