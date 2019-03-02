@@ -64,7 +64,8 @@ module.exports.login = async (req, res) => {
          const payload = {
             username: user.username,
             first_name: user.first_name,
-            last_name: user.last_name
+            last_name: user.last_name,
+            role: user.role
          };
          const token = jwt.sign(payload, secret);
          res.cookie('token', token, {httpOnly: true}).status(200).send({user: payload});
@@ -81,4 +82,5 @@ module.exports.login = async (req, res) => {
 
 module.exports.logout = (req, res) => {
    res.clearCookie('token').sendStatus(200);
+   req.user = null;
 }

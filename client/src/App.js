@@ -107,7 +107,7 @@ class App extends Component {
                               Logged in as <span style={{fontWeight: 'bold'}}>{this.state.user.first_name} </span>
                            </h4>
                            <div className="logo" />
-                           <SiderNavigation handleLogout={this.handleLogout}/>
+                           <SiderNavigation role={this.state.user.role} handleLogout={this.handleLogout}/>
                         </Sider>
                         <Layout>
                            <Header style={{boxShadow: '0px -1px 3px rgba(0, 0, 0, 1)', marginLeft: this.state.leftMargin, background: '#fff', padding: 0, position: 'fixed', zIndex: 1, width: '100%'}}>
@@ -120,7 +120,11 @@ class App extends Component {
                            <Layout style={{marginLeft: this.state.leftMargin, marginTop: 64}}>
                               <Content style={{margin: '24px 16px', padding: 24, background: '#fff'}}>
                                  <Switch>
-                                    <Route exact path={["/","/login"]}  render={(props) => <Redirect to="/dashboard"/>}/>
+                                    <Route exact path={["/","/login"]}  render={(props) => {
+                                       if(this.state.user.role === 'dentalaide')
+                                          return <Redirect to="/dentalrecords" />
+                                       return <Redirect to="/dashboard"/>
+                                    }}/>
                                     <ProtectedRoute exact path="/dashboard" component={Dashboard} />
                                     <ProtectedRoute exact path="/dentalrecords" component={DentalRecords}  />  
                                     <ProtectedRoute exact path="/appointments" component={Appointments}  />

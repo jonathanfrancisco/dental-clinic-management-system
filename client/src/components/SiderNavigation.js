@@ -9,14 +9,16 @@ const SiderNavigation = withRouter((props) => {
    // get the basepath of the current url
    // to use as a selected key to correspond with the menu
    const selectedItem = `/${props.location.pathname.split('/')[1]}`; 
-
    return (
       <Menu theme="dark" mode="inline" selectedKeys={[selectedItem]}>
-         <Menu.Item key="/dashboard">
-            <Icon type="dashboard" />
-            <span>Dashboard</span>
-            <Link to="/dashboard">Dashboard</Link>
-         </Menu.Item>
+         {props.role === 'dentalaide' ? null : (
+             <Menu.Item key="/dashboard">
+             <Icon type="dashboard" />
+             <span>Dashboard</span>
+             <Link to="/dashboard">Dashboard</Link>
+          </Menu.Item>
+         )}
+        
          <Menu.Item key="/dentalrecords">
             <Icon type="idcard" />
             <span>Dental Records</span>
@@ -32,11 +34,14 @@ const SiderNavigation = withRouter((props) => {
             <span>SMS Text Messaging</span>
             <Link to="/sms">SMS Text Messaging</Link>
          </Menu.Item>
-         <Menu.Item key="/useraccounts">
-            <Icon type="team" />
-            <span>User Accounts</span>
-            <Link to="/useraccounts">User Accounts</Link>
-         </Menu.Item>
+         {props.role === 'dentalaide' ? null : (
+            <Menu.Item key="/useraccounts">
+               <Icon type="team" />
+               <span>User Accounts</span>
+               <Link to="/useraccounts">User Accounts</Link>
+            </Menu.Item>
+         )}
+        
          <Menu.Item key="/logout" onClick={() => {
             confirm({
                title: 'System Message',
