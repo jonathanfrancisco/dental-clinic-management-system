@@ -1,9 +1,10 @@
 import React from 'react';
+import DentalRecordsTable from '../components/DentalRecordsTable';
 
 class DentalRecords extends React.Component {
    render() {
       return (
-         <h1>Dental Records</h1>
+         <DentalRecordsTable />
       );
    }
 }
