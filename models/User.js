@@ -22,6 +22,20 @@ class User extends Model {
       };
    }
 
+   static get relationMappings() {
+      const Treatment = require('./Treatment');
+      return {
+         treatments: {
+            relation: Model.HasManyRelation,
+            modelClass: Treatment,
+            join: {
+               from: 'user.id',
+               to: 'treatment.user_id'
+            }
+         }
+      };
+   }
+
    static async register(newUser) {
 
       const saltRounds = 10;
