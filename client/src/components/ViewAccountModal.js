@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Modal, Icon, Row, Col, Divider} from 'antd';
+import {Button, Modal, Icon, Row, Col, Divider, Tooltip} from 'antd';
 import DescriptionItem from './DescriptionItem';
 import moment from 'moment';
 
@@ -23,7 +23,9 @@ class ViewAccountModal extends React.Component {
       const {account} = this.props;
       return (
          <React.Fragment>
-            <Button onClick={this.showModal} type="primary"><Icon type="profile" /></Button>
+            <Tooltip title="View Account">
+               <Button onClick={this.showModal} type="primary"><Icon type="profile" /></Button>
+            </Tooltip>
             <Modal
                title={<h2>Account Info</h2>}
                visible={this.state.visible}

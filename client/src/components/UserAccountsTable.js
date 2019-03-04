@@ -120,13 +120,9 @@ class UserAccountsTable extends React.Component {
             dataIndex: 'actions',
             render: (text, record) => (
                <React.Fragment>
-                  <Tooltip title="View Account">
-                     <ViewAccountModal account={record} />
-                  </Tooltip>
-                  <Divider type="vertical" />
-                  <Tooltip title="Update Account">
-                     <UpdateAccountModal onUpdate={this.handleUpdate}account={record}/>
-                  </Tooltip>
+                  <ViewAccountModal account={record} />
+                  <Divider type="vertical" />          
+                  <UpdateAccountModal onUpdate={this.handleUpdate}account={record}/>
                   <Divider type="vertical" />
                   <Tooltip title="Delete Account">
                      <Button type="danger" onClick={() => this.showDeleteConfirm(record.id)}><Icon type="delete" /></Button>
