@@ -48,9 +48,7 @@ module.exports.update = async (req, res) => {
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(req.body.password, saltRounds).then(hash => hash)
       patchUser = {
-         first_name: req.body.first_name,
-         middle_name: req.body.middle_name || '',
-         last_name: req.body.last_name,
+         name: req.body.name,
          address: req.body.address,
          birthday: req.body.birthday,
          role: req.body.role,
@@ -61,9 +59,7 @@ module.exports.update = async (req, res) => {
    
    else {
       patchUser = {
-         first_name: req.body.first_name,
-         middle_name: req.body.middle_name || '',
-         last_name: req.body.last_name,
+         name: req.body.name,
          address: req.body.address,
          birthday: req.body.birthday,
          username: req.body.username,
@@ -107,8 +103,7 @@ module.exports.login = async (req, res) => {
       if(isPasswordCorrect) {
          const payload = {
             username: user.username,
-            first_name: user.first_name,
-            last_name: user.last_name,
+            name: user.name,
             role: user.role
          };
          const token = jwt.sign(payload, secret);

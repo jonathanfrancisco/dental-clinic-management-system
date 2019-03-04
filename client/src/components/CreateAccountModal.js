@@ -69,27 +69,11 @@ const CreateAccountModal = Form.create()(
                   onOk={this.handleSubmit}
                >
                <Form layout="vertical" onSubmit={this.handleSubmit}>
-                  <Row gutter={8}>
-                     <Col span={8}>
-                        <Form.Item label="Firstname">
-                           {getFieldDecorator('first_name', {
-                              rules: [{ required: true, message: 'Firstname is required' }],
-                           })(
-                           <Input />
-                           )}
-                        </Form.Item>
-                     </Col>
-                     <Col span={8}>
-                        <Form.Item label="Middlename">
-                           {getFieldDecorator('middle_name')(
-                           <Input />
-                           )}
-                        </Form.Item>
-                     </Col>
-                     <Col span={8}>
-                        <Form.Item label="Lastname">
-                           {getFieldDecorator('last_name', {
-                              rules: [{ required: true, message: 'Lastname is required' }],
+                  <Row>
+                     <Col span={24}>
+                        <Form.Item label="Name">
+                           {getFieldDecorator('name', {
+                              rules: [{ required: true, message: 'Name is required' }],
                            })(
                            <Input />
                            )}

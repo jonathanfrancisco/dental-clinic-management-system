@@ -104,7 +104,7 @@ class App extends Component {
                            style={{minHeight: '100vh', position: 'fixed', zIndex: 100}}
                         > 
                            <h4 style={{textAlign: 'center', margin: 0, padding: '12px 12px 0 12px', color: 'rgba(255,255,255,0.65)'}}>
-                              Logged in as <span style={{fontWeight: 'bold'}}>{this.state.user.first_name} </span>
+                              Logged in as <br /> <span style={{fontWeight: 'bold'}}>{this.state.user.name} </span>
                            </h4>
                            <div className="logo" />
                            <SiderNavigation role={this.state.user.role} handleLogout={this.handleLogout}/>

@@ -36,24 +36,18 @@ class ViewAccountModal extends React.Component {
             >
                <Divider orientation="left">Personal</Divider>
                <Row>
-                  <Col span={8}>
-                     <DescriptionItem title="Firstname" content={account.first_name} />
+                  <Col span={12}>
+                     <DescriptionItem title="Name" content={account.name} />
                   </Col>
-                  <Col span={8}>
-                     <DescriptionItem title="Middlename" content={account.middle_name} /> 
-                  </Col>
-                  <Col span={8}>
-                     <DescriptionItem title="Lastname" content={account.last_name}/>
-                  </Col>
-               </Row>
-               <Row>
                   <Col span={8}>
                      <DescriptionItem title="Role" content={account.role === 'dentist' ? 'Dentist' : 'Dental Aide'} />
                   </Col>
-                  <Col span={8}>
-                     <DescriptionItem title="Address" content={account.address || ''} />
+               </Row>
+               <Row>
+                  <Col span={12}>
+                     <DescriptionItem title="Address" content={account.address} />
                   </Col>
-                  <Col span={8}>
+                  <Col span={12}>
                      <DescriptionItem title="Birthday" content={moment(account.birthday).format('MMMM DD, YYYY')} />
                   </Col>
                </Row>

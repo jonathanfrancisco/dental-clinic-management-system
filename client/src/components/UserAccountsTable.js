@@ -102,10 +102,10 @@ class UserAccountsTable extends React.Component {
 
       const columns = [
          {
-            title: 'Fullname',
-            dataIndex: 'full_name',
+            title: 'Name',
+            dataIndex: 'name',
             render: (text, record) => {
-               return `${record.first_name} ${record.middle_name || ''} ${record.last_name}`;
+               return record.name;
             }
          }, 
          {
