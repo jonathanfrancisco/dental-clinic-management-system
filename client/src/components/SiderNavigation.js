@@ -15,30 +15,30 @@ const SiderNavigation = withRouter((props) => {
              <Menu.Item key="/dashboard">
              <Icon type="dashboard" />
              <span>Dashboard</span>
-             <Link to="/dashboard">Dashboard</Link>
+             <Link to="/dashboard"></Link>
           </Menu.Item>
          )}
         
          <Menu.Item key="/dentalrecords">
             <Icon type="idcard" />
             <span>Dental Records</span>
-            <Link to="/dentalrecords">Dental Records</Link>
+            <Link to="/dentalrecords"></Link>
          </Menu.Item>
          <Menu.Item key="/appointments">
             <Icon type="calendar" />
             <span>Appointments</span>
-            <Link to="/appointments">Appointments</Link>
+            <Link to="/appointments"></Link>
          </Menu.Item>
          <Menu.Item key="/sms">
             <Icon type="message" />
             <span>SMS Text Messaging</span>
-            <Link to="/sms">SMS Text Messaging</Link>
+            <Link to="/sms"></Link>
          </Menu.Item>
          {props.role === 'dentalaide' ? null : (
             <Menu.Item key="/useraccounts">
                <Icon type="team" />
                <span>User Accounts</span>
-               <Link to="/useraccounts">User Accounts</Link>
+               <Link to="/useraccounts"></Link>
             </Menu.Item>
          )}
         
