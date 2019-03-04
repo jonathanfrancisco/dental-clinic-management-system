@@ -4,11 +4,11 @@ exports.up = function(knex, Promise) {
       table.increments();
       table.string('name').notNullable();
       table.string('address').notNullable();
-      table.string('birthday').notNullable()
+      table.datetime('birthday').notNullable()
       table.string('occupation').nullable();
       table.string('civil_status').nullable();
-      table.datetime('contact_number').nullable();
-      table.string('last_visit').notNullable();
+      table.string('contact_number').nullable();
+      table.datetime('last_visit').notNullable();
    })
 };
 
