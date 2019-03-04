@@ -51,10 +51,10 @@ const UpdateAccountModal = Form.create()(
      
 
       validateToNextPassword = (rule, value, callback) => {
-         const form = this.props.form;
-         if (value) {
-         //   form.validateFields(['confirm_password'], { force: true });
-         }
+         // const form = this.props.form;
+         // if (value) {
+         // //   form.validateFields(['confirm_password'], { force: true });
+         // }
          callback();
       }
 
