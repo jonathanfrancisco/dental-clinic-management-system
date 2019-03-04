@@ -9,14 +9,12 @@ class User extends Model {
    static get jsonSchema() {
       return {
          type: 'object',
-         required: ['username','password','first_name','last_name', 'birthday','address','role'],
+         required: ['username','password','name', 'birthday','address','role'],
          properties: {
             id: {type: 'integer'},
             username: {type: 'string'},
             password: {type: 'string'},
-            first_name: {type: 'string'},
-            middle_name: {type: 'string'},
-            last_name: {type: 'string'},
+            name: {type: 'string'},
             birthday: {type: 'date-time'},
             address: {type: 'string'},
             role: {type: 'string'}
