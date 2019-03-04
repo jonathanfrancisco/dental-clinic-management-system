@@ -1,8 +1,8 @@
 
 exports.up = function(knex, Promise) {
    return knex.schema.createTable('patient', function(table) {
-      table.increments();
-      table.string('code').notNUllable();
+      table.increments('id').primary();
+      table.string('code').notNullable();
       table.string('name').notNullable();
       table.string('address').notNullable();
       table.datetime('birthday').notNullable()
