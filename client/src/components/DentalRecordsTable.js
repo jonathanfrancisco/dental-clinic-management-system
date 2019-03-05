@@ -19,9 +19,7 @@ class DentalRecordsTable extends React.Component {
    }
 
    getPatients(searchValue) {
-      console.log(searchValue);
-      this.setState({loading: true});
-
+      this.setState({loading: true, search: searchValue});
       if(searchValue) {
          axios.get('/api/patients', {
             params: {search: searchValue}
@@ -42,8 +40,6 @@ class DentalRecordsTable extends React.Component {
             console.log(err);
          });
       }
-
-
    }
 
    // when search button submits
@@ -141,6 +137,7 @@ class DentalRecordsTable extends React.Component {
                size="middle"
                columns={columns}
                dataSource={this.state.patients}
+               locale={{emptyText: this.state.search === '' ? 'No Data' : 'No Record Found'}}
                bordered
                title={TableTitle}
                scroll={{x: 300}}
