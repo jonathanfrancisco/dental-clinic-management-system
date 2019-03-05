@@ -1,30 +1,60 @@
 import React from 'react';
-import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message, Typography} from 'antd';
+import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message, Typography, Input} from 'antd';
 import moment from 'moment';
 import axios from 'axios';
 
+const {Search} = Input;
 const {Title, Paragraph} = Typography;
 
 class DentalRecordsTable extends React.Component {
 
    state ={
       loading: false,
-      patients: []
+      patients: [],
+      searchInput: '',
    };
 
    componentDidMount() {
       this.getPatients();
    }
 
-   getPatients() {
+   getPatients(searchValue) {
+      console.log(searchValue);
       this.setState({loading: true});
-      axios.get('/api/patients/')
-      .then((response) => {
-         this.setState({patients: response.data.patients, loading: false});
-      })
-      .catch((err) => {
-         console.log(err);
-      }) ;
+
+      if(searchValue) {
+         axios.get('/api/patients', {
+            params: {search: searchValue}
+         })
+         .then((response) => {
+            this.setState({patients: response.data.patients, loading: false});
+         })
+         .catch((err) => {
+            console.log(err);
+         });
+      }
+      else {
+         axios.get('/api/patients/')
+         .then((response) => {
+            this.setState({patients: response.data.patients, loading: false});
+         })
+         .catch((err) => {
+            console.log(err);
+         });
+      }
+
+
+   }
+
+   // when search button submits
+   handleSearch = (value) => {
+      this.getPatients(value);
+   }
+
+   // Live Suggest
+   handleLiveSearch = (e) => {
+     const {value} = e.target;
+     this.getPatients(value);
    }
 
    render() {
@@ -77,16 +107,28 @@ class DentalRecordsTable extends React.Component {
             }
          }
       ];
+
    
       const TableTitle = () => {
          return (
             <React.Fragment>
-               <Row type="flex" align="middle">
-                  <Col span={12}>
-                  <Title level={3} style={{margin: 0}}>Dental Records</Title>
+               <Row style={{marginBottom: 8}} type="flex" align="middle">
+                  <Col xs={{span: 24}} sm={{span: 12}} md={{span: 16}}>
+                     <Title level={3} style={{margin: 0}}>Dental Records</Title>
                   </Col>
-                  <Col align="right" span={12}>
-                     {/* create dental record modal */}
+                  <Col xs={{span: 24}} sm={{span: 12}} md={{span: 8}}>
+                  <Button style={{width: '100%'}} type="primary"><Icon type="idcard" />Create New Record</Button>
+                  </Col>
+               </Row>
+               <Row>
+               <Col span={24}>
+                     <Search 
+                        style={{width: '100%'}}
+                        placeholder="search dental record by patient name"
+                        enterButton
+                        onSearch={this.handleSearch}
+                        onChange={this.handleLiveSearch}
+                     />               
                   </Col>
                </Row>
             </React.Fragment>
