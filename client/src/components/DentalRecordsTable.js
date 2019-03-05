@@ -3,7 +3,7 @@ import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message, Typogr
 import moment from 'moment';
 import axios from 'axios';
 
-const {Title} = Typography;
+const {Title, Paragraph} = Typography;
 
 class DentalRecordsTable extends React.Component {
 
@@ -62,7 +62,14 @@ class DentalRecordsTable extends React.Component {
             title: 'Code',
             dataIndex: 'code',
             render: (text, record) => {
-               return record.code;
+               return <Paragraph copyable={true} >{record.code}</Paragraph>;
+            }
+         },
+         {
+            title: 'Actions',
+            dataIndex: 'actions',
+            render: (text, record) => {
+               return <p>Actions</p>
             }
          }
       ];
