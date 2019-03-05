@@ -33,6 +33,8 @@ class DentalRecordsTable extends React.Component {
          {
             title: 'Last Visit',
             dataIndex: 'last_visit',
+            defaultSortOrder: 'descend',
+            sorter: (a, b) => moment(a.last_visit).format('x') - moment(b.last_visit).format('x'),
             render: (text, record) => {
                return moment(record.last_visit).format('MMMM, DD YYYY');
             }
@@ -40,6 +42,8 @@ class DentalRecordsTable extends React.Component {
          {
             title: 'Name',
             dataIndex: 'name',
+            defaultSortOrder: 'ascend',
+            sorter: (a, b) => a.name.toLowerCase().substring(0,2) < b.name.toLowerCase().substring(0,2),
             render: (text, record) => {
               return record.name;
             }
