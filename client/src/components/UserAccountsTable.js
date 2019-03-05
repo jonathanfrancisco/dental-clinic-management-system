@@ -1,10 +1,12 @@
 import React from 'react';
-import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message} from 'antd';
+import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message, Typography} from 'antd';
+
 import axios from 'axios';
 import CreateAccountModal from './CreateAccountModal';
 import ViewAccountModal from './ViewAccountModal';
 import UpdateAccountModal from './UpdateAccountModal';
 
+const {Title} = Typography;
 const {confirm} = Modal;
 
 class UserAccountsTable extends React.Component {
@@ -137,7 +139,7 @@ class UserAccountsTable extends React.Component {
             <React.Fragment>
                <Row type="flex" align="middle">
                   <Col span={12}>
-                     <h1 style={{margin: 0}} >User Accounts</h1>
+                     <Title level={3} style={{margin: 0}}>User Accounts</Title>
                   </Col>
                   <Col align="right" span={12}>
                      <CreateAccountModal onCreate={this.handleCreate} />

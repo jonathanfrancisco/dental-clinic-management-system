@@ -1,7 +1,9 @@
 import React from 'react';
-import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message} from 'antd';
+import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message, Typography} from 'antd';
 import moment from 'moment';
 import axios from 'axios';
+
+const {Title} = Typography;
 
 class DentalRecordsTable extends React.Component {
 
@@ -70,7 +72,7 @@ class DentalRecordsTable extends React.Component {
             <React.Fragment>
                <Row type="flex" align="middle">
                   <Col span={12}>
-                     <h1 style={{margin: 0}} >Dental Records</h1>
+                  <Title level={3} style={{margin: 0}}>Dental Records</Title>
                   </Col>
                   <Col align="right" span={12}>
                      {/* create dental record modal */}
