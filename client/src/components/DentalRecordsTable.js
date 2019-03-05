@@ -21,15 +21,23 @@ class DentalRecordsTable extends React.Component {
    getPatients(searchValue) {
       this.setState({loading: true, search: searchValue});
       if(searchValue) {
+         const hide = message.loading('Searching...', 0);
          axios.get('/api/patients', {
             params: {search: searchValue}
          })
          .then((response) => {
-            this.setState({patients: response.data.patients, loading: false});
+            if(response.status === 200) {
+               hide();
+               this.setState({patients: response.data.patients, loading: false});
+               message.info(`${response.data.patients.length} Record(s) found`);
+            }
          })
          .catch((err) => {
             console.log(err);
+            hide();
+            message.error('Something went wrong! Please, try again.');
          });
+         
       }
       else {
          axios.get('/api/patients/')
@@ -48,10 +56,10 @@ class DentalRecordsTable extends React.Component {
    }
 
    // Live Suggest
-   handleLiveSearch = (e) => {
-     const {value} = e.target;
-     this.getPatients(value);
-   }
+   // handleLiveSearch = (e) => {
+   //   const {value} = e.target;
+   //   this.getPatients(value);
+   // }
 
    render() {
 
