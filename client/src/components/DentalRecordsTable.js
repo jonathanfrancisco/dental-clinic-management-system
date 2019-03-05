@@ -83,17 +83,10 @@ class DentalRecordsTable extends React.Component {
             }
          }, 
          {
-            title: 'Occupation',
-            dataIndex: 'occupation',
+            title: 'Address',
+            dataIndex: 'address',
             render: (text, record) => {
-               return record.occupation;
-            }
-         },
-         {
-            title: 'Civil Status',
-            dataIndex: 'civil_status',
-            render: (text, record) => {
-               return record.civil_status;
+               return record.address;
             }
          },
          {
