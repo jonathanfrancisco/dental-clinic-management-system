@@ -8,6 +8,8 @@ app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use('/api/users', require('./routes/user'));
+app.use('/api/patients', require('./routes/patient'));
+
 
 // PRODDUCTION
 // if(process.env.NODE_ENV === 'production') {

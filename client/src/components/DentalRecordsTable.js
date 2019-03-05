@@ -1,16 +1,28 @@
 import React from 'react';
 import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message} from 'antd';
+import moment from 'moment';
 import axios from 'axios';
 
 class DentalRecordsTable extends React.Component {
 
    state ={
       loading: false,
-      dentalrecords: []
+      patients: []
    };
 
    componentDidMount() {
-  
+      this.getPatients();
+   }
+
+   getPatients() {
+      this.setState({loading: true});
+      axios.get('/api/patients/')
+      .then((response) => {
+         this.setState({patients: response.data.patients, loading: false});
+      })
+      .catch((err) => {
+         console.log(err);
+      }) ;
    }
 
    render() {
@@ -20,7 +32,7 @@ class DentalRecordsTable extends React.Component {
             title: 'Last Visit',
             dataIndex: 'last_visit',
             render: (text, record) => {
-               return record.last_visit;
+               return moment(record.last_visit).format('MMMM, DD YYYY');
             }
          }, 
          {
@@ -42,6 +54,13 @@ class DentalRecordsTable extends React.Component {
             dataIndex: 'civil_status',
             render: (text, record) => {
                return record.civil_status;
+            }
+         },
+         {
+            title: 'Code',
+            dataIndex: 'code',
+            render: (text, record) => {
+               return record.code;
             }
          }
       ];
@@ -66,6 +85,7 @@ class DentalRecordsTable extends React.Component {
             <Table
                size="middle"
                columns={columns}
+               dataSource={this.state.patients}
                bordered
                title={TableTitle}
                scroll={{x: 300}}
