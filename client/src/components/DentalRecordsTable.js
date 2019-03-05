@@ -55,11 +55,11 @@ class DentalRecordsTable extends React.Component {
       this.getPatients(value);
    }
 
-   // Live Suggest
-   // handleLiveSearch = (e) => {
-   //   const {value} = e.target;
-   //   this.getPatients(value);
-   // }
+   handleSearchErased = (e) => {
+     const {value} = e.target;
+     if(value === '')
+      this.getPatients(value);
+   }
 
    render() {
 
@@ -131,7 +131,7 @@ class DentalRecordsTable extends React.Component {
                         placeholder="search dental record by patient name"
                         enterButton
                         onSearch={this.handleSearch}
-                        onChange={this.handleLiveSearch}
+                        onChange={this.handleSearchErased}
                      />               
                   </Col>
                </Row>
