@@ -7,7 +7,7 @@ const app = express();
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use('/api/user', require('./routes/user'));
+app.use('/api/users', require('./routes/user'));
 
 // PRODDUCTION
 // if(process.env.NODE_ENV === 'production') {

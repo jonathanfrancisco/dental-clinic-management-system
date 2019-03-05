@@ -20,7 +20,7 @@ class UserAccountsTable extends React.Component {
 
    getUsers() {
       this.setState({loading: true});
-      axios.get('/api/user/')
+      axios.get('/api/users/')
       .then((response) => {
          this.setState({users: response.data.users, loading: false});
       })
@@ -32,7 +32,7 @@ class UserAccountsTable extends React.Component {
    handleCreate = (values) => {
       const hide = message.loading('Creating New Account...', 0);
       values.birthday = values.birthday.format('YYYY-MM-DD');
-      axios.post('/api/user/create', values)
+      axios.post('/api/users/create', values)
       .then((response) => {
          if(response.status === 200) {
             hide();
@@ -50,7 +50,7 @@ class UserAccountsTable extends React.Component {
    handleUpdate = (id, values) => {
       const hide = message.loading('Updating Account...', 0);
       values.birthday = values.birthday.format('YYYY-MM-DD');
-      axios.patch(`/api/user/${id}/update`, values)
+      axios.patch(`/api/users/${id}/update`, values)
       .then((response) => {
          if(response.status === 200) {
             hide();
@@ -67,7 +67,7 @@ class UserAccountsTable extends React.Component {
 
    handleDelete(id) {
       const hide = message.loading('Deleting Acccount...', 0);
-      axios.delete('/api/user/delete', {data: {id}})
+      axios.delete(`/api/users/${id}/delete`)
       .then((response) => {
          if(response.status === 200) {
             hide();

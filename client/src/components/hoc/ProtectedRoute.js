@@ -11,7 +11,7 @@ class ProtectedRoute extends React.Component {
    };
 
    componentDidMount() {
-      axios.get('/api/user/checkToken')
+      axios.get('/api/users/checkToken')
       .then((response) => {
          if(response.status === 200) {
             this.setState({redirect: false, role:response.data.user.role});

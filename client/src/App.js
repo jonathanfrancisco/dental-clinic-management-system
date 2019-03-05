@@ -31,7 +31,7 @@ class App extends Component {
    };
 
    componentDidMount() {
-      axios.get('/api/user/checkToken')
+      axios.get('/api/users/checkToken')
       .then((response) => {
          if(response.status === 200) {
             this.setState({authenticated: true, user: response.data.user});
@@ -43,7 +43,7 @@ class App extends Component {
    }
 
    handleLogin = (formValues) => {
-      return axios.post('/api/user/login', formValues)
+      return axios.post('/api/users/login', formValues)
       .then((response) => {   
          if(response.data.error === undefined) {
             this.setState({authenticated: true, user: response.data.user});
@@ -57,7 +57,7 @@ class App extends Component {
    }
 
    handleLogout = () => {
-      axios.post('/api/user/logout')
+      axios.post('/api/users/logout')
       .then((response) => {
          if(response.status === 200)
             this.setState({authenticated: false, user: ''});

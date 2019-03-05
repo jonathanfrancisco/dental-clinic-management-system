@@ -78,9 +78,8 @@ module.exports.update = async (req, res) => {
 }
 
 module.exports.delete = async (req, res) => {
-
    try {
-      const result = await User.query().deleteById(req.body.id);
+      const result = await User.query().deleteById(req.params.id);
       if(result)
          res.sendStatus(200);
    } catch(err) {
