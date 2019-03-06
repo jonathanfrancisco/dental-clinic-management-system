@@ -52,6 +52,24 @@ class DentalRecordsTable extends React.Component {
       }
    }
 
+   handleCreate = (values) => {
+      const hide = message.loading('Creating New Dental Record...', 0);
+      values.birthday = values.birthday.format('YYYY-MM-DD');
+      axios.post('/api/patients/create', values)
+      .then((response) => {
+         if(response.status === 200) {
+            hide();
+            message.success('New Dental Record Created Successfully');
+            this.getPatients();
+         }
+      })
+      .catch((err) => {
+         console.log(err);
+         hide();
+         message.error('Something went wrong! Please, try again.');
+      });
+   }
+
    // when search button submits
    handleSearch = (value) => {
       this.getPatients(value);
@@ -116,7 +134,7 @@ class DentalRecordsTable extends React.Component {
                      <Title level={3} style={{margin: 0}}>Dental Records</Title>
                   </Col>
                   <Col xs={{span: 24}} sm={{span: 12}} md={{span: 8}}>
-                     <CreateDentalRecordModal />
+                     <CreateDentalRecordModal onCreate={this.handleCreate} />
                   </Col>
                </Row>
                <Row>
