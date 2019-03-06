@@ -147,7 +147,7 @@ class DentalRecordsTable extends React.Component {
                <Row>
                <Col span={24}>
                      <Search 
-                        style={{width: '100%'}}
+                        style={{width: '100%', zIndex: -999}}
                         placeholder="search dental record by patient name"
                         enterButton
                         onSearch={this.handleSearch}
