@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message, Typography, Input} from 'antd';
+import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message, Typography, Input, Tag} from 'antd';
 import moment from 'moment';
 import axios from 'axios';
 
@@ -85,12 +85,14 @@ class DentalRecordsTable extends React.Component {
 
       const columns = [
          {
-            title: 'Last Visit',
+            title: 'Last Visit (for a dental service)',
             dataIndex: 'last_visit',
-            defaultSortOrder: 'descend',
+            defaultSortOrder: 'ascend',
             sorter: (a, b) => moment(a.last_visit).format('x') - moment(b.last_visit).format('x'),
             render: (text, record) => {
-               return moment(record.last_visit).format('MMMM, DD YYYY');
+               const display = moment(record.last_visit).format('YYYY-MM-DD HH:MM:SS') === '1000-01-01 00:01:00' 
+                              ? <Tag color="geekblue">New Record</Tag> : moment(record.last_visit).format('MMMM, DD YYYY');
+               return display;
             }
          }, 
          {
