@@ -3,6 +3,8 @@ import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message, Typogr
 import moment from 'moment';
 import axios from 'axios';
 
+import CreateDentalRecordModal from './CreateDentalRecordModal'
+
 const {Search} = Input;
 const {Title, Paragraph} = Typography;
 
@@ -114,7 +116,7 @@ class DentalRecordsTable extends React.Component {
                      <Title level={3} style={{margin: 0}}>Dental Records</Title>
                   </Col>
                   <Col xs={{span: 24}} sm={{span: 12}} md={{span: 8}}>
-                  <Button style={{width: '100%'}} type="primary"><Icon type="idcard" />Create New Record</Button>
+                     <CreateDentalRecordModal />
                   </Col>
                </Row>
                <Row>
