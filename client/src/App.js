@@ -126,7 +126,8 @@ class App extends Component {
                                        return <Redirect to="/dashboard"/>
                                     }}/>
                                     <ProtectedRoute exact path="/dashboard" component={Dashboard} />
-                                    <ProtectedRoute exact path="/dentalrecords" component={DentalRecords}  />  
+                                    <ProtectedRoute exact path="/dentalrecords" component={DentalRecords}  /> 
+                                    <ProtectedRoute exact path="/dentalrecords/:code" component={DentalRecords}  /> 
                                     <ProtectedRoute exact path="/appointments" component={Appointments}  />
                                     <ProtectedRoute exact path="/sms" component={SMSTextMessaging}  />
                                     <ProtectedRoute exact path="/useraccounts" component={UserAccounts} /> 
