@@ -110,7 +110,7 @@ class App extends Component {
                            <SiderNavigation role={this.state.user.role} handleLogout={this.handleLogout}/>
                         </Sider>
                         <Layout>
-                           <Header style={{boxShadow: '0px -1px 3px rgba(0, 0, 0, 1)', marginLeft: this.state.leftMargin, background: '#fff', padding: 0, position: 'fixed', zIndex: 1, width: '100%'}}>
+                           <Header style={{boxShadow: '0px -1px 3px rgba(0, 0, 0, 1)', marginLeft: this.state.leftMargin, background: '#fff', padding: 0, position: 'fixed', zIndex: 100, width: '100%'}}>
                               <Icon
                                  className="trigger"
                                  type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}

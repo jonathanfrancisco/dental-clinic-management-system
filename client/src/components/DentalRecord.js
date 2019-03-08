@@ -8,7 +8,7 @@ import DescriptionItem from '../components/DescriptionItem';
 import AdultTeethChart from '../components/AdultTeethChart';
 import ChildTeethChart from '../components/ChildTeethChart';
 
-import UpdatePatientInfoModal from '../components/UpdatePatientInfoModal';
+import UpdatePersonalInfoModal from './UpdatePersonalInfoModal';
 
 const {TabPane} = Tabs;
 const {Title} = Typography;
@@ -27,16 +27,37 @@ class DentalRecord extends React.Component {
    }
 
    getRecord(code) {
+      this.setState({loading: true});
       axios.get(`/api/patients/${code}`)
       .then((response) => {
          if(response.status === 200)
             this.setState({patient: response.data.patient});
       })
       .then(() => {
-         this.setState({loading: false});
+         setInterval(() => {
+            this.setState({loading: false});
+         },800)
       })
       .catch((err) => {
          console.error(err);
+         message.error('Something went wrong! Please, try again.');
+      });
+   }
+
+   handleUpdate = (code, values) => {
+      const hide = message.loading('Updating Personal Info...', 0);
+      values.birthday = values.birthday.format('YYYY-MM-DD');
+      axios.patch(`/api/patients/${code}/update`, values)
+      .then((response) => {
+         if(response.status === 200) {
+            hide();
+            message.success('Personal Info Updated Successfully');
+            this.getRecord(code);
+         }
+      })
+      .catch((err) => {
+         console.log(err);
+         hide();
          message.error('Something went wrong! Please, try again.');
       });
    }
@@ -116,7 +137,7 @@ class DentalRecord extends React.Component {
                    <Card>
                    <Tabs defaultActiveKey="1">
                       <TabPane tab="Personal Info" key="1">
-                      <Divider orientation="left">Personal Info <UpdatePatientInfoModal /></Divider>
+                      <Divider orientation="left">Personal Info <UpdatePersonalInfoModal patient={this.state.patient} onUpdate={this.handleUpdate} /></Divider>
                          <Row>
                             <Col span={8}><DescriptionItem title="Code" content={this.state.patient.code}/></Col>
                             <Col span={8}><DescriptionItem title="Name" content={this.state.patient.name} /></Col>

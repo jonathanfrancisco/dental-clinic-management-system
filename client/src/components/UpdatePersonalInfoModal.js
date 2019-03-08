@@ -1,9 +1,10 @@
 import React from 'react';
 import {Form, Modal, Row, Col, Input, Button, Icon, DatePicker, Select} from 'antd';
+import moment from 'moment';
 
 const {Option} = Select;
 
-const UpdatePatientInfoModal = Form.create()(
+const UpdatePersonalInfoModal = Form.create()(
    class extends React.Component {
 
       state = {
@@ -15,7 +16,7 @@ const UpdatePatientInfoModal = Form.create()(
          this.props.form.validateFields((err, values) => {
             if(err)
                return
-            this.props.onUpdate();
+            this.props.onUpdate(this.props.patient.code, values);
             this.hideModal();
          });
       }
@@ -37,7 +38,7 @@ const UpdatePatientInfoModal = Form.create()(
                <a onClick={this.showModal}><Icon type="edit"/>Update</a>
                <Modal
                   visible={this.state.visible}
-                  title="Update Patient Personal Info"
+                  title="Update Patient's Personal Info"
                   okText="Update"
                   onCancel={this.hideModal}
                   onOk={this.handleSubmit}
@@ -48,6 +49,7 @@ const UpdatePatientInfoModal = Form.create()(
                         <Form.Item label="Name">
                            {getFieldDecorator('name', {
                               rules: [{ required: true, message: 'Name is required' }],
+                              initialValue: this.props.patient.name
                            })(
                            <Input />
                            )}
@@ -57,6 +59,7 @@ const UpdatePatientInfoModal = Form.create()(
                         <Form.Item label="Birthday">
                            {getFieldDecorator('birthday', {
                               rules: [{ required: true, message: 'Birthday is required' }],
+                              initialValue: moment(this.props.patient.birthday)
                            })(
                            <DatePicker format="MMMM DD, YYYY" style={{width: '100%'}} />
                            )}
@@ -64,14 +67,18 @@ const UpdatePatientInfoModal = Form.create()(
                      </Col>
                      <Col span={12}>
                         <Form.Item label="Occupation">
-                           {getFieldDecorator('occupation')(
+                           {getFieldDecorator('occupation', {
+                              initialValue: this.props.patient.occupation
+                           })(
                            <Input />
                            )}
                         </Form.Item>
                      </Col>
                      <Col span={12}>
                         <Form.Item label="Civil Status">
-                           {getFieldDecorator('civil_status')(
+                           {getFieldDecorator('civil_status', {
+                              initialValue: this.props.patient.civil_status
+                           })(
                            <Select>
                               <Option value="single">Single</Option>
                               <Option value="married">Married</Option>
@@ -85,6 +92,7 @@ const UpdatePatientInfoModal = Form.create()(
                         <Form.Item label="Address">
                            {getFieldDecorator('address', {
                               rules: [{ required: true, message: 'Address is required' }],
+                              initialValue: this.props.patient.address
                            })(
                            <Input />
                            )}
@@ -92,7 +100,9 @@ const UpdatePatientInfoModal = Form.create()(
                      </Col>
                      <Col span={12}>
                         <Form.Item label="Contact Number">
-                           {getFieldDecorator('contact_number')(
+                           {getFieldDecorator('contact_number', {
+                              initialValue: this.props.patient.cotact_number
+                           })(
                               <Input />
                            )}
                         </Form.Item>
@@ -107,4 +117,4 @@ const UpdatePatientInfoModal = Form.create()(
    }
 );
 
-export default UpdatePatientInfoModal;
+export default UpdatePersonalInfoModal;

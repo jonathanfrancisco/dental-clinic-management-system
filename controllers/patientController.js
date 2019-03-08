@@ -51,3 +51,15 @@ module.exports.create = async (req, res) => {
       return res.status(500).send({error: 'Internal server error'});
    }
 }
+
+module.exports.update = async (req, res) => {
+   const code = req.params.code;
+   const newInfo = req.body;
+   try {
+      const result = await Patient.query().patch(newInfo).where('code', code);
+      return res.sendStatus(200);
+   } catch(err) {
+      console.log(err);
+      return res.status(500).send({error: 'Internal server error'});
+   }
+}
