@@ -1,10 +1,13 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {Table, Typography, Row, Col, Tag, Card, Divider, Icon, Tabs} from 'antd';
+import {Table, Typography, Skeleton, Row, Col, Tag, Card, Divider, Icon, Tabs, message} from 'antd';
+import axios from 'axios';
 
 import DescriptionItem from '../components/DescriptionItem';
 import AdultTeethChart from '../components/AdultTeethChart';
 import ChildTeethChart from '../components/ChildTeethChart';
+
+import UpdatePatientInfoModal from '../components/UpdatePatientInfoModal';
 
 const {TabPane} = Tabs;
 const {Title} = Typography;
@@ -12,8 +15,32 @@ const {Title} = Typography;
 
 class DentalRecord extends React.Component {
 
-   render() {
+   state = {
+      loading: true,
+      patient: {},
+      treatments: []
+   };
 
+   componentDidMount() {
+      this.getRecord(this.props.code);
+   }
+
+   getRecord(code) {
+      axios.get(`/api/patients/${code}`)
+      .then((response) => {
+         if(response.status === 200)
+            this.setState({patient: response.data.patient});
+      })
+      .then(() => {
+         this.setState({loading: false});
+      })
+      .catch((err) => {
+         console.error(err);
+         message.error('Something went wrong! Please, try again.');
+      });
+   }
+
+   render() {
       const columns = [{
       title: 'Name',
       dataIndex: 'name',
@@ -76,57 +103,43 @@ class DentalRecord extends React.Component {
 
       return (
          <React.Fragment>
-         <div style={{marginBottom: 8}}>
-            <a>
-               <Link to="/dentalrecords"> <Icon type="arrow-left" /> Back to dental records</Link>
-            </a>
-         </div>
-         <Card>
-            <Tabs defaultActiveKey="1">
-               <TabPane tab="Personal Info" key="1">
-               <Divider orientation="left">Personal Info <a><Icon type="edit"/> Edit</a></Divider>
-                  <Row>
-                     <Col span={8}><DescriptionItem title="Code" content="ABCDEFGH"/></Col>
-                     <Col span={8}><DescriptionItem title="Name" content="Jonathan Francisco" /></Col>
-                     <Col span={8}><DescriptionItem title="Last Visit" content="August 19, 1998" /></Col>
-                     <Col span={8}><DescriptionItem title="Birthday" content="February 1, 2015" /></Col>
-                     <Col span={8}><DescriptionItem title="Occupation" content="Software Engineer && Project Manager" /></Col>
-                     <Col span={8}><DescriptionItem title="Civil Status" content="It's complicated" /></Col>
-                     <Col span={12}><DescriptionItem title="Address" content="Sa puso mo" /></Col>
-                     <Col span={12}><DescriptionItem title="Contact No" content="09212451903" /></Col>
-                  </Row>
-               </TabPane>
-               <TabPane tab="Dental Chart" key="2">
-                  <Divider orientation="left">Adult Teeth (left) and Child Teeth (right)</Divider>
-                  <Row>
-                     <Col align="center" md={{span:12}} sm={{span: 24}}>
-                        <AdultTeethChart />
-                     </Col>
-                     <Col align="center" md={{span: 12}} sm={{span: 24}}>
-                        <ChildTeethChart />
-                     </Col>
-                  </Row>
-               </TabPane>
-            </Tabs>
-            <Divider orientation="left">Treatments and/or Procedures taken <a><Icon type="plus" /> Add</a></Divider>
-             <Table columns={columns} dataSource={data} />
-         </Card>
-         {/* <Row gutter={32}>
-            <Col span={12}>
-               <Divider orientation="left">Personal Info</Divider>
-               <Row>
-                  <Col span={8}><DescriptionItem title="Code" content="ABCDEFGH"/></Col>
-                  <Col span={8}><DescriptionItem title="Name" content="Jonathan Francisco" /></Col>
-                  <Col span={8}><DescriptionItem title="Last Visit" content="August 19, 1998" /></Col>
-                  <Col span={8}><DescriptionItem title="Birthday" content="February 1, 2015" /></Col>
-                  <Col span={8}><DescriptionItem title="Occupation" content="Software Engineer && Project Manager" /></Col>
-                  <Col span={8}><DescriptionItem title="Civil Status" content="It's complicated" /></Col>
-                  <Col span={24}><DescriptionItem title="Address" content="Sa puso mo" /></Col>
-                  <Col span={24}><DescriptionItem title="Contact No" content="09212451903" /></Col>
-               </Row>
-            </Col>
-         </Row> */}
-       
+            <div style={{marginBottom: 8}}>
+               <a>
+                  <Link to="/dentalrecords"> <Icon type="arrow-left" /> Back to dental records</Link>
+               </a>
+            </div>
+               {this.state.loading ? (<Skeleton loading={this.state.loading} paragraph={{rows: 14}} active />) : (
+                   <Card>
+                   <Tabs defaultActiveKey="1">
+                      <TabPane tab="Personal Info" key="1">
+                      <Divider orientation="left">Personal Info <UpdatePatientInfoModal /></Divider>
+                         <Row>
+                            <Col span={8}><DescriptionItem title="Code" content={this.state.patient.code}/></Col>
+                            <Col span={8}><DescriptionItem title="Name" content={this.state.patient.name} /></Col>
+                            <Col span={8}><DescriptionItem title="Last Visit" content={this.state.patient.last_visit} /></Col>
+                            <Col span={8}><DescriptionItem title="Birthday" content={this.state.patient.birthday} /></Col>
+                            <Col span={8}><DescriptionItem title="Occupation" content={this.state.patient.occupation} /></Col>
+                            <Col span={8}><DescriptionItem title="Civil Status" content={this.state.patient.civil_status} /></Col>
+                            <Col span={12}><DescriptionItem title="Address" content={this.state.patient.address} /></Col>
+                            <Col span={12}><DescriptionItem title="Contact Number" content={this.state.patient.contact_number} /></Col>
+                         </Row>
+                      </TabPane>
+                      <TabPane tab="Dental Chart" key="2">
+                         <Divider orientation="left">Adult Teeth (left) and Child Teeth (right)</Divider>
+                         <Row>
+                            <Col align="center" md={{span:12}} sm={{span: 24}}>
+                               <AdultTeethChart />
+                            </Col>
+                            <Col align="center" md={{span: 12}} sm={{span: 24}}>
+                               <ChildTeethChart />
+                            </Col>
+                         </Row>
+                      </TabPane>
+                   </Tabs>
+                   <Divider orientation="left">Treatments and/or Procedures taken <a><Icon type="plus" /> Add</a></Divider>
+                   <Table columns={columns} dataSource={data} />
+                </Card> 
+               )}
          </React.Fragment>
       );
    }

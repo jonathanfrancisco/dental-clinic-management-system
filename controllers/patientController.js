@@ -11,6 +11,16 @@ module.exports.patients = async (req, res) => {
    return res.send({patients});
 }
 
+module.exports.getPatientByCode = async (req, res) => {
+   const {code} = req.params;
+   try {
+      const [patient] = await Patient.query().where('code', code);
+      return res.send({patient});
+   } catch(err) {
+      return res.status(500).send({error: 'Internal server error'});
+   }
+}
+
 module.exports.create = async (req, res) => {
    try {
       

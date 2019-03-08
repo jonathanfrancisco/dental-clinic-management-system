@@ -1,12 +1,12 @@
 import React from 'react';
-import {Modal, Form, Input,Row, Col, DatePicker, Select, Button, Icon} from 'antd';
+import {Form, Modal, Row, Col, Input, Button, Icon, DatePicker, Select} from 'antd';
+
 const {Option} = Select;
 
-const CreateDentalRecordModal = Form.create()(
+const UpdatePatientInfoModal = Form.create()(
    class extends React.Component {
 
       state = {
-         confirmDirty: false,
          visible: false
        };
 
@@ -15,7 +15,7 @@ const CreateDentalRecordModal = Form.create()(
          this.props.form.validateFields((err, values) => {
             if(err)
                return
-            this.props.onCreate(values);
+            this.props.onUpdate();
             this.hideModal();
          });
       }
@@ -30,37 +30,24 @@ const CreateDentalRecordModal = Form.create()(
       }
 
       render() {
-         const {form} = this.props;
+         const {form, account} = this.props;
          const { getFieldDecorator } = form;
          return (
             <React.Fragment>
-               <Button style={{width: '100%'}} type="primary" onClick={this.showModal}><Icon type="usergroup-add" />
-                  Create New Dental Record
-               </Button>
+               <a onClick={this.showModal}><Icon type="edit"/>Update</a>
                <Modal
                   visible={this.state.visible}
-                  title="Create a new Dental Record"
-                  okText="Create"
+                  title="Update Patient Personal Info"
+                  okText="Update"
                   onCancel={this.hideModal}
                   onOk={this.handleSubmit}
                >
                <Form layout="vertical" onSubmit={this.handleSubmit}>
-                  <Row>
-                     <Col span={24}>
+               <Row gutter={8}>
+                     <Col span={12}>
                         <Form.Item label="Name">
                            {getFieldDecorator('name', {
                               rules: [{ required: true, message: 'Name is required' }],
-                           })(
-                           <Input />
-                           )}
-                        </Form.Item>
-                     </Col>
-                  </Row>
-                  <Row gutter={8}>
-                     <Col span={12}>
-                        <Form.Item label="Address">
-                           {getFieldDecorator('address', {
-                              rules: [{ required: true, message: 'Address is required' }],
                            })(
                            <Input />
                            )}
@@ -75,9 +62,6 @@ const CreateDentalRecordModal = Form.create()(
                            )}
                         </Form.Item>
                      </Col>
-                  </Row>      
-                  
-                  <Row gutter={8}>
                      <Col span={12}>
                         <Form.Item label="Occupation">
                            {getFieldDecorator('occupation')(
@@ -85,7 +69,6 @@ const CreateDentalRecordModal = Form.create()(
                            )}
                         </Form.Item>
                      </Col>
-
                      <Col span={12}>
                         <Form.Item label="Civil Status">
                            {getFieldDecorator('civil_status')(
@@ -98,9 +81,16 @@ const CreateDentalRecordModal = Form.create()(
                            )}
                         </Form.Item>
                      </Col>
-                  </Row>       
-                  <Row>
-                     <Col span={24}>
+                     <Col span={12}>
+                        <Form.Item label="Address">
+                           {getFieldDecorator('address', {
+                              rules: [{ required: true, message: 'Address is required' }],
+                           })(
+                           <Input />
+                           )}
+                        </Form.Item>
+                     </Col>
+                     <Col span={12}>
                         <Form.Item label="Contact Number">
                            {getFieldDecorator('contact_number')(
                               <Input />
@@ -117,4 +107,4 @@ const CreateDentalRecordModal = Form.create()(
    }
 );
 
-export default CreateDentalRecordModal;
+export default UpdatePatientInfoModal;

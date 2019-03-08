@@ -6,7 +6,7 @@ class DentalRecords extends React.Component {
    render() {
       const {code: match} = this.props.match.params;
       if(match)
-         return <DentalRecord />
+         return <DentalRecord code={match} />
       return (
          <DentalRecordsTable />
       );
