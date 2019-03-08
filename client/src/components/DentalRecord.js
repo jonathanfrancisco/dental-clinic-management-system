@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {Table, Typography, Skeleton, Row, Col, Tag, Card, Divider, Icon, Tabs, message} from 'antd';
 import axios from 'axios';
+import moment from 'moment';
 
 import DescriptionItem from '../components/DescriptionItem';
 import AdultTeethChart from '../components/AdultTeethChart';
@@ -101,6 +102,9 @@ class DentalRecord extends React.Component {
       tags: ['cool', 'teacher'],
       }];
 
+      const lastVisit = moment(this.state.patient.last_visit).format('YYYY-MM-DD HH:MM:SS') === '1000-01-01 00:01:00' 
+      ? <Tag color="geekblue">New Record</Tag> : moment(this.state.patient.last_visit).format('MMMM, DD YYYY');
+
       return (
          <React.Fragment>
             <div style={{marginBottom: 8}}>
@@ -116,7 +120,7 @@ class DentalRecord extends React.Component {
                          <Row>
                             <Col span={8}><DescriptionItem title="Code" content={this.state.patient.code}/></Col>
                             <Col span={8}><DescriptionItem title="Name" content={this.state.patient.name} /></Col>
-                            <Col span={8}><DescriptionItem title="Last Visit" content={this.state.patient.last_visit} /></Col>
+                            <Col span={8}><DescriptionItem title="Last Visit" content={lastVisit}/></Col>
                             <Col span={8}><DescriptionItem title="Birthday" content={this.state.patient.birthday} /></Col>
                             <Col span={8}><DescriptionItem title="Occupation" content={this.state.patient.occupation} /></Col>
                             <Col span={8}><DescriptionItem title="Civil Status" content={this.state.patient.civil_status} /></Col>
