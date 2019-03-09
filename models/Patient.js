@@ -27,8 +27,26 @@ class Patient extends Model {
    static get relationMappings() {
    
       const Treatment = require('./Treatment');
-      
+      const AdultTeethChart = require('./AdultTeethChart');
+      const ChildTeethChart = require('./ChildTeethChart');
+
       return {
+         adult_teeth_chart: {
+            relation: Model.HasOneRelation,
+            modelClass: AdultTeethChart,
+            join: {
+               from: 'patient.id',
+               to: 'patient_adult_teeth_chart.patient_id'
+            }
+         },
+         child_teeth_chart: {
+            relation: Model.HasOneRelation,
+            modelClass: ChildTeethChart,
+            join: {
+               from: 'patient.id',
+               to: 'patient_child_teeth_chart.patient_id'
+            }
+         },
          treatments: {
             relation: Model.HasManyRelation,
             modelClass: Treatment,
