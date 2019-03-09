@@ -1,4 +1,6 @@
 const Patient = require('../models/Patient');
+const AdultTeethChart  =  require('../models/AdultTeethChart');
+const ChildTeethChart  =  require('../models/ChildTeethChart');
 const moment = require('moment');
 const generate = require('nanoid/generate');
 
@@ -42,8 +44,12 @@ module.exports.create = async (req, res) => {
       newPatient.last_visit = '1000-01-01 00:00:00';
       newPatient.code = newPatientCode;
      
-      const result = await Patient.query().insert(newPatient);
-      if(!result)
+      const patient = await Patient.query().insertAndFetch(newPatient);
+      if(!patient)
+         return res.status(500).send({error: 'Internal server error'});
+      const adultTeethChart = await AdultTeethChart.query().insert({patient_id: patient.id});
+      const childTeethChart = await ChildTeethChart.query().insert({patient_id: patient.id});
+      if(!adultTeethChart || !childTeethChart)
          return res.status(500).send({error: 'Internal server error'});
       return res.sendStatus(200);
    } catch(err) {
