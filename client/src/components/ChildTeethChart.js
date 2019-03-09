@@ -28,11 +28,11 @@ class ChildTeethChart extends React.Component {
    statusColor(value) {
       switch(value) {
          case 'decayed': 
-            return '#ffd666';
+            return '#ffc53d';
          case 'missing':
-            return '#ff7875';
+            return '#ff4d4f';
          case 'filled':
-            return '#69c0ff';
+            return '#40a9ff';
          default:
             return '#fff';
       }
