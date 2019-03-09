@@ -34,7 +34,7 @@ class DentalRecord extends React.Component {
             this.setState({patient: response.data.patient});
       })
       .then(() => {
-         setInterval(() => {
+         setTimeout(() => {
             this.setState({loading: false});
          },800)
       })
@@ -67,7 +67,6 @@ class DentalRecord extends React.Component {
       const lastVisit = moment(this.state.patient.last_visit).format('YYYY-MM-DD HH:MM:SS') === '1000-01-01 00:01:00' 
       ? <Tag color="geekblue">New Record</Tag> : moment(this.state.patient.last_visit).format('MMMM, DD YYYY');
       const birthday = moment(this.state.patient.birthday).format('MMMM DD, YYYY');
-      
       return (
          <React.Fragment>
             <div style={{marginBottom: 8}}>
@@ -95,10 +94,10 @@ class DentalRecord extends React.Component {
                          <Divider orientation="left">Adult Teeth (left) and Child Teeth (right)</Divider>
                          <Row>
                             <Col align="center" md={{span:12}} sm={{span: 24}}>
-                               <AdultTeethChart />
+                               <AdultTeethChart patientId={this.state.patient.id}/>
                             </Col>
                             <Col align="center" md={{span: 12}} sm={{span: 24}}>
-                               <ChildTeethChart />
+                               <ChildTeethChart patientId={this.state.patient.id}/>
                             </Col>
                          </Row>
                       </TabPane>

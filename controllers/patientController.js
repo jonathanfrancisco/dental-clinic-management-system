@@ -69,3 +69,26 @@ module.exports.update = async (req, res) => {
       return res.status(500).send({error: 'Internal server error'});
    }
 }
+
+module.exports.childTeethChart = async (req, res) => {
+   const {id} = req.params;
+   try {
+      const [childTeethChart] = await ChildTeethChart.query().where('patient_id', id);
+      return res.send({child_teeth_chart: childTeethChart});
+   } catch(err) {
+      console.log(err);
+      return res.status(500).send({error: 'Internal server error'});
+   }
+}
+
+module.exports.updateChildTeethChart = async (req, res) => {
+   const {id} = req.params;
+   const newChart = req.body;
+   try {
+      const result = await ChildTeethChart.query().patch(newChart).where('patient_id', id);
+      return res.sendStatus(200);
+   } catch (err) {
+      console.log(err);
+      return res.status(500).send({error: 'Internal server error'});
+   }
+}
