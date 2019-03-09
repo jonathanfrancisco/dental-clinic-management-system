@@ -125,7 +125,8 @@ class DentalRecord extends React.Component {
 
       const lastVisit = moment(this.state.patient.last_visit).format('YYYY-MM-DD HH:MM:SS') === '1000-01-01 00:01:00' 
       ? <Tag color="geekblue">New Record</Tag> : moment(this.state.patient.last_visit).format('MMMM, DD YYYY');
-
+      const birthday = moment(this.state.patient.birthday).format('MMMM DD, YYYY');
+      
       return (
          <React.Fragment>
             <div style={{marginBottom: 8}}>
@@ -142,7 +143,7 @@ class DentalRecord extends React.Component {
                             <Col span={8}><DescriptionItem title="Code" content={this.state.patient.code}/></Col>
                             <Col span={8}><DescriptionItem title="Name" content={this.state.patient.name} /></Col>
                             <Col span={8}><DescriptionItem title="Last Visit" content={lastVisit}/></Col>
-                            <Col span={8}><DescriptionItem title="Birthday" content={this.state.patient.birthday} /></Col>
+                            <Col span={8}><DescriptionItem title="Birthday" content={birthday} /></Col>
                             <Col span={8}><DescriptionItem title="Occupation" content={this.state.patient.occupation} /></Col>
                             <Col span={8}><DescriptionItem title="Civil Status" content={this.state.patient.civil_status} /></Col>
                             <Col span={12}><DescriptionItem title="Address" content={this.state.patient.address} /></Col>
