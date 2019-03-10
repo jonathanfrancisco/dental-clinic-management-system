@@ -7,5 +7,9 @@ Router.post('/create', patientController.create);
 Router.patch('/:code/update', patientController.update);
 Router.get('/:id/childteethchart', patientController.childTeethChart);
 Router.patch('/:id/childteethchart', patientController.updateChildTeethChart);
+Router.get('/:id/adultteethchart', patientController.adultTeethChart);
+Router.patch('/:id/adultteethchart', patientController.updateAdultTeethChart);
+
+
 
 module.exports = Router;
