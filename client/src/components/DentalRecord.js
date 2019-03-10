@@ -90,7 +90,10 @@ class DentalRecord extends React.Component {
                             <Col span={12}><DescriptionItem title="Contact Number" content={this.state.patient.contact_number} /></Col>
                          </Row>
                       </TabPane>
-                      <TabPane tab="Dental Chart" key="2">
+                      <TabPane tab="Treatments and/or Procedures" key="2">
+                        <Divider orientation="left">Treatments and/or Procedures taken <a><Icon type="plus" /> Add</a></Divider>
+                      </TabPane>
+                      <TabPane tab="Dental Chart" key="3">
                          <Divider orientation="left">Adult Teeth (left) and Child Teeth (right)</Divider>
                          <Row>
                             <Col align="center" md={{span:12}} sm={{span: 24}}>
@@ -102,7 +105,7 @@ class DentalRecord extends React.Component {
                          </Row>
                       </TabPane>
                    </Tabs>
-                   <Divider orientation="left">Treatments and/or Procedures taken <a><Icon type="plus" /> Add</a></Divider>
+                   
                 </Card> 
                )}
          </React.Fragment>
