@@ -11,7 +11,7 @@ import ChildTeethChart from '../components/ChildTeethChart';
 import UpdatePersonalInfoModal from './UpdatePersonalInfoModal';
 
 const {TabPane} = Tabs;
-const {Title} = Typography;
+const {Title, Text} = Typography;
 
 
 class DentalRecord extends React.Component {
@@ -95,13 +95,21 @@ class DentalRecord extends React.Component {
                       </TabPane>
                       <TabPane tab="Dental Chart" key="3">
                          <Divider orientation="left">Child Teeth (LEFT) and Adult Teeth (RIGHT)</Divider>
+                         
                          <Row>
-                            <Col align="center" md={{span:12}} sm={{span: 24}}>
+                           <Col align="center" span={24}>
+                           <Text strong>Legend: </Text>
+                           <br />
+                           <Tag color="#ffc53d">Decayed</Tag>
+                           <Tag color="#ff4d4f">Missing</Tag>
+                           <Tag color="#40a9ff">Filled Teeth</Tag>
+                           </Col>
+                           <Col align="center" md={{span:12}} sm={{span: 24}}>
                               <ChildTeethChart patientId={this.state.patient.id}/>
-                            </Col>
-                            <Col align="center" md={{span: 12}} sm={{span: 24}}>
+                           </Col>
+                           <Col align="center" md={{span: 12}} sm={{span: 24}}>
                                <AdultTeethChart patientId={this.state.patient.id}/>
-                            </Col>
+                           </Col>
                          </Row>
                       </TabPane>
                    </Tabs>
