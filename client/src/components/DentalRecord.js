@@ -94,13 +94,13 @@ class DentalRecord extends React.Component {
                         <Divider orientation="left">Treatments and/or Procedures taken <a><Icon type="plus" /> Add</a></Divider>
                       </TabPane>
                       <TabPane tab="Dental Chart" key="3">
-                         <Divider orientation="left">Adult Teeth (left) and Child Teeth (right)</Divider>
+                         <Divider orientation="left">Child Teeth (LEFT) and Adult Teeth (RIGHT)</Divider>
                          <Row>
                             <Col align="center" md={{span:12}} sm={{span: 24}}>
-                               <AdultTeethChart patientId={this.state.patient.id}/>
+                              <ChildTeethChart patientId={this.state.patient.id}/>
                             </Col>
                             <Col align="center" md={{span: 12}} sm={{span: 24}}>
-                               <ChildTeethChart patientId={this.state.patient.id}/>
+                               <AdultTeethChart patientId={this.state.patient.id}/>
                             </Col>
                          </Row>
                       </TabPane>
