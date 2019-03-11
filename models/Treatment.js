@@ -58,4 +58,4 @@ class Treatment extends Model {
 
 }
 
-module.exports = Model;
+module.exports = Treatment;

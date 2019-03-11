@@ -1,12 +1,13 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {Table, Typography, Skeleton, Row, Col, Tag, Card, Divider, Icon, Tabs, message} from 'antd';
+import {Typography, Skeleton, Row, Col, Tag, Card, Divider, Icon, Tabs, message} from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 
 import DescriptionItem from '../components/DescriptionItem';
 import AdultTeethChart from '../components/AdultTeethChart';
 import ChildTeethChart from '../components/ChildTeethChart';
+import TreatmentsTable from '../components/TreatmentsTable';
 
 import UpdatePersonalInfoModal from './UpdatePersonalInfoModal';
 
@@ -92,6 +93,7 @@ class DentalRecord extends React.Component {
                       </TabPane>
                       <TabPane tab="Treatments and/or Procedures" key="2">
                         <Divider orientation="left">Treatments and/or Procedures taken <a><Icon type="plus" /> Add</a></Divider>
+                        <TreatmentsTable patientId={this.state.patient.id} />
                       </TabPane>
                       <TabPane tab="Dental Chart" key="3">
                          <Divider orientation="left">Child Teeth (LEFT) and Adult Teeth (RIGHT)</Divider>

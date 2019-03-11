@@ -48,4 +48,4 @@ class PaymentTransaction extends Model {
 
 }
 
-module.exports = Model;
+module.exports = PaymentTransaction;

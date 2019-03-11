@@ -176,7 +176,7 @@ class DentalRecordsTable extends React.Component {
                      defaultCurrent: 1,
                      pageSize: 7,
                      onChange: (page, pageSize) => {
-                       
+                    
                      }
                   }
                }
