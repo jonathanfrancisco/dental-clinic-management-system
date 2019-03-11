@@ -1,0 +1,9 @@
+exports.up = function(knex, Promise) {
+   return knex.schema.table('treatment', function(table) {
+     table.dropColumn('balance');
+   });
+};
+   
+exports.down = function(knex, Promise) {
+
+};
