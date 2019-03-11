@@ -7,11 +7,20 @@ class Treatment extends Model {
    }
 
    static get relationMappings() {
+      const PaymentTransaction = require('./PaymentTransaction');
       const Patient = require('./Patient');
       const User = require('./User');
       return {
+         payments: {
+            relation: Model.HasManyRelation,
+            modelClass: PaymentTransaction,
+            join: {
+               from: 'treatment.id',
+               join: 'payment_transaction.treatment_id'
+            }
+         },
          patient: {
-            relation: Model.HasOneRelation,
+            relation: Model.BelongsToOneRelation,
             modelClass: Patient,
             join: {
                from: 'treatment.patient_id',
@@ -19,7 +28,7 @@ class Treatment extends Model {
             }
          },
          user: {
-            relation: Model.HasOneRelation,
+            relation: Model.BelongsToOneRelation,
             modelClass: User,
             join: {
                from: 'treatment.user_id',
@@ -32,8 +41,9 @@ class Treatment extends Model {
    static get jsonSchema() {
       return {
          type: 'object',
-         required: ['status', 'description', 'payment_type', 'patient_id','user_id'],
+         required: ['description', 'payment_type', 'patient_id','user_id'],
          properties: {
+            id: {type: 'integer'},
             status: {type: 'string'},
             description: {type: 'string'},
             tooth_affected_no: {type: 'string'},
