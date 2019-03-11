@@ -1,8 +1,8 @@
 import React from 'react';
-import {Table, Dropdown, Menu, Button, Icon, message, Tag} from 'antd';
+import {Table, Divider, Dropdown, Menu, Button, Icon, message, Tag} from 'antd';
 import axios from 'axios';
 import moment from 'moment';
-
+import AddTreatmentModal from './AddTreatmentModal';
 
 const balanceStatus = (paymentType, balance) => {
    switch(paymentType) {
@@ -133,6 +133,9 @@ class TreatmentsTable extends React.Component {
       ];
       
       return (  
+         <React.Fragment>
+         <Divider orientation="left">
+         Treatments and/or Procedures taken  <AddTreatmentModal /></Divider>
          <Table
             dataSource={this.state.treatments}
             size="middle"
@@ -150,6 +153,7 @@ class TreatmentsTable extends React.Component {
                }
             }
          />
+         </React.Fragment>
       );
    }
 }

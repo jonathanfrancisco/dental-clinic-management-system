@@ -92,7 +92,6 @@ class DentalRecord extends React.Component {
                          </Row>
                       </TabPane>
                       <TabPane tab="Treatments and/or Procedures" key="2">
-                        <Divider orientation="left">Treatments and/or Procedures taken <a><Icon type="plus" /> Add</a></Divider>
                         <TreatmentsTable patientId={this.state.patient.id} />
                       </TabPane>
                       <TabPane tab="Dental Chart" key="3">
