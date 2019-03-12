@@ -42,7 +42,7 @@ module.exports.add = async (req, res) => {
             const amount_paid = newTreatment.amount_paid;
             delete newTreatment.amount_paid;
             const treatment = await Treatment.query().insertAndFetch(newTreatment);
-            const current_balance_before = treatment.total_amount_to_pay - amount_paid;
+            const current_balance_before = amount_paid;
             const new_balance_after = treatment.total_amount_to_pay -  amount_paid;
 
             const payment = await PaymentTransaction.query().insert({
