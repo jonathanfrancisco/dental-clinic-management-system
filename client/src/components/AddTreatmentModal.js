@@ -133,7 +133,7 @@ const AddTreatmentModal = Form.create()(
                                  {getFieldDecorator('total_amount_to_pay', {
                                     rules: [{ required: true, message: 'Total Amount To Pay is required.' }],
                                  })(
-                                 <Input />
+                                 <InputNumber min={1} style={{width: '100%'}} />
                                  )}
                               </Form.Item>
                            </Col> ) 
