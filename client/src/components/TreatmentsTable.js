@@ -3,16 +3,15 @@ import {Table, Divider, Dropdown, Menu, Button, Icon, message, Tag} from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 import AddTreatmentModal from './AddTreatmentModal';
+import InstallmentPaymentsHistoryModal from './InstallmentPaymentsHistoryModal';
 
 const balanceStatus = (paymentType, balance) => {
-   switch(paymentType) {
-      case 'in-full':
-         return    <Tag color="blue">Fully Paid</Tag>;
-      case 'no-charge':
-         return <Tag color="green">No Charge</Tag>
-      default:
-         return  <Tag color="volcano">{balance}</Tag>;
-   }
+   if(paymentType === 'in-full')
+      return   <Tag color="blue">Fully Paid</Tag>;
+   else if(paymentType === 'no-charge')
+      return <Tag color="green">No Charge</Tag>
+   else if(paymentType === 'installment') 
+      return balance == 0 ?  <Tag color="blue">Fully Paid</Tag> : <Tag color="volcano">{balance}</Tag>;
 }
 
 
@@ -60,18 +59,7 @@ class TreatmentsTable extends React.Component {
 
    render() {
    
-      const menu = (
-            <Menu>
-               <Menu.Item>
-                  <a disabled target="_blank" rel="noopener noreferrer">Pay Installment</a>
-               </Menu.Item>
-               <Menu.Item>
-                  <a target="_blank" rel="noopener noreferrer">View Installment Payments History</a>
-               </Menu.Item>
-            </Menu>
-         );
-      
-
+     
       const columns = [
          {
             title: 'Description',
@@ -130,6 +118,16 @@ class TreatmentsTable extends React.Component {
             fixed: 'right',
             dataIndex: 'actions',
             render: (text, record) => {
+               const menu = (
+                  <Menu>
+                     <Menu.Item>
+                        <a disabled target="_blank" rel="noopener noreferrer">Pay Installment</a>
+                     </Menu.Item>
+                     <Menu.Item>
+                        <InstallmentPaymentsHistoryModal treatmentId={record.id} />
+                     </Menu.Item>
+                  </Menu>
+               );
                if(record.payment_type !== 'installment')
                   return (
                      <Dropdown disabled>

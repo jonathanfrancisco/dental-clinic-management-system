@@ -10,6 +10,7 @@ app.use(cookieParser());
 app.use('/api/users', require('./routes/user'));
 app.use('/api/patients', require('./routes/patient'));
 app.use('/api/treatments', require('./routes/treatment'));
+app.use('/api/paymentTransactions', require('./routes/paymentTransaction'));
 
 
 // PRODDUCTION
