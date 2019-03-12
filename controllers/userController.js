@@ -101,6 +101,7 @@ module.exports.login = async (req, res) => {
       
       if(isPasswordCorrect) {
          const payload = {
+            id: user.id,
             username: user.username,
             name: user.name,
             role: user.role

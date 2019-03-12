@@ -31,13 +31,30 @@ class TreatmentsTable extends React.Component {
    getTreatments() {
       axios.get(`/api/treatments/${this.props.patientId}`)
       .then((response) => {
-         console.log(response.data);
          if(response.status === 200)
             this.setState({treatments: response.data.treatments, loading: false});
       })
       .catch((err) => {
          console.log(err);
          message.error('Something went wrong! Please, try again.');
+      });
+   }
+   
+   handleAddTreatment = (values) => {
+      const hide = message.loading('Adding New Treatment...', 0);
+      values.date_treated = values.date_treated.format('YYYY-MM-DD');
+      axios.post(`/api/treatments/${this.props.patientId}/add`, values)
+      .then((response) => {
+         if(response.status === 200) {
+            hide();
+            message.success('New Treatment Added Sucessfully');
+            this.getTreatments();
+         }
+      })
+      .catch((err) => {
+         console.log(err);
+         hide();
+         message.error('Someting went wrong! Please, try again');
       });
    }
 
@@ -135,7 +152,7 @@ class TreatmentsTable extends React.Component {
       return (  
          <React.Fragment>
          <Divider orientation="left">
-         Treatments and/or Procedures taken  <AddTreatmentModal /></Divider>
+         Treatments and/or Procedures taken  <AddTreatmentModal onAdd={this.handleAddTreatment} /></Divider>
          <Table
             dataSource={this.state.treatments}
             size="middle"
