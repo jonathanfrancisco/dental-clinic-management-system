@@ -4,6 +4,7 @@ import axios from 'axios';
 import moment from 'moment';
 import AddTreatmentModal from './AddTreatmentModal';
 import InstallmentPaymentsHistoryModal from './InstallmentPaymentsHistoryModal';
+import PayInstallmentModal from './PayInstallmentModal';
 
 const balanceStatus = (paymentType, balance) => {
    if(paymentType === 'in-full')
@@ -57,9 +58,26 @@ class TreatmentsTable extends React.Component {
       });
    }
 
+   handlePayInstallment = (id, values) => {
+      const hide = message.loading('Processing Payment...', 0);
+      values.date_paid = values.date_paid.format('YYYY-MM-DD');
+      axios.post(`/api/paymentTransactions/${id}/add`, values)
+      .then((response) => {
+         if(response.status === 200) {
+            hide();
+            message.success('Payment Processed Sucessfully');
+            this.getTreatments();
+         }
+      })
+      .catch((err) => {
+         console.log(err);
+         hide();
+         message.error('Someting went wrong! Please, try again');
+      });
+   }
+
    render() {
    
-     
       const columns = [
          {
             title: 'Description',
@@ -121,7 +139,7 @@ class TreatmentsTable extends React.Component {
                const menu = (
                   <Menu>
                      <Menu.Item>
-                        <a disabled target="_blank" rel="noopener noreferrer">Pay Installment</a>
+                       <PayInstallmentModal treatmentId={record.id} currentBalance={record.balance} onPay={this.handlePayInstallment}/>
                      </Menu.Item>
                      <Menu.Item>
                         <InstallmentPaymentsHistoryModal treatmentId={record.id} />

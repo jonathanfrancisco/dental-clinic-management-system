@@ -30,6 +30,7 @@ class InstallmentPaymentsHistoryModal extends React.Component {
    }
 
    showModal = () => {
+      this.getPaymentTransactions();
       this.setState({visible: true});
    }
 
