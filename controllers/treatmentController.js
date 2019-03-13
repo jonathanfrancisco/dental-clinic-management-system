@@ -1,5 +1,6 @@
 const Treatment = require('../models/Treatment');
 const PaymentTransaction = require('../models/PaymentTransaction');
+const Patient = require('../models/Patient');
 const {raw} = require('objection');
 
 
@@ -25,10 +26,12 @@ module.exports.add = async (req, res) => {
 
       if(newTreatment.payment_type === 'no-charge') {
          const treatment = await Treatment.query().insert(newTreatment);
+         await Patient.query().patch({last_visit: treatment.date_treated});
          return res.sendStatus(200);
       }
 
       else if(newTreatment.payment_type === 'in-full' || newTreatment.payment_type === 'installment') {
+         
          if(newTreatment.payment_type === 'in-full') {
             const treatment = await Treatment.query().insertAndFetch(newTreatment);
             const payment = await PaymentTransaction.query().insert({
@@ -37,6 +40,8 @@ module.exports.add = async (req, res) => {
                user_id: req.user.id,
                date_paid: treatment.date_treated
             });
+
+            await Patient.query().patch({last_visit: treatment.date_treated});
          }
          else {
             const amount_paid = newTreatment.amount_paid;
@@ -53,6 +58,8 @@ module.exports.add = async (req, res) => {
                treatment_id: treatment.id,
                user_id: req.user.id
             });
+
+            await Patient.query().patch({last_visit: treatment.date_treated}).where('id', patient_id);;
             
          }
          return res.sendStatus(200);
