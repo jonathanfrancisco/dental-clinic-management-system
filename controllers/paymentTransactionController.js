@@ -1,5 +1,19 @@
 const PaymentTransaction = require('../models/PaymentTransaction');
 
+module.exports.payments = async (req, res) => {
+   try {
+      const paymentTransactions = await PaymentTransaction.query().select('payment_transaction.amount_paid','payment_transaction.date_paid','treatment.payment_type as payment_type', 'user.name as received_by', 'patient.name as from')
+                                 .join('user', 'user.id','payment_transaction.user_id').join('treatment','treatment.id', 'payment_transaction.treatment_id')
+                                 .join('patient', 'patient.id', 'treatment.patient_id')
+                                 .orderBy('payment_transaction.date_paid','desc')
+                                 .orderBy('payment_transaction.id', 'desc');
+      return res.send({paymentTransactions});
+   } catch(err) {
+      console.log(err);
+      return res.status(500).send({message: 'Internal server error'});
+   }
+}
+
 module.exports.getPaymentTransactionsById = async (req, res) => {
    const {id} = req.params;
    try {

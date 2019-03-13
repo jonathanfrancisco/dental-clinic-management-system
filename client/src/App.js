@@ -11,6 +11,7 @@ import SiderNavigation from './components/SiderNavigation';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import DentalRecords from './pages/DentalRecords';
+import Payments from './pages/Payments';
 import Appointments from './pages/Appointments';
 import SMSTextMessaging from './pages/SMSTextMessaging';
 import UserAccounts from './pages/UserAccounts';
@@ -128,6 +129,7 @@ class App extends Component {
                                     <ProtectedRoute exact path="/dashboard" component={Dashboard} />
                                     <ProtectedRoute exact path="/dentalrecords" component={DentalRecords}  /> 
                                     <ProtectedRoute exact path="/dentalrecords/:code" component={DentalRecords}  /> 
+                                    <ProtectedRoute exact path="/payments" component={Payments} />
                                     <ProtectedRoute exact path="/appointments" component={Appointments}  />
                                     <ProtectedRoute exact path="/sms" component={SMSTextMessaging}  />
                                     <ProtectedRoute exact path="/useraccounts" component={UserAccounts} /> 

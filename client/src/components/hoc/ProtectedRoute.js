@@ -30,7 +30,7 @@ class ProtectedRoute extends React.Component {
          <Route {...rest} render={(props) => {
             if(!this.state.redirect 
                && this.state.role === 'dentalaide' && 
-               (pathname === '/useraccounts' || pathname === '/dashboard')) {
+               (pathname === '/useraccounts' || pathname === '/dashboard' || pathname === '/payments')) {
                   return (
                      <Redirect to={
                         {
