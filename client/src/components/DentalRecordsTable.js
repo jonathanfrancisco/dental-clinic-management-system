@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message, Typography, Input, Tag} from 'antd';
+import { AutoComplete, Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message, Typography, Input, Tag} from 'antd';
 import {Link} from 'react-router-dom';
 import moment from 'moment';
 import axios from 'axios';
@@ -72,13 +72,16 @@ class DentalRecordsTable extends React.Component {
    }
 
    // when search button submits
-   handleSearch = (value) => {
+   // handleSearch = (value) => {
+   //    // this.getPatients(value);
+   // }
+
+   handleSearchErased = (value) => {
+     if(value === '')
       this.getPatients(value);
    }
 
-   handleSearchErased = (e) => {
-     const {value} = e.target;
-     if(value === '')
+   handleNameSelect = (value, option) => {
       this.getPatients(value);
    }
 
@@ -147,13 +150,20 @@ class DentalRecordsTable extends React.Component {
                </Row>
                <Row>
                <Col span={24}>
-                     <Search 
+                     <AutoComplete 
+                        style={{width: '100%'}}
+                        placeholder="search dental record by patient name"
+                        dataSource={this.state.patients.map(patient => patient.name)}
+                        filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                        onSelect={this.handleNameSelect}
+                        onChange={this.handleSearchErased}
+                     />
+                     {/* <Search 
                         style={{width: '100%', zIndex: -999}}
                         placeholder="search dental record by patient name"
                         enterButton
-                        onSearch={this.handleSearch}
-                        onChange={this.handleSearchErased}
-                     />               
+                        
+                     />                */}
                   </Col>
                </Row>
             </React.Fragment>
