@@ -86,6 +86,8 @@ class PaymentsTable extends React.Component {
             rowKey={(record) => record.id}
             pagination={
                {
+                  showSizeChanger: true,
+                  showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} payments`,
                   defaultCurrent: 1,
                   pageSize: 10,
                   onChange: (page, pageSize) => {

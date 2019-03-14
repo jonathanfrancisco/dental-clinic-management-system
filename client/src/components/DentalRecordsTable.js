@@ -184,6 +184,8 @@ class DentalRecordsTable extends React.Component {
                
                pagination={
                   {
+                     showSizeChanger: true,
+                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} records`,
                      defaultCurrent: 1,
                      pageSize: 7,
                      onChange: (page, pageSize) => {

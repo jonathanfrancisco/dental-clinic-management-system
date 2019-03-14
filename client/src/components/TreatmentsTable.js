@@ -172,6 +172,7 @@ class TreatmentsTable extends React.Component {
          <Divider orientation="left">
          Treatments and/or Procedures taken  <AddTreatmentModal onAdd={this.handleAddTreatment} /></Divider>
          <Table
+         
             dataSource={this.state.treatments}
             size="middle"
             columns={columns}
@@ -180,6 +181,8 @@ class TreatmentsTable extends React.Component {
             rowKey={(record) => record.id}
             pagination={
                {
+                  showSizeChanger: true,
+                  showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} treatments`,
                   defaultCurrent: 1,
                   pageSize: 4,
                   onChange: (page, pageSize) => {

@@ -162,6 +162,8 @@ class UserAccountsTable extends React.Component {
                rowKey={(record) => record.id}
                pagination={
                   {
+                     showSizeChanger: true,
+                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} accounts`,
                      defaultCurrent: 1,
                      pageSize: 4,
                      onChange: (page, pageSize) => {

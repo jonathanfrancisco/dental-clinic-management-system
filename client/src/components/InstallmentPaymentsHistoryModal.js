@@ -103,6 +103,8 @@ class InstallmentPaymentsHistoryModal extends React.Component {
                   rowKey={(record) => record.id}
                   pagination={
                      {
+                        showSizeChanger: true,
+                        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} payments history`,
                         defaultCurrent: 1,
                         pageSize: 5,
                         onChange: (page, pageSize) => {
