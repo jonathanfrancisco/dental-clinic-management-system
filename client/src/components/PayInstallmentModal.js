@@ -44,7 +44,7 @@ const PayInstallmentModal = Form.create()(
          const { getFieldDecorator } = form;
          return (
             <React.Fragment>
-               <a onClick={this.showModal} target="_blank" rel="noopener noreferrer">Pay Installment</a>
+               <a disabled={this.props.disabled} onClick={this.showModal} target="_blank" rel="noopener noreferrer">Pay Installment</a>
                <Modal
                   visible={this.state.visible}
                   title="Pay Installment"

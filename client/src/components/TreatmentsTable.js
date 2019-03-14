@@ -138,11 +138,21 @@ class TreatmentsTable extends React.Component {
             fixed: 'right',
             dataIndex: 'actions',
             render: (text, record) => {
+
+               const disabled = parseInt(record.balance) === 0 ? true : false;
+
                const menu = (
                   <Menu>
-                     <Menu.Item>
-                       <PayInstallmentModal treatmentId={record.id} currentBalance={record.balance} onPay={this.handlePayInstallment}/>
-                     </Menu.Item>
+                     { disabled ? (
+                        <Menu.Item disabled> 
+                           <PayInstallmentModal disabled={disabled} treatmentId={record.id} currentBalance={record.balance} onPay={this.handlePayInstallment}/>
+                        </Menu.Item>
+                     ) : (
+                        <Menu.Item> 
+                           <PayInstallmentModal disabled={disabled} treatmentId={record.id} currentBalance={record.balance} onPay={this.handlePayInstallment}/>
+                        </Menu.Item>
+                     )}
+                    
                      <Menu.Item>
                         <InstallmentPaymentsHistoryModal treatmentId={record.id} />
                      </Menu.Item>
