@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message, Typography} from 'antd';
+import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message, Typography, Popconfirm} from 'antd';
 
 import axios from 'axios';
 import CreateAccountModal from './CreateAccountModal';
@@ -84,21 +84,6 @@ class UserAccountsTable extends React.Component {
       });
    }
 
-   showDeleteConfirm = (id) => {
-      confirm({
-         title: 'System Message',
-         content: 'Are you sure you want to delete this account?',
-         okText: 'Yes',
-         okType: 'danger',
-         cancelText: 'No',
-         onOk: () => {
-           this.handleDelete(id);
-         },
-         onCancel() {
-
-         },
-       });
-   }
 
    render() {
 
@@ -127,7 +112,10 @@ class UserAccountsTable extends React.Component {
                   <UpdateAccountModal onUpdate={this.handleUpdate}account={record}/>
                   <Divider type="vertical" />
                   <Tooltip title="Delete Account">
-                     <Button type="danger" onClick={() => this.showDeleteConfirm(record.id)}><Icon type="delete" /></Button>
+                     <Popconfirm title="Are you sure?" onConfirm={() => this.handleDelete(record.id)} okText="Yes" cancelText="No">
+                        <Button type="danger"><Icon type="delete" /></Button>
+                     </Popconfirm>
+                     
                   </Tooltip>
                </React.Fragment>
             )
