@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import 'antd/dist/antd.css';
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
 import { Layout, Icon, notification} from 'antd';
-
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 // MY COMPONENTS
 import ProtectedRoute from './components/hoc/ProtectedRoute';
 import SiderNavigation from './components/SiderNavigation';
 
-// PAGES
+// PAGES 
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import DentalRecords from './pages/DentalRecords';
@@ -83,12 +83,15 @@ class App extends Component {
       return (
          <div className="App">
             <Router>
-               <React.Fragment>
+            
+                  <React.Fragment>
                   {!this.state.authenticated ? (
-                    <Switch>
+                    
+                     <Switch>
                         <Route exact path={["/","/login"]} render={(routeProps) => <Login {...routeProps} handleLogin={this.handleLogin}/>} />
                         <Route render={() => <Redirect to="/login"/>}/>
                      </Switch>
+               
                   ) : (
                      <Layout>
                         <Sider
@@ -118,29 +121,46 @@ class App extends Component {
                                  onClick={this.toggle}
                                  />
                            </Header>
-                           <Layout style={{marginLeft: this.state.leftMargin, marginTop: 64}}>
-                              <Content style={{margin: '24px 16px', padding: 24, background: '#fff'}}>
-                                 <Switch>
-                                    <Route exact path={["/","/login"]}  render={(props) => {
-                                       if(this.state.user.role === 'dentalaide')
-                                          return <Redirect to="/dentalrecords" />
-                                       return <Redirect to="/dashboard"/>
-                                    }}/>
-                                    <ProtectedRoute exact path="/dashboard" component={Dashboard} />
-                                    <ProtectedRoute exact path="/dentalrecords" component={DentalRecords}  /> 
-                                    <ProtectedRoute exact path="/dentalrecords/:code" component={DentalRecords}  /> 
-                                    <ProtectedRoute exact path="/payments" component={Payments} />
-                                    <ProtectedRoute exact path="/appointments" component={Appointments}  />
-                                    <ProtectedRoute exact path="/sms" component={SMSTextMessaging}  />
-                                    <ProtectedRoute exact path="/useraccounts" component={UserAccounts} /> 
-                                 </Switch>     
-                              </Content>
+                           <Layout style={{marginLeft: this.state.leftMargin, marginTop: 64, minHeight: '100vh'}}>
+                             
+                                 <Route render={({location}) => (
+                                    <TransitionGroup>
+                                    <CSSTransition
+                                       onEnter={() => {
+                                          window.scrollTo(0,0);
+                                       }}
+                                       key={location.key}
+                                       timeout={500}
+                                       classNames="move"
+                                    >
+                                       <Switch location={location}>
+                                          <Route exact path={["/","/login"]}  render={(props) => {
+                                             if(this.state.user.role === 'dentalaide')
+                                                return <Redirect to="/dentalrecords" />
+                                             return <Redirect to="/dashboard"/>
+                                          }}/>
+                                          <ProtectedRoute exact path="/dashboard" component={Dashboard} />
+                                          <ProtectedRoute exact path="/dentalrecords" component={DentalRecords}  /> 
+                                          <ProtectedRoute exact path="/dentalrecords/:code" component={DentalRecords}  /> 
+                                          <ProtectedRoute exact path="/payments" component={Payments} />
+                                          <ProtectedRoute exact path="/appointments" component={Appointments}  />
+                                          <ProtectedRoute exact path="/sms" component={SMSTextMessaging}  />
+                                          <ProtectedRoute exact path="/useraccounts" component={UserAccounts} /> 
+                                       </Switch>     
+                                    </CSSTransition>
+                                    </TransitionGroup>
+                                 )} />
+
                            </Layout>
                         </Layout>
                      </Layout>
                   )}
 
-               </React.Fragment>
+                  </React.Fragment>
+                 
+               
+
+               
             </Router>
          </div>
       );
