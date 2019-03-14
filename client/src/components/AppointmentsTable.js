@@ -1,5 +1,8 @@
 import React from 'react';
-import {Table} from 'antd'
+import {Table, Row, Col, AutoComplete, Typography} from 'antd'
+
+const {Title} = AutoComplete;
+
 
 class AppointmentsTable extends React.Component {
 
@@ -40,9 +43,31 @@ class AppointmentsTable extends React.Component {
             }
          }
       ];
+      
+      const TableTitle = () => {
+         return (
+            <React.Fragment>
+               <Row>
+               <Col span={24}>
+                     <AutoComplete 
+                        style={{width: '100%'}}
+                        placeholder="search dental record by patient name"
+                        // dataSource={this.state.patients.map(patient => patient.name)}
+                        // filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                        // onSelect={this.handleNameSelect}
+                        // onChange={this.handleSearchErased}
+                     />
+                     <p>Add New Appointment</p>
+                  </Col>
+               </Row>
+            </React.Fragment>
+         );
+      }
+
 
       return (
          <Table
+            title={TableTitle}
             dataSource={this.state.appointments}
             size="middle"
             columns={columns}
