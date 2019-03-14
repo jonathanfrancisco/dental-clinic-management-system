@@ -76,12 +76,9 @@ class DentalRecordsTable extends React.Component {
    //    // this.getPatients(value);
    // }
 
-   handleSearchErased = (value) => {
+   handleSearchErased = (e) => {
+      const {value} = e.target;
      if(value === '')
-      this.getPatients(value);
-   }
-
-   handleNameSelect = (value, option) => {
       this.getPatients(value);
    }
 
@@ -150,20 +147,13 @@ class DentalRecordsTable extends React.Component {
                </Row>
                <Row>
                <Col span={24}>
-                     <AutoComplete 
-                        style={{width: '100%', margin: '4px 0'}}
-                        placeholder="search dental record by patient name"
-                        dataSource={this.state.patients.map(patient => patient.name)}
-                        filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
-                        onSelect={this.handleNameSelect}
-                        onChange={this.handleSearchErased}
-                     />
-                     {/* <Search 
+                     <Search 
                         style={{width: '100%', zIndex: -999}}
                         placeholder="search dental record by patient name"
                         enterButton
-                        
-                     />                */}
+                        onSearch={(value) => this.getPatients(value)}
+                        onChange={this.handleSearchErased}
+                     />               
                   </Col>
                </Row>
             </React.Fragment>
