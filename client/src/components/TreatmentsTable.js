@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row, Col, Table, Dropdown, Menu, Button, Icon, message, Tag, Typography} from 'antd';
+import {Checkbox, Row, Col, Table, Dropdown, Menu, Button, Icon, message, Tag, Typography} from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 import AddTreatmentModal from './AddTreatmentModal';
@@ -23,6 +23,7 @@ class TreatmentsTable extends React.Component {
 
    state = {
       loading: true,
+      filterByBalance: false,
       treatments: []
    };
 
@@ -32,6 +33,18 @@ class TreatmentsTable extends React.Component {
 
    getTreatments() {
       axios.get(`/api/treatments/${this.props.patientId}`)
+      .then((response) => {
+         if(response.status === 200)
+            this.setState({treatments: response.data.treatments, loading: false});
+      })
+      .catch((err) => {
+         console.log(err);
+         message.error('Something went wrong! Please, try again.');
+      });
+   }
+
+   getTreatmentsHasBalance() {
+      axios.get(`/api/treatments/${this.props.patientId}`, {params: {balance: true}})
       .then((response) => {
          if(response.status === 200)
             this.setState({treatments: response.data.treatments, loading: false});
@@ -77,7 +90,11 @@ class TreatmentsTable extends React.Component {
          message.error('Someting went wrong! Please, try again');
       });
    }
-
+   
+   handleCheckBox = (e) => {
+      e.target.checked ? this.getTreatmentsHasBalance() : this.getTreatments();
+   }
+   
    render() {
    
       const columns = [
@@ -179,8 +196,13 @@ class TreatmentsTable extends React.Component {
       
       return (  
          <React.Fragment>
-         <Row style={{marginTop: 8, marginBottom: 12}}>
-            <Col align="right">
+         <Row align="bottom" style={{marginTop: 8, marginBottom: 8}}>
+            <Col span={12} align="left">
+               Filter:
+               <br />
+               <Checkbox onChange={this.handleCheckBox}>Has balance</Checkbox>
+            </Col>
+            <Col span={12} align="right">
                <AddTreatmentModal onAdd={this.handleAddTreatment} />
             </Col>
          </Row>
