@@ -59,7 +59,7 @@ const AddTreatmentModal = Form.create()(
          const { getFieldDecorator } = form;
          return (
             <React.Fragment>
-               <a onClick={this.showModal}><Icon type="plus" /> Add</a>
+               <Button onClick={this.showModal} type="primary"><Icon type="plus" /> Add New Treatment</Button>
                <Modal
                   visible={this.state.visible}
                   title="Add New Treatment"

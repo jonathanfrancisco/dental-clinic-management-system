@@ -1,5 +1,7 @@
 import React from 'react';
+import {Typography} from 'antd';
 
+const {Text} = Typography;
 
 const DescriptionItem = ({ title, content }) => (
    <div
@@ -10,17 +12,8 @@ const DescriptionItem = ({ title, content }) => (
          color: 'rgba(0,0,0,0.65)',
       }}
    >
-      <p
-         style={{
-         margin: 0,
-         display: 'block',
-         color: 'rgba(0,0,0,0.85)',
-         fontWeight: 'bold'
-         }}
-      >
-         {title}:
-      </p>
-      {content}
+      {title}:
+      <Text style={{display: 'block', color: 'rgba(0, 0, 0, 0.85)'}} strong>{content}</Text>
    </div>
 );
 

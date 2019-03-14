@@ -71,32 +71,32 @@ class DentalRecord extends React.Component {
       return (
          <React.Fragment>
             <div style={{marginBottom: 8}}>
-               <a>
-                  <Link to="/dentalrecords"> <Icon type="arrow-left" /> Back to dental records</Link>
-               </a>
+               <Row align="center">
+                  <Col align="left">
+                     <Link to="/dentalrecords"> <Icon type="arrow-left" /> Back to dental records</Link>
+                  </Col>
+                  <Col align="right">
+                     <UpdatePersonalInfoModal patient={this.state.patient} onUpdate={this.handleUpdate} />
+                  </Col>
+               </Row>
             </div>
                {this.state.loading ? (<Skeleton loading={this.state.loading} paragraph={{rows: 14}} active />) : (
-                   <Card>
-                   <Tabs defaultActiveKey="1">
-                      <TabPane tab="Personal Info" key="1">
-                      <Divider orientation="left">Personal Info <UpdatePersonalInfoModal patient={this.state.patient} onUpdate={this.handleUpdate} /></Divider>
-                         <Row>
-                            <Col span={8}><DescriptionItem title="Code" content={this.state.patient.code}/></Col>
-                            <Col span={8}><DescriptionItem title="Name" content={this.state.patient.name} /></Col>
-                            <Col span={8}><DescriptionItem title="Last Visit" content={lastVisit}/></Col>
-                            <Col span={8}><DescriptionItem title="Birthday" content={birthday} /></Col>
-                            <Col span={8}><DescriptionItem title="Occupation" content={this.state.patient.occupation} /></Col>
-                            <Col span={8}><DescriptionItem title="Civil Status" content={this.state.patient.civil_status} /></Col>
-                            <Col span={12}><DescriptionItem title="Address" content={this.state.patient.address} /></Col>
-                            <Col span={12}><DescriptionItem title="Contact Number" content={this.state.patient.contact_number} /></Col>
-                         </Row>
-                      </TabPane>
+                  <React.Fragment>
+                  <Row>
+                     <Col span={8}><DescriptionItem title="Code" content={this.state.patient.code}/></Col>
+                     <Col span={8}><DescriptionItem title="Name" content={this.state.patient.name} /></Col>
+                     <Col span={8}><DescriptionItem title="Last Visit" content={lastVisit}/></Col>
+                     <Col span={8}><DescriptionItem title="Birthday" content={birthday} /></Col>
+                     <Col span={8}><DescriptionItem title="Occupation" content={this.state.patient.occupation} /></Col>
+                     <Col span={8}><DescriptionItem title="Civil Status" content={this.state.patient.civil_status} /></Col>
+                     <Col span={12}><DescriptionItem title="Address" content={this.state.patient.address} /></Col>
+                     <Col span={12}><DescriptionItem title="Contact Number" content={this.state.patient.contact_number} /></Col>
+                  </Row>
+                  <Tabs defaultActiveKey="2">
                       <TabPane tab="Treatments and/or Procedures" key="2">
                         <TreatmentsTable patientId={this.state.patient.id} />
                       </TabPane>
                       <TabPane tab="Dental Chart" key="3">
-                         <Divider orientation="left">Child Teeth (LEFT) and Adult Teeth (RIGHT)</Divider>
-                         
                          <Row>
                            <Col align="center" span={24}>
                            <Text strong>Legend: </Text>
@@ -113,9 +113,8 @@ class DentalRecord extends React.Component {
                            </Col>
                          </Row>
                       </TabPane>
-                   </Tabs>
-                   
-                </Card> 
+                  </Tabs>
+                  </React.Fragment>  
                )}
          </React.Fragment>
       );

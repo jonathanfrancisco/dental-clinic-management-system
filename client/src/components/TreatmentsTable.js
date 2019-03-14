@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Divider, Dropdown, Menu, Button, Icon, message, Tag, Typography} from 'antd';
+import {Row, Col, Table, Dropdown, Menu, Button, Icon, message, Tag, Typography} from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 import AddTreatmentModal from './AddTreatmentModal';
@@ -169,8 +169,12 @@ class TreatmentsTable extends React.Component {
       
       return (  
          <React.Fragment>
-         <Divider orientation="left">
-         Treatments and/or Procedures taken  <AddTreatmentModal onAdd={this.handleAddTreatment} /></Divider>
+         <Row style={{marginTop: 8, marginBottom: 12}}>
+            <Col align="right">
+               <AddTreatmentModal onAdd={this.handleAddTreatment} />
+            </Col>
+         </Row>
+            
          <Table
          
             dataSource={this.state.treatments}

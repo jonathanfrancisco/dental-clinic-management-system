@@ -35,7 +35,7 @@ const UpdatePersonalInfoModal = Form.create()(
          const { getFieldDecorator } = form;
          return (
             <React.Fragment>
-               <a onClick={this.showModal}><Icon type="edit"/>Update</a>
+               <Button onClick={this.showModal} type="default"><Icon type="edit" /> Update Info</Button>
                <Modal
                   visible={this.state.visible}
                   title="Update Patient's Personal Info"
