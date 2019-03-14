@@ -2,7 +2,9 @@ import React from 'react';
 import {Modal, Icon, Table, message} from 'antd';
 import axios from 'axios';
 import moment from 'moment';
+import {Typography} from 'antd';
 
+const {Text} = Typography;
 
 
 class InstallmentPaymentsHistoryModal extends React.Component {
@@ -43,35 +45,35 @@ class InstallmentPaymentsHistoryModal extends React.Component {
 
       const columns = [
          {
-            title: 'Date Paid',
+            title: <Text strong>Date Paid</Text>,
             dataIndex: 'date_paid',
             render: (text, record) => {
                return moment(record.date_paid).format('MMMM DD, YYYY');
             }
          },
          {
-            title: 'Amount Paid',
+            title: <Text strong>Amount Paid</Text>,
             dataIndex: 'amount_paid',
             render: (text, record) => {
                return record.amount_paid;
             }
          },
          {
-            title: 'Current Balance',
+            title: <Text strong>Current Balance</Text>,
             dataIndex: 'current_balance_before',
             render: (text, record) => {
                return record.current_balance_before;
             }
          },
          {
-            title: 'New balance',
+            title: <Text strong>New Balance</Text>,
             dataIndex: 'new_balance_after',
             render: (text, record) => {
                return record.new_balance_after === 0 ? 'Fully Paid' : record.new_balance_after;
             }
          },
          {
-            title: 'Received By',
+            title: <Text strong>Received By</Text>,
             dataIndex: 'received_by',
             render: (text, record) => {
                return record.received_by;

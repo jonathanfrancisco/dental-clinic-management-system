@@ -6,7 +6,7 @@ import CreateAccountModal from './CreateAccountModal';
 import ViewAccountModal from './ViewAccountModal';
 import UpdateAccountModal from './UpdateAccountModal';
 
-const {Title} = Typography;
+const {Title, Text} = Typography;
 const {confirm} = Modal;
 
 class UserAccountsTable extends React.Component {
@@ -104,21 +104,21 @@ class UserAccountsTable extends React.Component {
 
       const columns = [
          {
-            title: 'Name',
+            title: <Text strong>Name</Text>,
             dataIndex: 'name',
             render: (text, record) => {
                return record.name;
             }
          }, 
          {
-            title: 'Role',
+            title: <Text strong>Role</Text>,
             dataIndex: 'role',
             render: (text, record) => {
                return record.role === 'dentist' ? 'Dentist' : 'Dental Aide';
             }
          }, 
          {
-            title: 'Actions',
+            title: <Text strong>Actions</Text>,
             dataIndex: 'actions',
             render: (text, record) => (
                <React.Fragment>
@@ -139,7 +139,7 @@ class UserAccountsTable extends React.Component {
             <React.Fragment>
                <Row type="flex" align="middle">
                   <Col span={12}>
-                     <Title level={3} style={{margin: 0}}>User Accounts</Title>
+                     <Title level={4} style={{margin: 0}}>User Accounts</Title>
                   </Col>
                   <Col align="right" span={12}>
                      <CreateAccountModal onCreate={this.handleCreate} />

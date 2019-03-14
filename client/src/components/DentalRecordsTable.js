@@ -7,7 +7,7 @@ import axios from 'axios';
 import CreateDentalRecordModal from './CreateDentalRecordModal'
 
 const {Search} = Input;
-const {Title, Paragraph} = Typography;
+const {Title, Paragraph, Text} = Typography;
 
 class DentalRecordsTable extends React.Component {
 
@@ -89,7 +89,7 @@ class DentalRecordsTable extends React.Component {
 
       const columns = [
          {
-            title: 'Name',
+            title: <Text strong>Name</Text>,
             dataIndex: 'name',
             defaultSortOrder: 'ascend',
             sorter: (a, b) => a.name.toLowerCase().substring(0,2) < b.name.toLowerCase().substring(0,2),
@@ -98,7 +98,7 @@ class DentalRecordsTable extends React.Component {
             }
          }, 
          {
-            title: 'Last Visit (for treatment)',
+            title: <Text strong>Last Visit</Text>,
             width: 200,
             dataIndex: 'last_visit',
             defaultSortOrder: 'ascend',
@@ -110,21 +110,21 @@ class DentalRecordsTable extends React.Component {
             }
          }, 
          {
-            title: 'Address',
+            title: <Text strong>Address</Text>,
             dataIndex: 'address',
             render: (text, record) => {
                return record.address;
             }
          },
          {
-            title: 'Code',
+            title: <Text strong>Code</Text>,
             dataIndex: 'code',
             render: (text, record) => {
                return <Paragraph copyable={true} >{record.code}</Paragraph>;
             }
          },
          {
-            title: 'Actions',
+            title: <Text strong>Actions</Text>,
             dataIndex: 'actions',
             render: (text, record) => {
                return (
@@ -142,7 +142,7 @@ class DentalRecordsTable extends React.Component {
             <React.Fragment>
                <Row style={{marginBottom: 8}} type="flex" align="middle">
                   <Col xs={{span: 24}} sm={{span: 12}} md={{span: 16}}>
-                     <Title level={3} style={{margin: 0}}>Dental Records</Title>
+                     <Title level={4} style={{margin: 0}}>Dental Records</Title>
                   </Col>
                   <Col xs={{span: 24}} sm={{span: 12}} md={{span: 8}}>
                      <CreateDentalRecordModal onCreate={this.handleCreate} />
@@ -151,7 +151,7 @@ class DentalRecordsTable extends React.Component {
                <Row>
                <Col span={24}>
                      <AutoComplete 
-                        style={{width: '100%'}}
+                        style={{width: '100%', margin: '4px 0'}}
                         placeholder="search dental record by patient name"
                         dataSource={this.state.patients.map(patient => patient.name)}
                         filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
@@ -173,15 +173,15 @@ class DentalRecordsTable extends React.Component {
       return (
          <React.Fragment>
             <Table
-               size="middle"
+               size="small"
                columns={columns}
                dataSource={this.state.patients}
                locale={{emptyText: this.state.search === '' ? 'No Data' : 'No Record Found'}}
-               bordered
                title={TableTitle}
                scroll={{x: 300}}
                loading={this.state.loading}
                rowKey={(record) => record.id}
+               
                pagination={
                   {
                      defaultCurrent: 1,

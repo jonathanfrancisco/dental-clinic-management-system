@@ -1,10 +1,12 @@
 import React from 'react';
-import {Table, Divider, Dropdown, Menu, Button, Icon, message, Tag} from 'antd';
+import {Table, Divider, Dropdown, Menu, Button, Icon, message, Tag, Typography} from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 import AddTreatmentModal from './AddTreatmentModal';
 import InstallmentPaymentsHistoryModal from './InstallmentPaymentsHistoryModal';
 import PayInstallmentModal from './PayInstallmentModal';
+
+const {Text} = Typography;
 
 const balanceStatus = (paymentType, balance) => {
    if(paymentType === 'in-full')
@@ -80,7 +82,7 @@ class TreatmentsTable extends React.Component {
    
       const columns = [
          {
-            title: 'Description',
+            title: <Text strong>Description</Text>,
             width: 190,
             fixed: 'left',
             dataIndex: 'description',
@@ -89,49 +91,49 @@ class TreatmentsTable extends React.Component {
             }
          }, 
          {
-            title: 'Tooth No',
+            title: <Text strong>Tooth No</Text>,
             dataIndex: 'tooth_affected_no',
             render: (text, record) => {
                return record.tooth_affected_no;
             }
          }, 
          {
-            title: 'Date Treated',
+            title: <Text strong>Date Treated</Text>,
             dataIndex: 'date_treated',
             render: (text, record) => {
                return moment(record.date_treated).format('MMMM DD, YYYY');
             }
          },
          {
-            title: 'Treated By',
+            title: <Text strong>Treated By</Text>,
             dataIndex: 'treated_by',
             render: (text, record) => {
                return record.treated_by;
             }
          },
          {
-            title: 'Payment Type',
+            title: <Text strong>Payment Type</Text>,
             dataIndex: 'payment_type',
             render: (text, record) => {
                return record.payment_type.substring(0,1).toUpperCase()+record.payment_type.substring(1,record.payment_type.length);
             }
          },
          {
-            title: 'Total Amount to Pay',
+            title: <Text strong>Total Amount To Pay</Text>,
             dataIndex: 'total_amount_to_pay',
             render: (text, record) => {
                return record.total_amount_to_pay;
             }
          },
          {
-            title: 'Balance',
+            title: <Text strong>Balance</Text>,
             dataIndex: 'balance',
             render: (text, record) => {
                return balanceStatus(record.payment_type, record.balance);
             }
          },
          {
-            title: 'Actions',
+            title: <Text strong>Actions</Text>,
             width: 80,
             fixed: 'right',
             dataIndex: 'actions',

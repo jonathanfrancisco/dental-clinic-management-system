@@ -1,7 +1,7 @@
 import React from 'react';
 import {Table, Row, Col, AutoComplete, Typography} from 'antd'
 
-const {Title} = AutoComplete;
+const {Title, Text} = Typography;
 
 
 class AppointmentsTable extends React.Component {
@@ -15,28 +15,28 @@ class AppointmentsTable extends React.Component {
 
       const columns = [
          {
-            title: 'Date & Time',
+            title: <Text strong>Date & Time</Text>,
             dataIndex: 'date_time',
             render: (text, record) => {
                return record.date_time;
             }
          },
          {
-            title: 'Name',
+            title: <Text strong>Name</Text>,
             dataIndex: 'name',
             render: (text, record) => {
                return record.name;
             }
          },
          {
-            title: 'Status',
+            title: <Text strong>Status</Text>,
             dataIndex: 'status',
             render: (text, record) => {
                return record.status;
             }
          },
          {
-            title: 'Actions',
+            title: <Text strong>Actions</Text>,
             dataIndex: 'actions',
             render: (text, record) => {
                return 'Actions bruh';
