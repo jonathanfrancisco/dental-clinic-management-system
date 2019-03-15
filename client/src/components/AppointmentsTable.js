@@ -1,6 +1,9 @@
 import React from 'react';
-import {Table, Row, Col, AutoComplete, Typography} from 'antd'
+import {Button, Table, Row, Col, Input, Typography, DatePicker} from 'antd'
 
+
+const {MonthPicker, RangePicker, WeekPicker} = DatePicker;;
+const {Search} = Input;
 const {Title, Text} = Typography;
 
 
@@ -29,6 +32,13 @@ class AppointmentsTable extends React.Component {
             }
          },
          {
+            title: <Text strong>Description</Text>,
+            dataIndex: 'description',
+            render: (text, record) => {
+               return record.description;
+            }         
+         },
+         {
             title: <Text strong>Status</Text>,
             dataIndex: 'status',
             render: (text, record) => {
@@ -44,46 +54,63 @@ class AppointmentsTable extends React.Component {
          }
       ];
       
-      const TableTitle = () => {
-         return (
-            <React.Fragment>
+  
+      return (
+         <React.Fragment>
+            
+            <Row gutter={8}>
+               <Col style={{marginBottom:8}} span={12}>
+                  <Text>Search by name:</Text>
+                  <Search 
+                     style={{width: '100%', zIndex: -999}}
+                     placeholder="search appointment by patient name"
+                     enterButton
+                     // onSearch={(value) => this.getPatients(value)}
+                     // onChange={this.handleSearchErased}
+                  />      
+               </Col>
+               <Col style={{marginBottom:8}} span={12}>
+                  <Text>Filter by date:</Text>
+                  <DatePicker style={{width: '100%'}}/>
+               </Col>
+               <Col style={{marginBottom:8}} span={8}>
+                  <Text>Filter by month:</Text>
+                  <MonthPicker style={{width: '100%'}} />  
+               </Col>
+               <Col style={{marginBottom:8}} span={8}>
+                  <Text>Filter by week:</Text>
+                  <WeekPicker style={{width: '100%'}}/>  
+               </Col>
+               <Col style={{marginBottom:8}} span={8}>
+                  <Text>Filter by range:</Text>
+                  <RangePicker style={{width: '100%'}} />  
+               </Col>
+               </Row>
                <Row>
-               <Col span={24}>
-                     <AutoComplete 
-                        style={{width: '100%'}}
-                        placeholder="search dental record by patient name"
-                        // dataSource={this.state.patients.map(patient => patient.name)}
-                        // filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
-                        // onSelect={this.handleNameSelect}
-                        // onChange={this.handleSearchErased}
-                     />
-                     <p>Add New Appointment</p>
+                  <Col align="right" span={24}>
+                     <Button type="default">Clear search & filter(s)</Button>
                   </Col>
                </Row>
-            </React.Fragment>
-         );
-      }
-
-
-      return (
-         <Table
-            title={TableTitle}
-            dataSource={this.state.appointments}
-            size="middle"
-            columns={columns}
-            bordered
-            scroll={{x: 300}}
-            rowKey={(record) => record.id}
-            pagination={
-               {
-                  defaultCurrent: 1,
-                  pageSize: 5,
-                  onChange: (page, pageSize) => {
-                  
+           
+            <Table
+               style={{marginTop: 21}}
+               dataSource={this.state.appointments}
+               size="small"
+               columns={columns}
+               bordered
+               scroll={{x: 300}}
+               rowKey={(record) => record.id}
+               pagination={
+                  {
+                     defaultCurrent: 1,
+                     pageSize: 5,
+                     onChange: (page, pageSize) => {
+                     
+                     }
                   }
                }
-            }
-         />
+            />
+         </React.Fragment>
       );
    }
 }

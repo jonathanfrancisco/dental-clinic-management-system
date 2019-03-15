@@ -31,8 +31,11 @@ class DentalRecordsTable extends React.Component {
          .then((response) => {
             if(response.status === 200) {
                hide();
-               this.setState({patients: response.data.patients, loading: false});
-               message.info(`${response.data.patients.length} Record(s) found`);
+               this.setState({patients: response.data.patients});
+               setTimeout(() => {
+                  this.setState({loading: false});
+                  message.info(`${response.data.patients.length} Record(s) found`);
+               },500); 
             }
          })
          .catch((err) => {

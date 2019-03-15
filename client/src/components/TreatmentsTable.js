@@ -32,10 +32,15 @@ class TreatmentsTable extends React.Component {
    }
 
    getTreatments() {
+      this.setState({loading: true});
       axios.get(`/api/treatments/${this.props.patientId}`)
       .then((response) => {
-         if(response.status === 200)
-            this.setState({treatments: response.data.treatments, loading: false});
+         if(response.status === 200) {
+            this.setState({treatments: response.data.treatments});
+            setTimeout(() => {
+               this.setState({loading: false});
+            },500);
+         }
       })
       .catch((err) => {
          console.log(err);
@@ -44,10 +49,15 @@ class TreatmentsTable extends React.Component {
    }
 
    getTreatmentsHasBalance() {
+      this.setState({loading: true});
       axios.get(`/api/treatments/${this.props.patientId}`, {params: {balance: true}})
       .then((response) => {
-         if(response.status === 200)
-            this.setState({treatments: response.data.treatments, loading: false});
+         if(response.status === 200) {
+            this.setState({treatments: response.data.treatments});
+            setTimeout(() => {
+               this.setState({loading: false});
+            },500);
+         }
       })
       .catch((err) => {
          console.log(err);
@@ -208,7 +218,7 @@ class TreatmentsTable extends React.Component {
          </Row>
             
          <Table
-         
+            loading={this.state.loading}
             dataSource={this.state.treatments}
             size="middle"
             columns={columns}

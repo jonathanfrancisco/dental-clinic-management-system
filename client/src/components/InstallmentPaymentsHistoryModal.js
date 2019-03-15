@@ -20,10 +20,15 @@ class InstallmentPaymentsHistoryModal extends React.Component {
    }
 
    getPaymentTransactions() {
+      this.setState({loading: true});
       axios.get(`/api/paymentTransactions/${this.props.treatmentId}`)
       .then((response) => {
-         if(response.status === 200)
-            this.setState({paymentTransactions: response.data.paymentTransactions, loading: false});
+         if(response.status === 200) {
+            this.setState({paymentTransactions: response.data.paymentTransactions});
+            setTimeout(() => {
+               this.setState({loading: false});
+            },500);
+         }
       })
       .catch((err) => {
          console.log(err);

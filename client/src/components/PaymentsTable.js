@@ -17,10 +17,15 @@ class PaymentsTable extends React.Component {
    }
 
    getAllPaymentTransactions() {
+      this.setState({loading: true});
       axios.get('/api/paymentTransactions')
       .then((response) => {
-         if(response.status === 200)
-            this.setState({paymentTransactions: response.data.paymentTransactions, loading: false});
+         if(response.status === 200) {
+            this.setState({paymentTransactions: response.data.paymentTransactions});
+            setTimeout(() => {
+               this.setState({loading: false});
+            },500);
+         }
       })
       .catch((err) => {
          console.log(err);

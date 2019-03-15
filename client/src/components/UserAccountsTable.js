@@ -25,6 +25,9 @@ class UserAccountsTable extends React.Component {
       axios.get('/api/users/')
       .then((response) => {
          this.setState({users: response.data.users, loading: false});
+         setTimeout(() => {
+            this.setState({loading: false});
+         },500);
       })
       .catch((err) => {
          console.log(err);
