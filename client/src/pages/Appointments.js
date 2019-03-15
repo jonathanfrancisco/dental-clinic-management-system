@@ -14,11 +14,11 @@ class Appointments extends React.Component {
       return (
          <Content style={{margin: '24px 24px 24px 36px', padding:24, background: '#fff'}}>
             <Title level={4}>Appointments</Title>
-            <Tabs defaultActiveKey="1">
-               <TabPane tab="Calendar" key="1">
+            <Tabs tabPosition="left" defaultActiveKey="1">
+               <TabPane tab="Calendar View" key="1">
                  <AppointmentsCalendar /> 
                </TabPane>
-               <TabPane tab="Appointments" key="2">
+               <TabPane tab="List View" key="2">
                   <AppointmentsTable />
                </TabPane>
             </Tabs>

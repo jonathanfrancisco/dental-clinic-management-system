@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Table, Row, Col, Input, Typography, DatePicker} from 'antd'
+import {Icon, Button, Table, Row, Col, Input, Typography, DatePicker, Radio} from 'antd'
 
 
 const {MonthPicker, RangePicker, WeekPicker} = DatePicker;;
@@ -58,9 +58,11 @@ class AppointmentsTable extends React.Component {
       return (
          <React.Fragment>
             
-            <Row gutter={8}>
-               <Col style={{marginBottom:8}} span={12}>
-                  <Text>Search by name:</Text>
+            <Row align="center" gutter={8}>
+               <Col style={{marginBottom: '12px'}} align="right">
+                  <Button type="primary"><Icon type="add"/>Add New Appointment</Button>
+               </Col>
+               <Col style={{marginBottom:8}} span={24}>
                   <Search 
                      style={{width: '100%', zIndex: -999}}
                      placeholder="search appointment by patient name"
@@ -69,29 +71,18 @@ class AppointmentsTable extends React.Component {
                      // onChange={this.handleSearchErased}
                   />      
                </Col>
+               <Col span={12} align="right">
+                  <Radio.Group>
+                     <Radio.Button value="a">All Day</Radio.Button>
+                     <Radio.Button value="b">All Week</Radio.Button>
+                     <Radio.Button value="c">All Month</Radio.Button>
+                     <Radio.Button value="d">All Year</Radio.Button>
+                  </Radio.Group>
+               </Col>
                <Col style={{marginBottom:8}} span={12}>
-                  <Text>Filter by date:</Text>
-                  <DatePicker style={{width: '100%'}}/>
-               </Col>
-               <Col style={{marginBottom:8}} span={8}>
-                  <Text>Filter by month:</Text>
-                  <MonthPicker style={{width: '100%'}} />  
-               </Col>
-               <Col style={{marginBottom:8}} span={8}>
-                  <Text>Filter by week:</Text>
-                  <WeekPicker style={{width: '100%'}}/>  
-               </Col>
-               <Col style={{marginBottom:8}} span={8}>
-                  <Text>Filter by range:</Text>
                   <RangePicker style={{width: '100%'}} />  
                </Col>
                </Row>
-               <Row>
-                  <Col align="right" span={24}>
-                     <Button type="default">Clear search & filter(s)</Button>
-                  </Col>
-               </Row>
-           
             <Table
                style={{marginTop: 21}}
                dataSource={this.state.appointments}
