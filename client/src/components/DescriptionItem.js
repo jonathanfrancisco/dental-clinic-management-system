@@ -6,7 +6,7 @@ const {Text} = Typography;
 const DescriptionItem = ({ title, content }) => (
    <div
       style={{
-         fontSize: 14,
+         fontSize: 16,
          lineHeight: '22px',
          marginBottom: 18,
          color: 'rgba(0,0,0,0.65)',
