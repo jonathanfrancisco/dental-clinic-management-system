@@ -7,7 +7,7 @@ class SMSTextMessaging extends React.Component {
    
    render() {
       return (
-         <Content style={{margin: '24px 24px 24px 36px',boxShadow: '0px 3px 10px -4px #8c8c8c', padding: 24, borderRadius: '10px', background: '#fff'}}>
+         <Content style={{margin: '24px 24px 24px 36px',padding: 24, background: '#fff'}}>
             <h1>SMS Text Messaging</h1>
          </Content>
       );

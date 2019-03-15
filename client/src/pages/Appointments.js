@@ -10,8 +10,9 @@ const {Content} = Layout;
 
 class Appointments extends React.Component {
    render() {
+      {/* boxShadow: '0px 3px 10px -4px #8c8c8c', padding: 24 */}
       return (
-         <Content style={{margin: '24px 24px 24px 36px',boxShadow: '0px 3px 10px -4px #8c8c8c', padding: 24, borderRadius: '10px', background: '#fff'}}>
+         <Content style={{margin: '24px 24px 24px 36px', padding:24, background: '#fff'}}>
             <Title level={4}>Appointments</Title>
             <Tabs defaultActiveKey="1">
                <TabPane tab="Calendar" key="1">

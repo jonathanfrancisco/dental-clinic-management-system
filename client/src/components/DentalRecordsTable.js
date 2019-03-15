@@ -166,7 +166,7 @@ class DentalRecordsTable extends React.Component {
       return (
          <React.Fragment>
             <Table
-               size="small"
+               size="medium"
                columns={columns}
                dataSource={this.state.patients}
                locale={{emptyText: this.state.search === '' ? 'No Data' : 'No Record Found'}}

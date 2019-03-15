@@ -12,12 +12,12 @@ class DentalRecords extends React.Component {
       const {code: match} = this.props.match.params;
       if(match)
          return (
-            <Content style={{margin: '24px 24px 24px 36px',boxShadow: '0px 3px 10px -4px #8c8c8c', borderRadius: '10px', padding: 24, background: '#fff'}}>
+            <Content style={{margin: '24px 24px 24px 36px', padding: 24, background: '#fff'}}>
                <DentalRecord code={match} />
             </Content>
          );
       return (
-      <Content style={{margin: '24px 24px 24px 36px',boxShadow: '0px 3px 10px -4px #8c8c8c', borderRadius: '10px', padding: 24, background: '#fff'}}>
+      <Content style={{margin: '24px 24px 24px 36px', padding: 24, background: '#fff'}}>
          <DentalRecordsTable />
       </Content>
       );
