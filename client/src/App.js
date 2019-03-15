@@ -6,6 +6,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 // MY COMPONENTS
 import ProtectedRoute from './components/hoc/ProtectedRoute';
 import SiderNavigation from './components/SiderNavigation';
+import SpinningComponent from './components/SpinningComponent';
 
 // PAGES 
 import Login from './pages/Login';
@@ -29,9 +30,10 @@ class App extends Component {
       collapsedWidth: 80,
       collapsed: false,
       leftMargin: 200, 
+      loginLoading: false
    };
 
-   componentDidMount() {
+   componentDidMount() {;
       axios.get('/api/users/checkToken')
       .then((response) => {
          if(response.status === 200) {
@@ -44,14 +46,19 @@ class App extends Component {
    }
 
    handleLogin = (formValues) => {
+      this.setState({loginLoading: true});
       return axios.post('/api/users/login', formValues)
       .then((response) => {   
          if(response.data.error === undefined) {
             this.setState({authenticated: true, user: response.data.user});
-            notification['success']({
-               message: 'System Message',
-               description: 'Logged-in successfully!',
-            });
+            setTimeout(() => {
+               this.setState({loginLoading: false});
+               notification['success']({
+                  message: 'System Message',
+                  description: 'Logged-in successfully!',
+               });
+            },2000);
+           
          }
          return response;
       })
@@ -92,6 +99,8 @@ class App extends Component {
                         <Route render={() => <Redirect to="/login"/>}/>
                      </Switch>
                
+                  ) : this.state.loginLoading ? (
+                        <SpinningComponent />
                   ) : (
                      <Layout>
                         <Sider
