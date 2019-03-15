@@ -29,6 +29,7 @@ class Patient extends Model {
       const Treatment = require('./Treatment');
       const AdultTeethChart = require('./AdultTeethChart');
       const ChildTeethChart = require('./ChildTeethChart');
+      const Appointment = require('./Appointment');
 
       return {
          adult_teeth_chart: {
@@ -53,6 +54,14 @@ class Patient extends Model {
             join: {
                from: 'patient.id',
                to: 'treatment.patient_id'
+            }
+         },
+         appointments: {
+            relation: Model.HasManyRelation,
+            modelClass: Appointment,
+            join: {
+               from: 'patient.id',
+               to: 'appointment.patient_id'
             }
          }
       };
