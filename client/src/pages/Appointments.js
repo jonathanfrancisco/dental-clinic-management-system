@@ -1,25 +1,80 @@
 import React from 'react';
-import {Table, Tabs, Typography} from 'antd';
+import {Table, Tabs, Typography, message} from 'antd';
 import AppointmentsCalendar from '../components/ApppointmentsCalendar';
 import AppointmentsTable from '../components/AppointmentsTable';
 import {Layout} from 'antd';
+import axios from 'axios';
 
 const {Title} = Typography;
 const {TabPane} = Tabs;
 const {Content} = Layout;
 
 class Appointments extends React.Component {
+
+
+   state = {
+      appointmentsTableLoading: true,
+      appointmentsTable: []
+   };
+
+   componentDidMount() {
+      this.getAppointmentsTable();
+   }
+   
+   getAppointmentsTable = (dates = []) => {
+      
+      if(dates.length === 2) {
+         this.setState({appointmentsTableLoading: true});
+         axios.get(`/api/appointments`, {
+            params: {
+               startDate: dates[0].format('YYYY-MM-DD'),
+               endDate: dates[1].format('YYYY-MM-DD')
+            }
+         })
+         .then((response) => {
+            if(response.status === 200) {
+               setTimeout(() => {
+                  this.setState({appointmentsTableLoading: false, appointmentsTable: response.data.appointments});
+               },300);
+            }
+         })
+         .catch((err) => {
+            console.log(err);
+            message.error('Something went wrong! Please, try again.');
+         });
+      }
+
+      else {
+         this.setState({appointmentsTableLoading: true});
+         axios.get(`/api/appointments`)
+         .then((response) => {
+            if(response.status === 200) {
+              
+               setTimeout(() => {
+                  this.setState({appointmentsTableLoading: false,appointmentsTable: response.data.appointments});
+               },300);
+            }
+         })
+         .catch((err) => {
+            console.log(err);
+            message.error('Something went wrong! Please, try again.');
+         });
+      }
+
+
+   }
+
    render() {
       {/* boxShadow: '0px 3px 10px -4px #8c8c8c', padding: 24 */}
       return (
          <Content style={{margin: '24px 24px 24px 36px', padding:24, background: '#fff'}}>
-            <Title level={4}>Appointments</Title>
+            <Title level={4}>APPOINTMENTS</Title>
             <Tabs tabPosition="left" defaultActiveKey="1">
                <TabPane tab="Calendar View" key="1">
                  <AppointmentsCalendar /> 
                </TabPane>
-               <TabPane tab="List View" key="2">
-                  <AppointmentsTable />
+               <TabPane tab="Table View" key="2">
+                  <AppointmentsTable tableLoading={this.state.appointmentsTableLoading} appointments={this.state.appointmentsTable} getAppointments={this.getAppointmentsTable} />
                </TabPane>
             </Tabs>
          </Content>

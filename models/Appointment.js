@@ -3,7 +3,7 @@ const Model = require('./Model');
 
 class Appointment extends Model {
    static get tableName() {
-      return 'patient';
+      return 'appointment';
    }
 
    static get jsonSchema() {
