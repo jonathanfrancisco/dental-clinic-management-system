@@ -222,7 +222,6 @@ class TreatmentsTable extends React.Component {
             dataSource={this.state.treatments}
             size="middle"
             columns={columns}
-            bordered
             scroll={{x: 1000}}
             rowKey={(record) => record.id}
             pagination={
