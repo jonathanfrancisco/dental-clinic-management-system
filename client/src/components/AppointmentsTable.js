@@ -11,9 +11,17 @@ const {Title, Text} = Typography;
 class AppointmentsTable extends React.Component {
 
    state = {
+      search: '',
       selectedFilterBy: '',
       rangeDate: [],
    };
+
+   handleSearchChange = (e) => {
+      const {value} = e.target;
+      this.setState({search: value});
+      if(value === '')
+         this.props.getAppointments(value, this.state.rangeDate);
+   }
 
    onRadioChange = async (e) => {
       const {value: filterBy} = e.target;
@@ -26,13 +34,13 @@ class AppointmentsTable extends React.Component {
          await this.setState({rangeDate: [moment().startOf('month'), moment().endOf('month')]});
       else if(filterBy === 'year')
          await this.setState({rangeDate: [moment().startOf('year'), moment().endOf('year')]});
-      this.props.getAppointments(this.state.rangeDate);
+      this.props.getAppointments(this.state.search, this.state.rangeDate);
     }
    
     onRangePickerChange =  async (dates, dateStrings) => {
       await this.setState({selectedFilterBy: ''});
       await this.setState({rangeDate: dates});
-      this.props.getAppointments(this.state.rangeDate);
+      this.props.getAppointments(this.state.search, this.state.rangeDate);
     }
 
    render() {
@@ -92,8 +100,8 @@ class AppointmentsTable extends React.Component {
                      style={{width: '100%', zIndex: -999}}
                      placeholder="search appointment by patient name"
                      enterButton
-                     // onSearch={(value) => this.getPatients(value)}
-                     // onChange={this.handleSearchErased}
+                     onSearch={(value) => this.props.getAppointments(value, this.state.rangeDate)}
+                     onChange={this.handleSearchChange}
                   />      
                </Col>
                <Col span={12} align="right">
@@ -122,7 +130,7 @@ class AppointmentsTable extends React.Component {
                      defaultCurrent: 1,
                      pageSize: 5,
                      onChange: (page, pageSize) => {
-                       this.props.getAppointments(this.state.rangeDate);
+                       this.props.getAppointments(this.state.search, this.state.rangeDate);
                      }
                   }
                }

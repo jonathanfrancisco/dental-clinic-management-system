@@ -21,19 +21,26 @@ class Appointments extends React.Component {
       this.getAppointmentsTable();
    }
    
-   getAppointmentsTable = (dates = []) => {
-      
+   getAppointmentsTable = (search = '', dates = []) => {
+      let hide;
+      if(search != '')
+         hide = message.loading('Searching...', 0);
       if(dates.length === 2) {
          this.setState({appointmentsTableLoading: true});
          axios.get(`/api/appointments`, {
             params: {
                startDate: dates[0].format('YYYY-MM-DD'),
-               endDate: dates[1].format('YYYY-MM-DD')
+               endDate: dates[1].format('YYYY-MM-DD'),
+               search
             }
          })
          .then((response) => {
             if(response.status === 200) {
                setTimeout(() => {
+                  if(search !='') {
+                     hide();
+                     message.info(`${response.data.appointments.length} appointment(s) found`);
+                  }
                   this.setState({appointmentsTableLoading: false, appointmentsTable: response.data.appointments});
                },300);
             }
@@ -46,12 +53,19 @@ class Appointments extends React.Component {
 
       else {
          this.setState({appointmentsTableLoading: true});
-         axios.get(`/api/appointments`)
+         axios.get(`/api/appointments`, {
+            params: {
+               search
+            }
+         })
          .then((response) => {
             if(response.status === 200) {
-              
                setTimeout(() => {
-                  this.setState({appointmentsTableLoading: false,appointmentsTable: response.data.appointments});
+                  if(search !='') {
+                     hide();
+                     message.info(`${response.data.appointments.length} appointment(s) found`);
+                  }
+                  this.setState({appointmentsTableLoading: false, appointmentsTable: response.data.appointments});
                },300);
             }
          })
