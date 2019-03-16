@@ -2,6 +2,7 @@ import React from 'react';
 import {Popconfirm, Badge, Icon, Button, Table, Row, Col, Input, Typography, DatePicker, Radio, Divider} from 'antd';
 import moment from 'moment';
 
+import CreateAppointmentModal from './CreateAppointmentModal';
 
 const {MonthPicker, RangePicker, WeekPicker} = DatePicker;;
 const {Search} = Input;
@@ -61,7 +62,7 @@ class AppointmentsTable extends React.Component {
             }
          },
          {
-            title: <Text strong>Name</Text>,
+            title: <Text strong>Patient Name</Text>,
             dataIndex: 'name',
             render: (text, record) => {
                return record.name;
@@ -93,7 +94,7 @@ class AppointmentsTable extends React.Component {
             
             <Row align="middle" gutter={8}>
                <Col style={{marginBottom: '12px'}} align="right">
-                  <Button type="primary"><Icon type="plus"/>Add new appointment</Button>
+                  <CreateAppointmentModal />
                </Col>
                <Col style={{marginBottom:8}} span={24}>
                   <Search 
