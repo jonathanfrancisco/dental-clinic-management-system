@@ -72,7 +72,7 @@ class AppointmentsTable extends React.Component {
             render: (text, record) => {
                return record.status === 'confirmed' ? (<Badge status="success" text="confirmed"/>) 
                : record.status === 'pending' ? (
-                  <Popconfirm title="What would you like to do with this appointment?" cancelText="Cancel" cancelButtonProps={{type: 'danger'}} okText="Confirm">
+                  <Popconfirm placement="topRight" title="What would you like to do with this appointment?" cancelText="Cancel" cancelButtonProps={{type: 'danger'}} okText="Confirm">
                      <a href="#"><Badge status="processing" text={<Text style={{color: '#108ee9'}}>pending</Text>}/></a>
                   </Popconfirm>
                ) 
