@@ -1,5 +1,5 @@
 import React from 'react';
-import {Popconfirm, Badge, Icon, Button, Table, Row, Col, Input, Typography, DatePicker, Radio, Divider} from 'antd';
+import {Menu, Dropdown, Popconfirm, Badge, Icon, Button, Table, Row, Col, Input, Typography, DatePicker, Radio, Divider} from 'antd';
 import moment from 'moment';
 
 import CreateAppointmentModal from './CreateAppointmentModal';
@@ -79,13 +79,54 @@ class AppointmentsTable extends React.Component {
             title: <Text strong>Status</Text>,
             dataIndex: 'status',
             render: (text, record) => {
-               return record.status === 'confirmed' ? (<Badge status="success" text="confirmed"/>) 
-               : record.status === 'pending' ? (
-                  <Popconfirm placement="topRight" title="What would you like to do with this appointment?" cancelText="Cancel" cancelButtonProps={{type: 'danger'}} okText="Confirm">
-                     <a href="#"><Badge status="processing" text={<Text style={{color: '#108ee9'}}>pending</Text>}/></a>
-                  </Popconfirm>
+            return record.status === 'confirmed' ? (<Badge status="success" text={<Text style={{color: '#73d13d'}}>confirmed</Text>}/>) 
+               : record.status === 'pending' ? (    
+                  <Badge status="processing" text={<Text style={{color: '#108ee9'}}>pending</Text>}/>
                ) 
-               : (<Badge status="error" text="cancelled"/>) }
+               : (<Badge status="error" text={<Text style={{color: '#ff7875'}}>cancelled</Text>}/>) }
+         },
+         {
+            title: <Text strong>Actions</Text>,
+            dataIndex: 'actions',
+            render: (text, record) => {
+
+               const menu = record.status === 'pending' ? (
+                  <Menu>
+                     <Menu.Item> 
+                        Confirm appointment
+                     </Menu.Item>
+                     <Menu.Item>
+                        Cancel appointment
+                     </Menu.Item>
+                  </Menu>
+               ) : (
+                  <Menu>
+                     <Menu.Item> 
+                        Move date and time
+                     </Menu.Item>
+                     <Menu.Item>
+                        Cancel appointment
+                     </Menu.Item>
+                  </Menu>
+               );
+
+               if(record.status === 'cancelled')
+               return (
+                  <Dropdown disabled>
+                     <Button>
+                        Actions <Icon type="down" />
+                     </Button>
+                  </Dropdown>
+               );
+
+               return (
+                  <Dropdown overlay={menu} trigger={['click']}>
+                     <Button>
+                        Actions <Icon type="down" />
+                     </Button>
+                  </Dropdown>
+               );
+            }
          }
       ];
       
