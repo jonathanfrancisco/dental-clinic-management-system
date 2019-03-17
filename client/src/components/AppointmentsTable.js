@@ -110,6 +110,9 @@ class AppointmentsTable extends React.Component {
             dataIndex: 'actions',
             render: (text, record) => {
 
+               const isAppointmentPast = moment(record.date_time).format('X') < moment(Date.now()).format('X');
+               console.log(record.date_time, isAppointmentPast)
+
                const menu = record.status === 'pending' ? (
                   <Menu>
                      <Menu.Item> 
@@ -124,21 +127,33 @@ class AppointmentsTable extends React.Component {
                      <Menu.Item disabled> 
                         Confirm appointment
                      </Menu.Item>
-                     <Menu.Item>
-                        Cancel appointment
-                     </Menu.Item>
+                     
+                     {
+                        isAppointmentPast ? (
+                           <Menu.Item disabled> 
+                              Cancel appointment
+                           </Menu.Item>
+   
+                        ) : (
+                           <Menu.Item>
+                              Cancel appointment
+                           </Menu.Item>
+                        )
+                     }
                   </Menu>
                );
 
-               if(record.status === 'cancelled')
-               return (
-                  <Dropdown disabled>
-                     <Button>
-                        Actions <Icon type="down" />
-                     </Button>
-                  </Dropdown>
-               );
-
+               if(record.status === 'cancelled' 
+                  ||(record.status === 'pending' && isAppointmentPast)
+                  ||(record.status === 'confirmed' && isAppointmentPast))
+                     return (
+                        <Dropdown disabled>
+                           <Button>
+                              Actions <Icon type="down" />
+                           </Button>
+                        </Dropdown>
+                     );
+              
                return (
                   <Dropdown overlay={menu} trigger={['click']}>
                      <Button>
