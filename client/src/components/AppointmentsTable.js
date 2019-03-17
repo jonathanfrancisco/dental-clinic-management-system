@@ -101,8 +101,8 @@ class AppointmentsTable extends React.Component {
                   </Menu>
                ) : (
                   <Menu>
-                     <Menu.Item> 
-                        Move date and time
+                     <Menu.Item disabled> 
+                        Confirm appointment
                      </Menu.Item>
                      <Menu.Item>
                         Cancel appointment

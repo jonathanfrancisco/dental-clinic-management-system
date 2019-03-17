@@ -83,11 +83,11 @@ class Appointments extends React.Component {
       return (
          <Content style={{margin: '24px 24px 24px 36px', padding:24, background: '#fff'}}>
             <Title level={4}>APPOINTMENTS</Title>
-            <Tabs tabPosition="left" defaultActiveKey="1">
-               <TabPane tab="Calendar View" key="1">
+            <Tabs defaultActiveKey="1">
+               <TabPane tab="Calendar View" key="2">
                  <AppointmentsCalendar /> 
                </TabPane>
-               <TabPane tab="Table View" key="2">
+               <TabPane tab="Table View" key="1">
                   <AppointmentsTable tableLoading={this.state.appointmentsTableLoading} appointments={this.state.appointmentsTable} getAppointments={this.getAppointmentsTable} />
                </TabPane>
             </Tabs>
