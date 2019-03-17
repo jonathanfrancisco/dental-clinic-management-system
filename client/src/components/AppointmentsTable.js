@@ -1,8 +1,9 @@
 import React from 'react';
-import {Menu, Dropdown, Popconfirm, Badge, Icon, Button, Table, Row, Col, Input, Typography, DatePicker, Radio, Divider} from 'antd';
+import {message, Menu, Dropdown, Popconfirm, Badge, Icon, Button, Table, Row, Col, Input, Typography, DatePicker, Radio, Divider} from 'antd';
 import moment from 'moment';
 
 import CreateAppointmentModal from './CreateAppointmentModal';
+import axios from 'axios';
 
 const {MonthPicker, RangePicker, WeekPicker} = DatePicker;;
 const {Search} = Input;
@@ -16,6 +17,25 @@ class AppointmentsTable extends React.Component {
       selectedFilterBy: '',
       rangeDate: [],
    };
+
+   handleAppointmentCreate = (values) => {
+      values.date_time = moment(values.date_time).format('YYYY-MM-DD HH:MM:SS');
+      const hide = message.loading('Creating New Appointment...', 0);
+      axios.post('/api/appointments/create/in-person', values)
+      .then((response) => {
+         if(response.status === 200) {
+            hide();
+            message.success('New Appointment Successfully Created');
+            this.props.getAppointments(this.state.search, this.state.rangeDate);
+         }
+      })
+      .catch((err) => {
+         console.log(err);
+         hide();
+         message.error('Something went wrong! Please, try again.');
+      });
+      
+   }
 
    handleSearchChange = (e) => {
       const {value} = e.target;
@@ -135,7 +155,7 @@ class AppointmentsTable extends React.Component {
             
             <Row align="middle" gutter={8}>
                <Col style={{marginBottom: '12px'}} align="right">
-                  <CreateAppointmentModal />
+                  <CreateAppointmentModal onCreate={this.handleAppointmentCreate}/>
                </Col>
                <Col style={{marginBottom:8}} span={24}>
                   <Search 

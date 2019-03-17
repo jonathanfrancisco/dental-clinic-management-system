@@ -13,6 +13,7 @@ const CreateAppointmentModal = Form.create()(
          searchPatientInputData: []
       };
 
+
       handleSearch = (value) => {
          // ajax stuff
          axios.get('/api/patients', {
@@ -38,8 +39,7 @@ const CreateAppointmentModal = Form.create()(
          this.props.form.validateFields((err, values) => {
             if(err)
                return
-            // this.props.onCreate(values);
-            console.log(values);
+            this.props.onCreate(values);
             this.hideModal();
          });
       }

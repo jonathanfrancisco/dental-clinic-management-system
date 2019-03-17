@@ -2,6 +2,20 @@ const Appointment = require('../models/Appointment');
 const {raw} = require('objection');
 const moment = require('moment');
 
+module.exports.createInPersonAppointment = async (req, res) => {
+   const newAppointment = req.body;
+   newAppointment.patient_id = parseInt(newAppointment.patient_id);
+   newAppointment.status = 'confirmed';
+   try {
+      const appointment = await Appointment.query().insert(newAppointment);
+      console.log(appointment);
+      return res.sendStatus(200);
+   } catch(err) {
+      console.log(err);
+      return res.status(500).send({message: 'Internal server error'});
+   }
+}
+
 module.exports.appointments = async (req, res) => {
    
    try {
