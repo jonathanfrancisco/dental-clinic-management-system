@@ -218,7 +218,8 @@ class TreatmentsTable extends React.Component {
          <Table
             loading={this.state.loading}
             dataSource={this.state.treatments}
-            size="middle"
+            bordered
+            size="small"
             columns={columns}
             scroll={{x: 1000}}
             rowKey={(record) => record.id}
