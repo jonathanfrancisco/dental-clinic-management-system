@@ -63,7 +63,7 @@ const CreateAccountModal = Form.create()(
                </Button>
                <Modal
                   visible={this.state.visible}
-                  title="Create a New Account"
+                  title="Create a New User Account"
                   okText="Create"
                   onCancel={this.hideModal}
                   onOk={this.handleSubmit}
