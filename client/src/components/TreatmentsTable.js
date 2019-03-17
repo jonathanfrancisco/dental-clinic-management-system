@@ -47,23 +47,6 @@ class TreatmentsTable extends React.Component {
          message.error('Something went wrong! Please, try again.');
       });
    }
-
-   getTreatmentsHasBalance() {
-      this.setState({loading: true});
-      axios.get(`/api/treatments/${this.props.patientId}`, {params: {balance: true}})
-      .then((response) => {
-         if(response.status === 200) {
-            this.setState({treatments: response.data.treatments});
-            setTimeout(() => {
-               this.setState({loading: false});
-            },500);
-         }
-      })
-      .catch((err) => {
-         console.log(err);
-         message.error('Something went wrong! Please, try again.');
-      });
-   }
    
    handleAddTreatment = (values) => {
       const hide = message.loading('Adding New Treatment...', 0);
@@ -99,10 +82,6 @@ class TreatmentsTable extends React.Component {
          hide();
          message.error('Someting went wrong! Please, try again');
       });
-   }
-   
-   handleCheckBox = (e) => {
-      e.target.checked ? this.getTreatmentsHasBalance() : this.getTreatments();
    }
    
    render() {
@@ -155,6 +134,26 @@ class TreatmentsTable extends React.Component {
          {
             title: <Text strong>Balance</Text>,
             dataIndex: 'balance',
+            filters: [{
+               text: 'Fully Paid',
+               value: 'fully-paid',
+             }, {
+               text: 'No Charge',
+               value: 'no-charge',
+             }, {
+               text: 'Has Balance',
+               value: 'balance',
+             }],
+            filterMultiple: false,
+            onFilter: (value, record) => {
+               if(value === 'balance')
+                  return record.balance > 0
+               else if(value === 'fully-paid') {
+                  console.log('Fully paid gago', record.balance, record.payment_type);
+                  return record.balance == 0;
+               }
+               return !record.balance && record.payment_type === 'no-charge'
+            },
             render: (text, record) => {
                return balanceStatus(record.payment_type, record.balance);
             }
@@ -209,9 +208,6 @@ class TreatmentsTable extends React.Component {
          <Row align="bottom" style={{marginTop: 8, marginBottom: 8}}>
             <Col style={{marginBottom: 8}} span={24} align="right">
                <AddTreatmentModal onAdd={this.handleAddTreatment} />
-            </Col>
-            <Col span={24} align="left">
-               <Checkbox onChange={this.handleCheckBox}>Balance</Checkbox>
             </Col>
          </Row>
             
