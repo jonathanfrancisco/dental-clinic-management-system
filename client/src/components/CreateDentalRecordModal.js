@@ -34,12 +34,12 @@ const CreateDentalRecordModal = Form.create()(
          const { getFieldDecorator } = form;
          return (
             <React.Fragment>
-               <Button style={{width: '100%'}} type="primary" onClick={this.showModal}><Icon type="usergroup-add" />
+               <Button type="primary" onClick={this.showModal}><Icon type="usergroup-add" />
                   Create New Dental Record
                </Button>
                <Modal
                   visible={this.state.visible}
-                  title="Create a new Dental Record"
+                  title="Create a New Dental Record"
                   okText="Create"
                   onCancel={this.hideModal}
                   onOk={this.handleSubmit}

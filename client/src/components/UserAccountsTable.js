@@ -90,10 +90,10 @@ class UserAccountsTable extends React.Component {
             render: (text, record) => (
                <React.Fragment>
                   <Link to={`/useraccounts/${record.id}`}>
-                     <Button style={{marginRight: 8}} type="primary"><Icon type="solution" />View user account</Button>
+                     <Button style={{marginRight: 8}} type="primary"><Icon type="solution" />View User Account</Button>
                   </Link>
                   <Popconfirm title="Are you sure?" onConfirm={() => this.handleDelete(record.id)} okText="Yes" cancelText="No">
-                     <Button type="danger"><Icon type="delete" />Delete user account</Button>
+                     <Button type="danger"><Icon type="delete" />Delete User Account</Button>
                   </Popconfirm>
                </React.Fragment>
             )
@@ -103,16 +103,17 @@ class UserAccountsTable extends React.Component {
        
       return (
          <React.Fragment>
-            <Row style={{marginBottom: 8}} type="flex" align="middle">
-               <Col span={12}>
+            <Row type="flex" align="left">
+               <Col span={24}>
                   <Title level={4} style={{margin: 0}}>USER ACCOUNTS</Title>
                </Col>
-               <Col align="right" span={12}>
+               <Col align="right" span={24}>
                   <CreateAccountModal onCreate={this.handleCreate} />
                </Col>
             </Row>
             <Table
-               size="middle"
+               style={{marginTop: 8}}
+               size="small"
                columns={columns}
                dataSource={this.state.users}
                bordered
@@ -124,7 +125,7 @@ class UserAccountsTable extends React.Component {
                      showSizeChanger: true,
                      showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} accounts`,
                      defaultCurrent: 1,
-                     pageSize: 4,
+                     pageSize: 8,
                      onChange: (page, pageSize) => {
                         this.getUsers();
                        

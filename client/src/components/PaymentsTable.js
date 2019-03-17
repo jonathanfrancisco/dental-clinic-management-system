@@ -35,10 +35,6 @@ class PaymentsTable extends React.Component {
 
    render() {
 
-      const TableTitle = () => {
-         return  <Title level={4} style={{margin: 0}}>Payments Log</Title>;
-      }
-
       const columns = [
          {
             title: <Text strong>Date Paid</Text>,
@@ -80,27 +76,30 @@ class PaymentsTable extends React.Component {
       ];
 
       return (
-         <Table
-            title={TableTitle}
-            bordered
-            loading={this.state.loading}
-            dataSource={this.state.paymentTransactions}
-            size="small"
-            columns={columns}
-            scroll={{x: 500}}
-            rowKey={(record) => record.id}
-            pagination={
-               {
-                  showSizeChanger: true,
-                  showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} payments`,
-                  defaultCurrent: 1,
-                  pageSize: 10,
-                  onChange: (page, pageSize) => {
-                  
+         <React.Fragment>
+            <Title level={4} style={{margin: 0}}>PAYMENTS LOG</Title>
+            <Table
+               bordered
+               loading={this.state.loading}
+               dataSource={this.state.paymentTransactions}
+               size="small"
+               columns={columns}
+               scroll={{x: 500}}
+               rowKey={(record) => record.id}
+               pagination={
+                  {
+                     position: 'both',
+                     showSizeChanger: true,
+                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} payments`,
+                     defaultCurrent: 1,
+                     pageSize: 15,
+                     onChange: (page, pageSize) => {
+                     
+                     }
                   }
                }
-            }
-         />
+            />
+         </React.Fragment>
       );
    }
 }

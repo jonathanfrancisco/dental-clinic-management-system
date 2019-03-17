@@ -207,13 +207,11 @@ class TreatmentsTable extends React.Component {
       return (  
          <React.Fragment>
          <Row align="bottom" style={{marginTop: 8, marginBottom: 8}}>
-            <Col span={12} align="left">
-               Filter:
-               <br />
-               <Checkbox onChange={this.handleCheckBox}>Has balance</Checkbox>
-            </Col>
-            <Col span={12} align="right">
+            <Col style={{marginBottom: 8}} span={24} align="right">
                <AddTreatmentModal onAdd={this.handleAddTreatment} />
+            </Col>
+            <Col span={24} align="left">
+               <Checkbox onChange={this.handleCheckBox}>Balance</Checkbox>
             </Col>
          </Row>
             
@@ -226,10 +224,11 @@ class TreatmentsTable extends React.Component {
             rowKey={(record) => record.id}
             pagination={
                {
+                  position: 'both',
                   showSizeChanger: true,
                   showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} treatments`,
                   defaultCurrent: 1,
-                  pageSize: 4,
+                  pageSize: 8,
                   onChange: (page, pageSize) => {
                   
                   }

@@ -61,10 +61,10 @@ const CreateAppointmentModal = Form.create()(
          const options = this.state.searchPatientInputData.map(d => <Option key={d.id}>{d.name}</Option>)
          return (
             <React.Fragment>
-              <Button onClick={this.showModal} type="primary"><Icon type="plus"/>Create new appointment</Button>
+              <Button onClick={this.showModal} type="primary"><Icon type="plus"/>Create New Appointment</Button>
                <Modal
                   visible={this.state.visible}
-                  title="Create a new appointment"
+                  title="Create a New Appointment"
                   okText="Create"
                   onCancel={this.hideModal}
                   onOk={this.handleSubmit}

@@ -137,50 +137,40 @@ class DentalRecordsTable extends React.Component {
       ];
 
    
-      const TableTitle = () => {
-         return (
-            <React.Fragment>
-               <Row style={{marginBottom: 8}} type="flex" align="middle">
-                  <Col xs={{span: 24}} sm={{span: 12}} md={{span: 16}}>
-                     <Title level={4} style={{margin: 0}}>Dental Records</Title>
-                  </Col>
-                  <Col xs={{span: 24}} sm={{span: 12}} md={{span: 8}}>
-                     <CreateDentalRecordModal onCreate={this.handleCreate} />
-                  </Col>
-               </Row>
-               <Row>
-               <Col span={24}>
-                     <Search 
-                        style={{width: '100%', zIndex: -999}}
-                        placeholder="search dental record by patient name"
-                        enterButton
-                        onSearch={(value) => this.getPatients(value)}
-                        onChange={this.handleSearchErased}
-                     />               
-                  </Col>
-               </Row>
-            </React.Fragment>
-         );
-      }
-       
       return (
          <React.Fragment>
+            <Title level={4} style={{margin: 0}}>DENTAL RECORDS</Title>
+               <Row>
+                  <Col align="right" style={{marginBottom: '8px'}}>
+                     <CreateDentalRecordModal onCreate={this.handleCreate} />
+                  </Col>
+                  <Col span={24}>
+                        <Search 
+                           style={{width: '100%', zIndex: -999}}
+                           placeholder="search dental record by patient name"
+                           enterButton
+                           onSearch={(value) => this.getPatients(value)}
+                           onChange={this.handleSearchErased}
+                        />               
+                  </Col>
+               </Row>
             <Table
-               size="medium"
+               size="small"
                columns={columns}
                dataSource={this.state.patients}
                locale={{emptyText: this.state.search === '' ? 'No Data' : 'No Record Found'}}
-               title={TableTitle}
+               bordered
                scroll={{x: 300}}
                loading={this.state.loading}
                rowKey={(record) => record.id}
                
                pagination={
                   {
+                     position: 'both',
                      showSizeChanger: true,
-                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} records`,
+                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} dental records`,
                      defaultCurrent: 1,
-                     pageSize: 7,
+                     pageSize: 11,
                      onChange: (page, pageSize) => {
                     
                      }

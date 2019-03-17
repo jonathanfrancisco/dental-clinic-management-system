@@ -116,27 +116,27 @@ class AppointmentsTable extends React.Component {
                const menu = record.status === 'pending' ? (
                   <Menu>
                      <Menu.Item> 
-                        Confirm appointment
+                        Confirm Appointment
                      </Menu.Item>
                      <Menu.Item>
-                        Cancel appointment
+                        Cancel Appointment
                      </Menu.Item>
                   </Menu>
                ) : (
                   <Menu>
                      <Menu.Item disabled> 
-                        Confirm appointment
+                        Confirm Appointment
                      </Menu.Item>
                      
                      {
                         isAppointmentPast ? (
                            <Menu.Item disabled> 
-                              Cancel appointment
+                              Cancel Appointment
                            </Menu.Item>
    
                         ) : (
                            <Menu.Item>
-                              Cancel appointment
+                              Cancel Appointment
                            </Menu.Item>
                         )
                      }
@@ -169,7 +169,7 @@ class AppointmentsTable extends React.Component {
          <React.Fragment>
             
             <Row align="middle" gutter={8}>
-               <Col style={{marginBottom: '12px'}} align="right">
+               <Col style={{marginBottom: 8}} align="right">
                   <CreateAppointmentModal onCreate={this.handleAppointmentCreate}/>
                </Col>
                <Col style={{marginBottom:8}} span={24}>
@@ -195,7 +195,6 @@ class AppointmentsTable extends React.Component {
                </Row>
             <Table
                loading={this.props.tableLoading}
-               style={{marginTop: 21}}
                dataSource={this.props.appointments}
                size="small"
                columns={columns}
@@ -204,8 +203,10 @@ class AppointmentsTable extends React.Component {
                rowKey={(record) => record.id}
                pagination={
                   {
+                     position: 'both',
                      defaultCurrent: 1,
-                     pageSize: 5,
+                     pageSize: 8,
+                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} appointments`,
                      onChange: (page, pageSize) => {
                        this.props.getAppointments(this.state.search, this.state.rangeDate);
                      }

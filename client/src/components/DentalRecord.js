@@ -73,7 +73,7 @@ class DentalRecord extends React.Component {
             <div style={{marginBottom: 8}}>
                <Row align="center">
                   <Col align="left">
-                     <Link to="/dentalrecords"> <Icon type="arrow-left" /> Back to dental records</Link>
+                     <Link to="/dentalrecords"> <Icon type="arrow-left" /> Back to Dental Records</Link>
                   </Col>
                   <Col align="right">
                      <UpdatePersonalInfoModal patient={this.state.patient} onUpdate={this.handleUpdate} />
