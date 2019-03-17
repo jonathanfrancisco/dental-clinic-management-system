@@ -98,12 +98,26 @@ class AppointmentsTable extends React.Component {
          {
             title: <Text strong>Status</Text>,
             dataIndex: 'status',
+            filters: [{
+               text: 'Confirmed',
+               value: 'confirmed',
+             }, {
+               text: 'Cancelled',
+               value: 'cancelled',
+             }, {
+               text: 'Pending',
+               value: 'pending',
+             }],
+            filterMultiple: false,
+            onFilter: (value, record) => {
+              return record.status.indexOf(value) === 0;
+            },
             render: (text, record) => {
-            return record.status === 'confirmed' ? (<Badge status="success" text={<Text style={{color: '#73d13d'}}>confirmed</Text>}/>) 
+            return record.status === 'confirmed' ? (<Badge status="success" text={<Text style={{color: '#73d13d'}}>Confirmed</Text>}/>) 
                : record.status === 'pending' ? (    
-                  <Badge status="processing" text={<Text style={{color: '#108ee9'}}>pending</Text>}/>
+                  <Badge status="processing" text={<Text style={{color: '#108ee9'}}>Pending</Text>}/>
                ) 
-               : (<Badge status="error" text={<Text style={{color: '#ff7875'}}>cancelled</Text>}/>) }
+               : (<Badge status="error" text={<Text style={{color: '#ff7875'}}>Cancelled</Text>}/>) }
          },
          {
             title: <Text strong>Actions</Text>,
