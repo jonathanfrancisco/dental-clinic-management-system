@@ -48,21 +48,21 @@ module.exports.update = async (req, res) => {
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(req.body.password, saltRounds).then(hash => hash)
       patchUser = {
-         name: req.body.name,
-         address: req.body.address,
-         birthday: req.body.birthday,
-         role: req.body.role,
          username: req.body.username,
          password: hashedPassword
       };
    }
+
+   else if(!req.body.password && !req.body.confirm_password && req.body.username)
+      patchUser = {
+         username: req.body.username
+      };
    
    else {
       patchUser = {
          name: req.body.name,
          address: req.body.address,
          birthday: req.body.birthday,
-         username: req.body.username,
          role: req.body.role
       };
    }

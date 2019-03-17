@@ -155,6 +155,7 @@ class App extends Component {
                                           <ProtectedRoute exact path="/appointments" component={Appointments}  />
                                           <ProtectedRoute exact path="/sms" component={SMSTextMessaging}  />
                                           <ProtectedRoute exact path="/useraccounts" component={UserAccounts} /> 
+                                          <ProtectedRoute exact path="/useraccounts/:id" component={UserAccounts} />
                                        </Switch>     
                                     </CSSTransition>
                                     </TransitionGroup>

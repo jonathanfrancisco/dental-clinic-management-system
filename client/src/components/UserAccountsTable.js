@@ -1,13 +1,10 @@
 import React from 'react';
 import { Table, Button, Divider, Icon, Tooltip, Row, Col, Modal, message, Typography, Popconfirm} from 'antd';
-
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 import CreateAccountModal from './CreateAccountModal';
-import ViewAccountModal from './ViewAccountModal';
-import UpdateAccountModal from './UpdateAccountModal';
 
 const {Title, Text} = Typography;
-const {confirm} = Modal;
 
 class UserAccountsTable extends React.Component {
 
@@ -42,24 +39,6 @@ class UserAccountsTable extends React.Component {
          if(response.status === 200) {
             hide();
             message.success('Account Created Successfully');
-            this.getUsers();
-         }
-      })
-      .catch((err) => {
-         console.log(err);
-         hide();
-         message.error('Something went wrong! Please, try again.');
-      });
-   }
-
-   handleUpdate = (id, values) => {
-      const hide = message.loading('Updating Account...', 0);
-      values.birthday = values.birthday.format('YYYY-MM-DD');
-      axios.patch(`/api/users/${id}/update`, values)
-      .then((response) => {
-         if(response.status === 200) {
-            hide();
-            message.success('Account Updated Successfully');
             this.getUsers();
          }
       })
@@ -110,44 +89,33 @@ class UserAccountsTable extends React.Component {
             dataIndex: 'actions',
             render: (text, record) => (
                <React.Fragment>
-                  <ViewAccountModal account={record} />
-                  <Divider type="vertical" />          
-                  <UpdateAccountModal onUpdate={this.handleUpdate}account={record}/>
-                  <Divider type="vertical" />
-                  <Tooltip title="Delete Account">
-                     <Popconfirm title="Are you sure?" onConfirm={() => this.handleDelete(record.id)} okText="Yes" cancelText="No">
-                        <Button type="danger"><Icon type="delete" /></Button>
-                     </Popconfirm>
-                     
-                  </Tooltip>
+                  <Link to={`/useraccounts/${record.id}`}>
+                     <Button style={{marginRight: 8}} type="primary"><Icon type="solution" />View user account</Button>
+                  </Link>
+                  <Popconfirm title="Are you sure?" onConfirm={() => this.handleDelete(record.id)} okText="Yes" cancelText="No">
+                     <Button type="danger"><Icon type="delete" />Delete user account</Button>
+                  </Popconfirm>
                </React.Fragment>
             )
          }
       ];
    
-      const TableTitle = () => {
-         return (
-            <React.Fragment>
-               <Row type="flex" align="middle">
-                  <Col span={12}>
-                     <Title level={4} style={{margin: 0}}>User Accounts</Title>
-                  </Col>
-                  <Col align="right" span={12}>
-                     <CreateAccountModal onCreate={this.handleCreate} />
-                  </Col>
-               </Row>
-            </React.Fragment>
-         );
-      }
        
       return (
          <React.Fragment>
+            <Row style={{marginBottom: 8}} type="flex" align="middle">
+               <Col span={12}>
+                  <Title level={4} style={{margin: 0}}>USER ACCOUNTS</Title>
+               </Col>
+               <Col align="right" span={12}>
+                  <CreateAccountModal onCreate={this.handleCreate} />
+               </Col>
+            </Row>
             <Table
                size="middle"
                columns={columns}
                dataSource={this.state.users}
                bordered
-               title={TableTitle}
                scroll={{x: 300}}
                loading={this.state.loading}
                rowKey={(record) => record.id}
