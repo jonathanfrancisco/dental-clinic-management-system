@@ -121,7 +121,7 @@ class TreatmentsTable extends React.Component {
             title: <Text strong>Tooth No</Text>,
             dataIndex: 'tooth_affected_no',
             render: (text, record) => {
-               return record.tooth_affected_no;
+               return !record.tooth_affected_no ? 'N/A' : record.tooth_affected_no;
             }
          }, 
          {
@@ -149,7 +149,7 @@ class TreatmentsTable extends React.Component {
             title: <Text strong>Total Amount To Pay</Text>,
             dataIndex: 'total_amount_to_pay',
             render: (text, record) => {
-               return record.total_amount_to_pay;
+               return !record.total_amount_to_pay ? 0 : record.total_amount_to_pay;
             }
          },
          {
