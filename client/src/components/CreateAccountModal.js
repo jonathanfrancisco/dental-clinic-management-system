@@ -59,11 +59,11 @@ const CreateAccountModal = Form.create()(
          return (
             <React.Fragment>
                <Button type="primary" onClick={this.showModal}><Icon type="usergroup-add" />
-                  Create new account
+                  Create New User Account
                </Button>
                <Modal
                   visible={this.state.visible}
-                  title="Create a new account"
+                  title="Create a New Account"
                   okText="Create"
                   onCancel={this.hideModal}
                   onOk={this.handleSubmit}
