@@ -154,7 +154,7 @@ paymentTransactions
 
       return (
          <React.Fragment>
-            <Title level={4} style={{margin: 0}}>PAYMENTS LOG</Title>
+            <Title level={4} style={{margin: 0}}>TRANSACTION LOG</Title>
             <Row align="middle" gutter={8}>
                <Col style={{marginBottom:8}} span={24}>
                   <Search 
