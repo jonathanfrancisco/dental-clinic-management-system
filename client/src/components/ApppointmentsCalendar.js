@@ -1,5 +1,6 @@
 import React from 'react';
-import {Card, Popover, Tag, Typography, BackTop, Calendar, Row, Col, Alert} from 'antd'
+import {Card, Tag, Typography, BackTop, Calendar, Row, Col, Alert} from 'antd'
+import AppointmentsPopoverDrawer from './AppointmentsPopoverDrawer';
 import moment from 'moment';
 
 
@@ -8,7 +9,8 @@ const {Text} = Typography;
 class AppointmentsCalendar extends React.Component {
 
    state = {
-      value: moment(Date.now())
+      value: moment(Date.now()),
+      visiblePopover: false
    }
 
    getAppointmentCount(value) {
@@ -17,7 +19,23 @@ class AppointmentsCalendar extends React.Component {
       return data.filter((appointment) => {
          return dateValue === moment(moment(appointment.date_time).format('MMMM DD')).unix('X') && appointment.status === 'confirmed';
       }).length;
+   }
+
+   getAppointmentMonthCount(value) {
+      const dateValue = moment(value.format('MMMM YYYY')).unix('X');
+      const data = [...this.props.appointments];
+      return data.filter((appointment) => {
+         return dateValue === moment(moment(appointment.date_time).format('MMMM YYYY')).unix('X') && appointment.status === 'confirmed';
+      }).length;
     }
+
+   getAppointmentsDay(value) {
+      const dateValue = moment(value.format('MMMM DD')).unix('X');
+      const data = [...this.props.appointments];
+      return data.filter((appointment) => {
+         return dateValue === moment(moment(appointment.date_time).format('MMMM DD')).unix('X') && appointment.status === 'confirmed';
+      });
+   }
 
 
    dateFullCellRender = (date) => {
@@ -44,59 +62,86 @@ class AppointmentsCalendar extends React.Component {
          );
       }
 
+   
       return (
          <div style={{padding: 4}}>
-            <Popover title={<Text strong>{date.format('MMMM DD')}</Text>} trigger="click" content={<a>View Appointments</a>}>
-                  {
-                     isSelected ? (
-                        <Card
-                           title={<Text>{date.format('MMMM DD')}</Text>}
-                           size="small"
-                           style={
-                              {
-                                 textAlign: 'right',
-                                 backgroundColor: '#e6f7ff',
-                                 height: 100,
-                                 cursor: 'pointer', 
-                                 border: 0, 
-                                 boxShadow: '3px 3px 6px -4px #8c8c8c'
-                              }
+            <AppointmentsPopoverDrawer
+               title={<Text strong>{date.format('MMMM DD')}</Text>}
+               appointments={this.getAppointmentsDay(date)}
+            >
+               {
+                  isSelected ? (
+                     <Card
+                        title={<Text>{date.format('MMMM DD')}</Text>}
+                        size="small"
+                        style={
+                           {
+                              textAlign: 'right',
+                              backgroundColor: '#e6f7ff',
+                              height: 100,
+                              cursor: 'pointer', 
+                              border: 0, 
+                              boxShadow: '3px 3px 6px -4px #8c8c8c'
                            }
-                        >
+                        }
+                     >
 
+                        {
+                           appointmentCount > 0 ? (
+                              <Tag color="red">{appointmentCount} Appointment(s)</Tag>
+                           ) : (null)
+                        }
+   
+                     </Card>
+                  ) : (
+                     <Card
+                        title={<Text>{date.format('MMMM DD')}</Text>}
+                        size="small"
+                        style={
                            {
-                              appointmentCount > 0 ? (
-                                 <Tag color="red">{appointmentCount} Appointment(s)</Tag>
-                              ) : (null)
+                              textAlign: 'right',
+                              height: 100,
+                              cursor: 'pointer', 
+                              border: 0, 
+                              boxShadow: '3px 3px 6px -4px #8c8c8c'
                            }
-      
-                        </Card>
-                     ) : (
-                        <Card
-                           title={<Text>{date.format('MMMM DD')}</Text>}
-                           size="small"
-                           style={
-                              {
-                                 textAlign: 'right',
-                                 height: 100,
-                                 cursor: 'pointer', 
-                                 border: 0, 
-                                 boxShadow: '3px 3px 6px -4px #8c8c8c'
-                              }
-                           }
-                        >
-                           {
-                              appointmentCount > 0 ? (
-                                 <Tag color="red">{appointmentCount} Appointment(s)</Tag>
-                              ) : (null)
-                           }
-                        </Card>
-                     )
-                  }
-            </Popover>
+                        }
+                     >
+                        {
+                           appointmentCount > 0 ? (
+                              <Tag style={{textAlign: 'center'}} color="red">{appointmentCount} Appointment(s)</Tag>
+                           ) : (null)
+                        }
+                     </Card>
+                  )
+               }
+            </AppointmentsPopoverDrawer>
+  
          </div>
       );
 
+   }
+
+   hidePopover = () => {
+      this.setState({visiblePopover: false});
+   }
+
+   handleVisiblePopoverChange = (visible) => {
+      this.setState({ visiblePopover: visible });
+   }
+
+
+   monthCellRender = (date) => {
+      const appointmentCount = this.getAppointmentMonthCount(date);
+      return (
+         <Row>
+            <Col align="center">
+               {appointmentCount > 0 ? (
+                  <Tag color="red">{appointmentCount} Appointment(s)</Tag>
+               ) : (null)}
+            </Col>
+         </Row>
+      ); 
    }
   
    onSelect = (value) => {
@@ -124,6 +169,7 @@ class AppointmentsCalendar extends React.Component {
             <Alert message={`You selected date: ${value.format('MMMM DD, YYYY')}`} />
             <Calendar 
                dateFullCellRender={this.dateFullCellRender} 
+               monthCellRender={this.monthCellRender}
                value={value}
                onSelect={this.onSelect}
                onPanelChange={this.onPanelChange} />
