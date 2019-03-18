@@ -1,5 +1,5 @@
 import React from 'react';
-import {Checkbox, Row, Col, Table, Dropdown, Menu, Button, Icon, message, Tag, Typography} from 'antd';
+import {Row, Col, Table, Dropdown, Menu, Button, Icon, message, Tag, Typography} from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 import AddTreatmentModal from './AddTreatmentModal';

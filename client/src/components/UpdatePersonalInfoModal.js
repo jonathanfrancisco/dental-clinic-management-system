@@ -31,7 +31,7 @@ const UpdatePersonalInfoModal = Form.create()(
       }
 
       render() {
-         const {form, account} = this.props;
+         const {form} = this.props;
          const { getFieldDecorator } = form;
          return (
             <React.Fragment>

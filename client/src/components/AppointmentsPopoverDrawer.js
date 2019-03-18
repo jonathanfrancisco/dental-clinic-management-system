@@ -1,5 +1,5 @@
 import React from 'react';
-import {Tag, Card, Popover, Drawer,  } from 'antd';
+import {Card, Popover, Drawer,  } from 'antd';
 import moment from 'moment';
 
 const {Meta} = Card;

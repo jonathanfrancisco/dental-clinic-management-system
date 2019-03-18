@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {Typography, Skeleton, Row, Col, Tag, Card, Divider, Icon, Tabs, message} from 'antd';
+import {Typography, Skeleton, Row, Col, Tag, Icon, Tabs, message} from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -12,7 +12,7 @@ import TreatmentsTable from '../components/TreatmentsTable';
 import UpdatePersonalInfoModal from './UpdatePersonalInfoModal';
 
 const {TabPane} = Tabs;
-const {Title, Text} = Typography;
+const {Text} = Typography;
 
 
 class DentalRecord extends React.Component {
@@ -71,7 +71,7 @@ class DentalRecord extends React.Component {
       return (
          <React.Fragment>
             <div style={{marginBottom: 8}}>
-               <Row align="center">
+               <Row>
                   <Col align="left">
                      <Link to="/dentalrecords"> <Icon type="arrow-left" /> Back to Dental Records</Link>
                   </Col>

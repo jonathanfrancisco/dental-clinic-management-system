@@ -70,7 +70,7 @@ class TreatmentsPopoverDrawer extends React.Component {
                <Timeline>
                   {
                      this.props.treatments.map((treatment) => (
-                        <Timeline.Item>{moment(treatment.date_treated).format('MMMM DD, YYYY')} {treatment.description}</Timeline.Item>
+                        <Timeline.Item key={treatment.id}>{moment(treatment.date_treated).format('MMMM DD, YYYY')} {treatment.description}</Timeline.Item>
                      ))
                   }
                </Timeline>  

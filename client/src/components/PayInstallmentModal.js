@@ -1,6 +1,5 @@
 import React from 'react';
-import {Modal, Form, InputNumber, DatePicker, Row, Col, Button, Icon} from 'antd';
-import axios from 'axios';
+import {Modal, Form, InputNumber, DatePicker, Row, Col, Button} from 'antd';
 
 const PayInstallmentModal = Form.create()(
    class extends React.Component {
@@ -31,7 +30,6 @@ const PayInstallmentModal = Form.create()(
       }
 
       checkBalance = (rule, value, callback) => {
-         const {form} = this.props;
          const {currentBalance} = this.props;;
          if( (value > currentBalance) || (value < 1 && currentBalance)) 
             callback('Cannot be lower or greater than current balance');

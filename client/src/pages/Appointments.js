@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Tabs, Typography, message} from 'antd';
+import {Tabs, Typography, message} from 'antd';
 import AppointmentsCalendar from '../components/ApppointmentsCalendar';
 import AppointmentsTable from '../components/AppointmentsTable';
 import {Layout} from 'antd';

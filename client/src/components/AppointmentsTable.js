@@ -1,13 +1,13 @@
 import React from 'react';
-import {message, Menu, Dropdown, Popconfirm, Badge, Icon, Button, Table, Row, Col, Input, Typography, DatePicker, Radio, Divider} from 'antd';
+import {message, Menu, Dropdown,Badge, Icon, Button, Table, Row, Col, Input, Typography, DatePicker, Radio, Divider} from 'antd';
 import moment from 'moment';
 
 import CreateAppointmentModal from './CreateAppointmentModal';
 import axios from 'axios';
 
-const {MonthPicker, RangePicker, WeekPicker} = DatePicker;;
+const {RangePicker} = DatePicker;;
 const {Search} = Input;
-const {Title, Text} = Typography;
+const {Text} = Typography;
 
 
 class AppointmentsTable extends React.Component {

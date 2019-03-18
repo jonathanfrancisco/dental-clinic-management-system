@@ -19,7 +19,7 @@ import UserAccounts from './pages/UserAccounts';
 
 import axios from 'axios';
 
-const {Content, Sider, Header} = Layout;
+const {Sider, Header} = Layout;
 
 
 class App extends Component {
