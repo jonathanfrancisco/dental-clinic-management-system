@@ -1,11 +1,35 @@
 import React from 'react';
-import {Popover, Radio} from 'antd';
+import {Radio, message} from 'antd';
+import TreatmentsPopoverDrawer from './TreatmentsPopoverDrawer';
+import axios from 'axios';
+
 const RadioGroup = Radio.Group;
 
 
 
 class DMFTPopover extends React.Component {
    
+   state = {
+      treatments: []
+   };
+
+   componentDidMount() {
+      this.getTreatments(this.props.toothPosition);
+   }
+
+   getTreatments(toothPosition) {
+      axios.get(`/api/treatments/tooth/${toothPosition}`)
+      .then((response) => {
+         if(response.status === 200) {
+            this.setState({treatments: response.data.treatments});
+         }
+      })
+      .catch((err) => {
+         console.error(err);
+         message.error('Something went wrong! Please, try again.');
+      });
+   }
+
    onChange = (e) => {
       this.props.onChange(this.props.toothPosition, e.target.value);
    }
@@ -26,9 +50,10 @@ class DMFTPopover extends React.Component {
             </RadioGroup>);
 
       return (
-         <Popover title={this.props.toothPosition} content={DMFTRadioGroup} trigger="click">
+         <TreatmentsPopoverDrawer treatments={this.state.treatments} title={this.props.toothPosition} content={DMFTRadioGroup}>
             {this.props.children}
-         </Popover>
+         </TreatmentsPopoverDrawer>
+      
       );
    }
 
