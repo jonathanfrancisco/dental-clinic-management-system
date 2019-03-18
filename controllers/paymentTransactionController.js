@@ -1,17 +1,70 @@
 const PaymentTransaction = require('../models/PaymentTransaction');
+const {raw} = require('objection');
 
 module.exports.payments = async (req, res) => {
+
+
    try {
-      const paymentTransactions = await PaymentTransaction.query().select('payment_transaction.id','payment_transaction.amount_paid','payment_transaction.date_paid','treatment.payment_type as payment_type', 'user.name as received_by', 'patient.name as from')
-                                 .join('user', 'user.id','payment_transaction.user_id').join('treatment','treatment.id', 'payment_transaction.treatment_id')
-                                 .join('patient', 'patient.id', 'treatment.patient_id')
-                                 .orderBy('payment_transaction.date_paid','desc')
-                                 .orderBy('payment_transaction.id', 'desc');
+     
+      let paymentTransactions;
+      
+      if(req.query.startDate && req.query.endDate) {
+
+         if(req.query.search) {
+            paymentTransactions = await PaymentTransaction.query().select('payment_transaction.id','payment_transaction.amount_paid','payment_transaction.date_paid','treatment.payment_type as payment_type', 'user.name as received_by', 'patient.name as from')
+            .join('user', 'user.id','payment_transaction.user_id').join('treatment','treatment.id', 'payment_transaction.treatment_id')
+            .join('patient', 'patient.id', 'treatment.patient_id')
+            .whereRaw(`LOWER(patient.name) like "%${req.query.search.toLowerCase()}%"`)
+            .whereBetween('date_paid', [req.query.startDate+' 00:00:00', req.query.endDate+' 23:59:59'])
+            .orderBy('payment_transaction.date_paid','desc')
+            .orderBy('payment_transaction.id', 'desc')
+            .orderBy(raw('UNIX_TIMESTAMP(date_paid)'),'ASC');
+         }
+
+         else {
+            paymentTransactions = await PaymentTransaction.query().select('payment_transaction.id','payment_transaction.amount_paid','payment_transaction.date_paid','treatment.payment_type as payment_type', 'user.name as received_by', 'patient.name as from')
+            .join('user', 'user.id','payment_transaction.user_id').join('treatment','treatment.id', 'payment_transaction.treatment_id')
+            .join('patient', 'patient.id', 'treatment.patient_id')
+            .whereBetween('date_paid', [req.query.startDate+' 00:00:00', req.query.endDate+' 23:59:59'])
+            .orderBy('payment_transaction.date_paid','desc')
+            .orderBy('payment_transaction.id', 'desc')
+            .orderBy(raw('UNIX_TIMESTAMP(date_paid)'),'ASC');
+            
+         }
+      
+   
+      }
+
+      else {
+         if(req.query.search) {
+            paymentTransactions = await PaymentTransaction.query().select('payment_transaction.id','payment_transaction.amount_paid','payment_transaction.date_paid','treatment.payment_type as payment_type', 'user.name as received_by', 'patient.name as from')
+            .join('user', 'user.id','payment_transaction.user_id').join('treatment','treatment.id', 'payment_transaction.treatment_id')
+            .join('patient', 'patient.id', 'treatment.patient_id')
+            .whereRaw(`LOWER(patient.name) like "%${req.query.search.toLowerCase()}%"`)
+            .orderBy('payment_transaction.date_paid','desc')
+            .orderBy('payment_transaction.id', 'desc')
+            .orderBy(raw('UNIX_TIMESTAMP(date_paid)'),'ASC');
+
+         }
+         else {
+            paymentTransactions = await PaymentTransaction.query().select('payment_transaction.id','payment_transaction.amount_paid','payment_transaction.date_paid','treatment.payment_type as payment_type', 'user.name as received_by', 'patient.name as from')
+            .join('user', 'user.id','payment_transaction.user_id').join('treatment','treatment.id', 'payment_transaction.treatment_id')
+            .join('patient', 'patient.id', 'treatment.patient_id')
+            .orderBy('payment_transaction.date_paid','desc')
+            .orderBy('payment_transaction.id', 'desc')
+            .orderBy(raw('UNIX_TIMESTAMP(date_paid)'),'ASC');
+         }
+      }
+      
       return res.send({paymentTransactions});
    } catch(err) {
       console.log(err);
       return res.status(500).send({message: 'Internal server error'});
    }
+
+
+
+
 }
 
 module.exports.getPaymentTransactionsById = async (req, res) => {
