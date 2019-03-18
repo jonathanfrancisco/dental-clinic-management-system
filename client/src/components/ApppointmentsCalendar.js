@@ -30,7 +30,7 @@ class AppointmentsCalendar extends React.Component {
          return (
             <div style={{padding: 4, opacity: 0.5}}>
                <Card
-                  title={<Text strong>{date.format('MMMM DD')}</Text>}
+                  title={<Text>{date.format('MMMM DD')}</Text>}
                   size="small"
                   style={{textAlign: 'right', height: 100, cursor: 'pointer', border: 0, boxShadow: '3px 3px 6px -4px #8c8c8c'}}
                >
@@ -50,7 +50,7 @@ class AppointmentsCalendar extends React.Component {
                   {
                      isSelected ? (
                         <Card
-                           title={<Text strong>{date.format('MMMM DD')}</Text>}
+                           title={<Text>{date.format('MMMM DD')}</Text>}
                            size="small"
                            style={
                               {
@@ -73,7 +73,7 @@ class AppointmentsCalendar extends React.Component {
                         </Card>
                      ) : (
                         <Card
-                           title={<Text strong>{date.format('MMMM DD')}</Text>}
+                           title={<Text>{date.format('MMMM DD')}</Text>}
                            size="small"
                            style={
                               {
