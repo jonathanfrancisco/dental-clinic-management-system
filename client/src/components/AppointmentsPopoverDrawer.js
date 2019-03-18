@@ -1,8 +1,6 @@
 import React from 'react';
-import {Card, Popover, Drawer,  } from 'antd';
+import {Divider, Timeline, Popover, Drawer,  } from 'antd';
 import moment from 'moment';
-
-const {Meta} = Card;
 
 class AppointmentsPopoverDrawer extends React.Component {
 
@@ -59,18 +57,15 @@ class AppointmentsPopoverDrawer extends React.Component {
                onClose={this.onClose}
                visible={this.state.visible}
             >
-
-            {
-               this.props.appointments.map((appointment) => (
-                  <Card key={appointment.id} size="small" style={{ width: '100%', marginBottom: 16}}>
-                      <Meta
-                        title={`${appointment.name} @ ${moment(appointment.date_time).format('h:MM A')}`}
-                        description={`${appointment.reason}`}
-                     />
-                  </Card>
-               ))
-            }
-
+            <Timeline>
+               {
+                  this.props.appointments.map((appointment) => (
+                     <Timeline.Item>
+                        {appointment.name} @{moment(appointment.date_time).format('h:MM A')} <Divider type="vertical"/> {appointment.reason}
+                     </Timeline.Item>
+                  ))
+               }
+            </Timeline>
                {/* SECOND LEVEL DAWER*/}
                {/* <Button type="primary" onClick={this.showChildrenDrawer}>
                   Two-level drawer
