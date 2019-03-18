@@ -85,7 +85,7 @@ class Appointments extends React.Component {
             <Title level={4}>APPOINTMENTS</Title>
             <Tabs defaultActiveKey="1">
                <TabPane tab="Calendar View" key="2">
-                 <AppointmentsCalendar /> 
+                 <AppointmentsCalendar appointments={this.state.appointmentsTable} /> 
                </TabPane>
                <TabPane tab="Table View" key="1">
                   <AppointmentsTable tableLoading={this.state.appointmentsTableLoading} appointments={this.state.appointmentsTable} getAppointments={this.getAppointmentsTable} />

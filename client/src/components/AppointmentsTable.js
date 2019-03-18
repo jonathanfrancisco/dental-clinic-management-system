@@ -125,7 +125,6 @@ class AppointmentsTable extends React.Component {
             render: (text, record) => {
 
                const isAppointmentPast = moment(record.date_time).format('X') < moment(Date.now()).format('X');
-               console.log(record.date_time, isAppointmentPast)
 
                const menu = record.status === 'pending' ? (
                   <Menu>
