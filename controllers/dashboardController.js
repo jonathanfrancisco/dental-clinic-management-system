@@ -38,9 +38,9 @@ module.exports.incomereceivable = async (req, res) => {
 
       return res.send(
          {
-            today_total_gross_income: parseInt(todayTotalGrossIncomeResult.totalIncome),
+            today_total_gross_income: parseInt(todayTotalGrossIncomeResult.totalIncome) || 0,
             today_total_receivable: todayTotalReceivable,
-            all_total_gross_income: parseInt(allTotalGrossIncome.totalIncome),
+            all_total_gross_income: parseInt(allTotalGrossIncome.totalIncome) || 0,
             all_total_receivable: allTotalReceivable
          }
       );
