@@ -114,7 +114,7 @@ class App extends Component {
                                  this.setState({collapsedWidth: 80, collapsed: false, leftMargin: 200});  
                            }}
                            collapsedWidth={this.state.collapsedWidth}
-                           style={{minHeight: '100vh', position: 'fixed', zIndex: 100}}
+                           style={{minHeight: '100vh', position: 'fixed', zIndex: 100, boxShadow: '3px 0px 15px 2px #8c8c8c'}}
                         > 
                            <h4 style={{textAlign: 'center', margin: 0, padding: '12px 12px 0 12px', color: 'rgba(255,255,255,0.65)'}}>
                               Logged in as <br /> <span style={{fontWeight: 'bold'}}>{this.state.user.name} </span>
