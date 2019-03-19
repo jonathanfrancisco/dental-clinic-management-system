@@ -1,6 +1,8 @@
 import React from 'react';
 import {Tabs, Card, Icon, Row, Col, Layout, Typography} from 'antd';
 import axios from 'axios';
+import VisitChart from '../components/VisitChart';
+
 const {TabPane} = Tabs;
 const {Title, Text} = Typography;
 const {Content} = Layout;
@@ -674,8 +676,10 @@ class Dashboard extends React.Component {
             <Row>
                <Col style={{backgroundColor: "#fff"}} span={24}>
                   <Tabs defaultActiveKey="1">
-                     <TabPane tab={<Text style={{fontSize: 18}}>Visits</Text>} key="1">Content of Tab Pane 1</TabPane>
-                     <TabPane tab={<Text style={{fontSize: 18}}>Finances</Text>} key="2">Content of Tab Pane 2</TabPane>
+                     <TabPane tab={<Text style={{fontSize: 18}}><Icon type="bar-chart" /> Visits</Text>} key="1">
+                        <VisitChart />
+                     </TabPane>
+                     <TabPane tab={<Text style={{fontSize: 18}}><Icon type="line-chart" /> Finances</Text>} key="2">Content of Tab Pane 2</TabPane>
                   </Tabs>
                </Col>
             </Row>
