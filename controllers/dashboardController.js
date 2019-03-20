@@ -49,3 +49,33 @@ module.exports.incomereceivable = async (req, res) => {
    }
 }
 
+module.exports.visits = async (req, res) => {
+   
+   try {
+      let visits;
+      
+      if(req.query.filterBy === 'month')
+         visits = await Treatment.query()
+                     .select(raw(`MONTH(date_treated) as name, COUNT(id) AS 'Number of Visits'`))
+                     .whereBetween('date_treated',  [req.query.startDate+' 00:00:00', req.query.endDate+' 23:59:59'])
+                     .groupByRaw('MONTH(date_treated)');
+      else {
+         visits = await Treatment.query()
+         .select(raw(`WEEKDAY(date_treated) as name, COUNT(id) AS 'Number of Visits'`))
+         .whereBetween('date_treated',  [req.query.startDate+' 00:00:00', req.query.endDate+' 23:59:59'])
+         .groupByRaw('WEEKDAY(date_treated)');
+      }
+      return res.send({visits});
+   } catch(err) {
+      console.log(err);
+      return res.status(500).send({message: 'Internal server error'});
+   }
+
+
+
+
+
+
+
+
+}
