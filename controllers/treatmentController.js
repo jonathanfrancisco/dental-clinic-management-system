@@ -57,7 +57,7 @@ module.exports.add = async (req, res) => {
                date_paid: treatment.date_treated
             });
 
-            await Patient.query().patch({last_visit: treatment.date_treated});
+            await Patient.query().patch({last_visit: treatment.date_treated}).where('id', patient_id);
          }
          else {
             const amount_paid = newTreatment.amount_paid;
