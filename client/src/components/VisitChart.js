@@ -62,7 +62,8 @@ class VisitChart extends React.Component {
    state = {
       filterBy: 'month',
       rangeDate: [moment().startOf('year'), moment().endOf('year')],
-      visitsTrend: []
+      visitsTrend: [],
+      visitsRanking: []
    };
 
    componentDidMount() {
@@ -79,7 +80,7 @@ class VisitChart extends React.Component {
       })
       .then((response) => {
          if(response.status === 200)
-            this.setState({visitsTrend: response.data.visits});
+            this.setState({visitsTrend: response.data.visits, visitsRanking: response.data.visitsRanked});
       })
       .catch((err) => {
          console.log(err);
@@ -117,8 +118,30 @@ class VisitChart extends React.Component {
             "Number of Visits": data["Number of Visits"]
          };
       });
-     
 
+      let previousPosition;
+      let visitsRanking = [...this.state.visitsRanking].map((obj, index, arr) => {
+         if(index != 0) {
+            if(obj.totalVisits === arr[index-1].totalVisits) {
+               return {
+                  ...obj,
+                  position: previousPosition
+               }
+            }
+            previousPosition+= 1;
+            return {
+               ...obj,
+               position: previousPosition
+            }
+         }
+         previousPosition = 1;
+         return {
+           ...obj,
+           position: previousPosition
+         };
+      });
+
+   
       return (
          <div style={{padding: '12px 0px 24px 0px'}}>
             <Row style={{marginBottom: 8}}>
@@ -147,61 +170,29 @@ class VisitChart extends React.Component {
                </Col>
                <Col span={6}>
                   <Title level={1} style={{marginTop: 0, marginBottom: 24,fontWeight: 'normal', fontSize: 14}}>Visits Ranking</Title>
-                  <Row style={{marginBottom: 12}}>
-                     <Col span={24}>
-                        <Badge count={1} style={{marginRight: 8,fontWeight: 'bold', backgroundColor: '#314659', color: '#f5f5f5'}} />
-                        January
-                     </Col>
-                  </Row>
-                  <Row style={{marginBottom: 12}}>
-                     <Col span={24}>
-                        <Badge count={2} style={{marginRight: 8,fontWeight: 'bold', backgroundColor: '#314659', color: '#f5f5f5'}} />
-                        February
-                     </Col>
-                  </Row>
-                  <Row style={{marginBottom: 12}}>
-                     <Col span={24}>
-                        <Badge count={3} style={{marginRight: 8,fontWeight: 'bold', backgroundColor: '#314659', color: '#f5f5f5'}} />
-                        March
-                     </Col>
-                  </Row>
 
+                  {
+                     visitsRanking.map((obj, index) => {
+                        if(index < 3)
+                           return (
+                              <Row style={{marginBottom: 12}}>
+                                 <Col span={24}>
+                                    <Badge count={obj.position} style={{marginRight: 8,fontWeight: 'bold', backgroundColor: '#314659', color: '#f5f5f5'}} />
+                                    {getMonthName(obj.name)}
+                              </Col>
+                              </Row>
+                           );
+                        return (
+                           <Row style={{marginBottom: 12}}>
+                              <Col span={24}>
+                                 <Badge count={obj.position} style={{marginRight: 8,fontWeight: 'bold', backgroundColor: '#f5f5f5', color: '#595959'}} />
+                                 {getMonthName(obj.name)}
+                              </Col>
+                           </Row>
+                        );
+                     })
+                  }
 
-                  <Row style={{marginBottom: 12}}>
-                     <Col span={24}>
-                        <Badge count={4} style={{marginRight: 8,fontWeight: 'bold', backgroundColor: '#f5f5f5', color: '#595959'}} />
-                     </Col>
-                  </Row>
-                  <Row style={{marginBottom: 12}}>
-                     <Col span={24}>
-                        <Badge count={5} style={{marginRight: 8,fontWeight: 'bold', backgroundColor: '#f5f5f5', color: '#595959'}} />
-                     </Col>
-                  </Row>
-                  <Row style={{marginBottom: 12}}>
-                     <Col span={24}>
-                        <Badge count={6} style={{marginRight: 8,fontWeight: 'bold', backgroundColor: '#f5f5f5', color: '#595959'}} />
-                     </Col>
-                  </Row>
-                  <Row style={{marginBottom: 12}}>
-                     <Col span={24}>
-                        <Badge count={7} style={{marginRight: 8,fontWeight: 'bold', backgroundColor: '#f5f5f5', color: '#595959'}} />
-                     </Col>
-                  </Row>
-                  <Row style={{marginBottom: 12}}>
-                     <Col span={24}>
-                        <Badge count={8} style={{marginRight: 8,fontWeight: 'bold', backgroundColor: '#f5f5f5', color: '#595959'}} />
-                     </Col>
-                  </Row>
-                  <Row style={{marginBottom: 12}}>
-                     <Col span={24}>
-                        <Badge count={9} style={{marginRight: 8,fontWeight: 'bold', backgroundColor: '#f5f5f5', color: '#595959'}} />
-                     </Col>
-                  </Row>
-                  <Row style={{marginBottom: 12}}>
-                     <Col span={24}>
-                        <Badge count={10} style={{marginRight: 8,fontWeight: 'bold', backgroundColor: '#f5f5f5', color: '#595959'}} />
-                     </Col>
-                  </Row>
                </Col>
             </Row>
             

@@ -32,7 +32,6 @@ module.exports.incomereceivable = async (req, res) => {
                         .select('treatment.id',raw(`(SELECT treatment.total_amount_to_pay - SUM(payment_transaction.amount_paid) FROM payment_transaction WHERE payment_transaction.treatment_id = treatment.id) as total_receivable`))
       let allTotalReceivable = 0;
       allTreatments.forEach((treatment) => {
-            console.log(treatment.id, treatment.total_receivable);
             allTotalReceivable += parseInt(treatment.total_receivable) || 0;
       });
 
@@ -66,7 +65,17 @@ module.exports.visits = async (req, res) => {
          .whereBetween('date_treated',  [req.query.startDate+' 00:00:00', req.query.endDate+' 23:59:59'])
          .groupByRaw('WEEKDAY(date_treated)');
       }
-      return res.send({visits});
+
+
+      const visitsRanked = await Treatment.query()
+      .select(raw(`MONTH(date_treated) as name, COUNT(id) AS totalVisits`))
+      .groupByRaw('MONTH(date_treated)')
+      .orderBy('totalVisits', 'DESC');
+      
+
+
+
+      return res.send({visits, visitsRanked});
    } catch(err) {
       console.log(err);
       return res.status(500).send({message: 'Internal server error'});
