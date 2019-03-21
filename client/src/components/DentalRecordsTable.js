@@ -155,11 +155,10 @@ class DentalRecordsTable extends React.Component {
                   </Col>
                </Row>
             <Table
-               size="small"
+               size="medium"
                columns={columns}
                dataSource={this.state.patients}
                locale={{emptyText: this.state.search === '' ? 'No Data' : 'No Record Found'}}
-               bordered
                scroll={{x: 300}}
                loading={this.state.loading}
                rowKey={(record) => record.id}

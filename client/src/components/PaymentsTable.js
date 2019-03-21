@@ -178,10 +178,9 @@ paymentTransactions
                </Col>
             </Row>
             <Table
-               bordered
                loading={this.state.loading}
                dataSource={this.state.paymentTransactions}
-               size="small"
+               size="medium"
                columns={columns}
                scroll={{x: 500}}
                rowKey={(record) => record.id}

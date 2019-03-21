@@ -113,10 +113,9 @@ class UserAccountsTable extends React.Component {
             </Row>
             <Table
                style={{marginTop: 8}}
-               size="small"
+               size="medium"
                columns={columns}
                dataSource={this.state.users}
-               bordered
                scroll={{x: 300}}
                loading={this.state.loading}
                rowKey={(record) => record.id}

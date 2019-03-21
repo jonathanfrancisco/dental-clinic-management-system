@@ -209,9 +209,8 @@ class AppointmentsTable extends React.Component {
             <Table
                loading={this.props.tableLoading}
                dataSource={this.props.appointments}
-               size="small"
+               size="medium"
                columns={columns}
-               bordered
                scroll={{x: 300}}
                rowKey={(record) => record.id}
                pagination={
