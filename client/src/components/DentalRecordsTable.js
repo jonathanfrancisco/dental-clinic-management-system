@@ -104,8 +104,7 @@ class DentalRecordsTable extends React.Component {
             defaultSortOrder: 'ascend',
             sorter: (a, b) => moment(a.last_visit).format('x') - moment(b.last_visit).format('x'),
             render: (text, record) => {
-               const display = moment(record.last_visit).format('YYYY-MM-DD HH:MM:SS') === '1000-01-01 00:01:00' 
-                              ? <Tag color="geekblue">New Record</Tag> : moment(record.last_visit).format('MMMM, DD YYYY');
+               const display = !record.last_visit ? (<Tag color="geekblue">New Record</Tag>) : moment(record.last_visit).format('MMMM, DD YYYY');
                return display;
             }
          }, 

@@ -65,8 +65,7 @@ class DentalRecord extends React.Component {
 
    render() {
      
-      const lastVisit = moment(this.state.patient.last_visit).format('YYYY-MM-DD HH:MM:SS') === '1000-01-01 00:01:00' 
-      ? <Tag color="geekblue">New Record</Tag> : moment(this.state.patient.last_visit).format('MMMM, DD YYYY');
+      const lastVisit = !this.state.patient.last_visit ? (<Tag color="geekblue">New Record</Tag>) : moment(this.state.patient.last_visit).format('MMMM, DD YYYY');
       const birthday = moment(this.state.patient.birthday).format('MMMM DD, YYYY');
       return (
          <React.Fragment>

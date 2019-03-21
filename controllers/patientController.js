@@ -3,20 +3,37 @@ const AdultTeethChart  =  require('../models/AdultTeethChart');
 const ChildTeethChart  =  require('../models/ChildTeethChart');
 const moment = require('moment');
 const generate = require('nanoid/generate');
+const {raw} = require('objection');
 
 module.exports.patients = async (req, res) => {
    let {search} = req.query;
    if(!search) 
-      patients = patients = await Patient.query().orderBy('id', 'desc');
+      patients = patients = await Patient
+                           .query()
+                           .select('patient.name',
+                           raw(`(SELECT date_treated FROM treatment WHERE treatment.patient_id = patient.id ORDER BY UNIX_TIMESTAMP(date_treated) DESC LIMIT 1) as last_visit`),
+                           'patient.address',
+                           'patient.code')
+                           .orderBy('patient.id', 'desc');
    else 
-      patients = await Patient.query().whereRaw(`LOWER(name) like "%${search.toLowerCase()}%"`);
+      patients = await Patient
+                  .query()
+                  .select('patient.name',
+                  raw(`(SELECT date_treated FROM treatment WHERE treatment.patient_id = patient.id ORDER BY UNIX_TIMESTAMP(date_treated) DESC LIMIT 1) as last_visit`),
+                  'patient.address',
+                  'patient.code')
+                  .whereRaw(`LOWER(name) like "%${search.toLowerCase()}%"`)
+                  .orderBy('patient.id', 'desc');;
    return res.send({patients});
 }
 
 module.exports.getPatientByCode = async (req, res) => {
    const {code} = req.params;
    try {
-      const [patient] = await Patient.query().where('code', code);
+      const [patient] = await Patient.query()
+                        .select('patient.*',
+                        raw(`(SELECT date_treated FROM treatment WHERE treatment.patient_id = patient.id ORDER BY UNIX_TIMESTAMP(date_treated) DESC LIMIT 1) as last_visit`))
+                        .where('code', code);
       return res.send({patient});
    } catch(err) {
       return res.status(500).send({error: 'Internal server error'});
