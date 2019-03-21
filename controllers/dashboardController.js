@@ -29,10 +29,11 @@ module.exports.incomereceivable = async (req, res) => {
       // ALL TOTAL RECEIVABLE
       const allTreatments = await Treatment
                         .query()
-                        .select(raw(`(SELECT treatment.total_amount_to_pay - SUM(payment_transaction.amount_paid) FROM payment_transaction WHERE payment_transaction.treatment_id = treatment.id) as total_receivable`))
+                        .select('treatment.id',raw(`(SELECT treatment.total_amount_to_pay - SUM(payment_transaction.amount_paid) FROM payment_transaction WHERE payment_transaction.treatment_id = treatment.id) as total_receivable`))
       let allTotalReceivable = 0;
       allTreatments.forEach((treatment) => {
-            allTotalReceivable += parseInt(treatment.total_receivable);
+            console.log(treatment.id, treatment.total_receivable);
+            allTotalReceivable += parseInt(treatment.total_receivable) || 0;
       });
 
 
