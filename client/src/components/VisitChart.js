@@ -144,18 +144,18 @@ class VisitChart extends React.Component {
    
       return (
          <div style={{padding: '12px 0px 24px 0px'}}>
-            <Row style={{marginBottom: 8}}>
-                  <Col align="center" span={24}>
-                     <Select style={{marginRight: 12}} defaultValue="month" onChange={this.handleSelectChange} >
-                        <Select.Option value="month">Month</Select.Option>
-                        <Select.Option value="day">Day</Select.Option>
-                     </Select>
-                     <RangePicker format="MMMM DD, YYYY" defaultPickerValue={[moment().startOf('year'), moment().endOf('year')]} value={this.state.rangeDate} onChange={this.handleRangeDateChange}/>
-                  </Col>
-               </Row>
             <Row gutter={32}>
                <Col span={18}>
-               <Title level={4} style={{marginLeft: 30, marginTop: 0, marginBottom: 12,fontWeight: 'normal', fontSize: 14}}>Visits Trend</Title>
+                  <Title level={4} style={{marginLeft: 30, marginTop: 0, fontWeight: 'normal', fontSize: 14}}>Visits Trend</Title>
+                  <Row>
+                     <Col span={24} align="right">
+                        <Select style={{marginRight: 12}} defaultValue="month" onChange={this.handleSelectChange} >
+                           <Select.Option value="month">Month</Select.Option>
+                           <Select.Option value="day">Day</Select.Option>
+                        </Select>
+                        <RangePicker style={{marginBottom: 8}} format="MMMM DD, YYYY" defaultPickerValue={[moment().startOf('year'), moment().endOf('year')]} value={this.state.rangeDate} onChange={this.handleRangeDateChange}/>
+                     </Col>
+                  </Row>
                {/* <Title style={{textAlign: 'center', fontWeight: 'normal', fontSize: 18}}>January 1, 2019 ~ December 31, 2019</Title> */}
                   <ResponsiveContainer width="100%" height={320}>
                      <BarChart data={data}>
