@@ -1,6 +1,7 @@
 import React from 'react';
 import {message, Modal, Form, Input,Row, Col, DatePicker, Select, Button, Icon} from 'antd';
 import axios from 'axios';
+import moment from 'moment';
 
 const {Option} = Select;
 
@@ -53,6 +54,22 @@ const CreateAppointmentModal = Form.create()(
          this.props.form.resetFields();
       }
 
+      range(start, end) {
+         const result = [];
+         for (let i = start; i < end; i++) {
+           result.push(i);
+         }
+         return result;
+       }
+       
+
+      disabledDateTime() {
+         return {
+           disabledHours: () => this.range(0, 24).splice(4, 20),
+           disabledMinutes: () => this.range(30, 60),
+           disabledSeconds: () => [55, 56],
+         };
+       }
      
       
       render() {
@@ -76,7 +93,7 @@ const CreateAppointmentModal = Form.create()(
                            {getFieldDecorator('date_time', {
                               rules: [{ required: true, message: 'Date and Time is required.' }],
                            })(
-                              <DatePicker placeholder="Select date and time" style={{width: '100%'}} showTime={{use12Hours: true, format: 'HH:mm'}} format="MMMM DD, YYYY hh:mm A" />
+                              <DatePicker disabledDate={(current) => current && current < moment()} placeholder="Select date and time" style={{width: '100%'}} showTime={{use12Hours: true, format: 'HH:mm'}} format="MMMM DD, YYYY hh:mm A" />
                            )}
                         </Form.Item>
                      </Col>

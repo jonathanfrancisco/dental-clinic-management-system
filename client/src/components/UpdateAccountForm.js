@@ -51,7 +51,7 @@ const UpdateAccountForm = Form.create()(
                               rules: [{ required: true, message: 'Birthday is required' }],
                               initialValue: moment(account.birthday) || ''
                            })(
-                           <DatePicker format="MMMM DD, YYYY" style={{width: '100%'}} />
+                           <DatePicker disabledDate={(current) => current && current > moment()} format="MMMM DD, YYYY" style={{width: '100%'}} />
                            )}
                         </Form.Item>
                      </Col>

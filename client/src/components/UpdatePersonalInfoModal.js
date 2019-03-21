@@ -61,7 +61,7 @@ const UpdatePersonalInfoModal = Form.create()(
                               rules: [{ required: true, message: 'Birthday is required' }],
                               initialValue: moment(this.props.patient.birthday)
                            })(
-                           <DatePicker format="MMMM DD, YYYY" style={{width: '100%'}} />
+                           <DatePicker disabledDate={(current) => current && current < moment()} format="MMMM DD, YYYY" style={{width: '100%'}} />
                            )}
                         </Form.Item>
                      </Col>

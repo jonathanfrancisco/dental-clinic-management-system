@@ -1,5 +1,6 @@
 import React from 'react';
 import {Modal, Form, Input,Row, Col, DatePicker, Select, Button, Icon} from 'antd';
+import moment from 'moment';
 const {Option} = Select;
 
 const CreateDentalRecordModal = Form.create()(
@@ -71,7 +72,7 @@ const CreateDentalRecordModal = Form.create()(
                            {getFieldDecorator('birthday', {
                               rules: [{ required: true, message: 'Birthday is required' }],
                            })(
-                           <DatePicker format="MMMM DD, YYYY" style={{width: '100%'}} />
+                           <DatePicker disabledDate={(current) => current && current > moment()} format="MMMM DD, YYYY" style={{width: '100%'}} />
                            )}
                         </Form.Item>
                      </Col>

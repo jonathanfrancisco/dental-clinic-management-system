@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal, Form, Input, InputNumber, Row, Col, DatePicker, Select, Button, Icon, Radio} from 'antd';
 import axios from 'axios';
+import moment from 'moment';
 
 const AddTreatmentModal = Form.create()(
    class extends React.Component {
@@ -150,7 +151,7 @@ const AddTreatmentModal = Form.create()(
                            {getFieldDecorator('date_treated', {
                               rules: [{required: true, message: 'Date Treated is required.'}]
                            })(
-                              <DatePicker format="MMMM DD, YYYY" style={{width: '100%'}} />
+                              <DatePicker disabledDate={(current) => current && current > moment()} format="MMMM DD, YYYY" style={{width: '100%'}} />
                            )}
                         </Form.Item>
                      </Col>

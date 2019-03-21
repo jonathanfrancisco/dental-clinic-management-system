@@ -1,5 +1,6 @@
 import React from 'react';
 import {Modal, Form, InputNumber, DatePicker, Row, Col, Button} from 'antd';
+import moment from 'moment';
 
 const PayInstallmentModal = Form.create()(
    class extends React.Component {
@@ -69,7 +70,7 @@ const PayInstallmentModal = Form.create()(
                            {getFieldDecorator('date_paid', {
                               rules: [{ required: true, message: 'Date Paid is required.' }],
                            })(
-                           <DatePicker format="MMMM DD, YYYY" style={{width: '100%'}} />
+                           <DatePicker disabledDate={(current) => current && current > moment()} format="MMMM DD, YYYY" style={{width: '100%'}} />
                            )}
                         </Form.Item>
                      </Col>
