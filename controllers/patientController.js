@@ -13,7 +13,8 @@ module.exports.patients = async (req, res) => {
                            .select('patient.name',
                            raw(`(SELECT date_treated FROM treatment WHERE treatment.patient_id = patient.id ORDER BY UNIX_TIMESTAMP(date_treated) DESC LIMIT 1) as last_visit`),
                            'patient.address',
-                           'patient.code')
+                           'patient.code',
+                           'patient.id')
                            .orderBy('patient.id', 'desc');
    else 
       patients = await Patient
@@ -21,7 +22,8 @@ module.exports.patients = async (req, res) => {
                   .select('patient.name',
                   raw(`(SELECT date_treated FROM treatment WHERE treatment.patient_id = patient.id ORDER BY UNIX_TIMESTAMP(date_treated) DESC LIMIT 1) as last_visit`),
                   'patient.address',
-                  'patient.code')
+                  'patient.code',
+                  'patient.id')
                   .whereRaw(`LOWER(name) like "%${search.toLowerCase()}%"`)
                   .orderBy('patient.id', 'desc');;
    return res.send({patients});
