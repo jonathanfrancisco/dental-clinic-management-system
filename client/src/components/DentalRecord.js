@@ -45,6 +45,18 @@ class DentalRecord extends React.Component {
       });
    }
 
+   getRecordOnAddTreatment(code) {
+      axios.get(`/api/patients/${code}`)
+      .then((response) => {
+         if(response.status === 200)
+            this.setState({patient: response.data.patient});
+      })
+      .catch((err) => {
+         console.error(err);
+         message.error('Something went wrong! Please, try again.');
+      });
+   }
+
    handleUpdate = (code, values) => {
       const hide = message.loading('Updating Personal Info...', 0);
       values.birthday = values.birthday.format('YYYY-MM-DD');
@@ -93,7 +105,7 @@ class DentalRecord extends React.Component {
                   </Row>
                   <Tabs defaultActiveKey="2">
                       <TabPane tab="Treatments and/or Procedures" key="2">
-                        <TreatmentsTable patientId={this.state.patient.id} />
+                        <TreatmentsTable getPatient={() => this.getRecordOnAddTreatment(this.props.code)} patientId={this.state.patient.id} />
                       </TabPane>
                       <TabPane tab="Dental Chart" key="3">
                          <Row>

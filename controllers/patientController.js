@@ -58,7 +58,6 @@ module.exports.create = async (req, res) => {
        
       } while(!isUnique);
 
-      newPatient.last_visit = '1000-01-01 00:00:00';
       newPatient.code = newPatientCode;
      
       const patient = await Patient.query().insertAndFetch(newPatient);

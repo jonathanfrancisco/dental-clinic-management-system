@@ -42,7 +42,6 @@ module.exports.add = async (req, res) => {
 
       if(newTreatment.payment_type === 'no-charge') {
          const treatment = await Treatment.query().insert(newTreatment);
-         await Patient.query().patch({last_visit: treatment.date_treated}).where('id', patient_id);
          return res.sendStatus(200);
       }
 
@@ -56,8 +55,6 @@ module.exports.add = async (req, res) => {
                user_id: req.user.id,
                date_paid: treatment.date_treated
             });
-
-            await Patient.query().patch({last_visit: treatment.date_treated}).where('id', patient_id);
          }
          else {
             const amount_paid = newTreatment.amount_paid;
@@ -75,8 +72,6 @@ module.exports.add = async (req, res) => {
                user_id: req.user.id
             });
 
-            await Patient.query().patch({last_visit: treatment.date_treated}).where('id', patient_id);;
-            
          }
          return res.sendStatus(200);
       }

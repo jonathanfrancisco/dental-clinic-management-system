@@ -57,6 +57,7 @@ class TreatmentsTable extends React.Component {
             hide();
             message.success('New Treatment Added Sucessfully');
             this.getTreatments();
+            this.props.getPatient();
          }
       })
       .catch((err) => {

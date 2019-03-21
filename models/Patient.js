@@ -9,7 +9,7 @@ class Patient extends Model {
    static get jsonSchema() {
       return {
          type: 'object',
-         required: ['code','name','address','birthday','last_visit'],
+         required: ['code','name','address','birthday'],
          properties: {
             id: {type: 'integer'},
             code: {type: 'string'},
@@ -18,8 +18,7 @@ class Patient extends Model {
             birthday: {type: 'date-time'},
             occupation: {type: 'string'},
             civil_status: {type: 'string'},
-            contact_number: {type: 'string'},
-            last_visit: {type: 'date-time'},
+            contact_number: {type: 'string'}
          }
       };
    }
