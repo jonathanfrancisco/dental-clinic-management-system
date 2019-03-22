@@ -18,7 +18,7 @@ class DMFTPopover extends React.Component {
    }
 
    getTreatments(toothPosition) {
-      axios.get(`/api/treatments/tooth/${toothPosition}`)
+      axios.get(`/api/treatments/tooth/${toothPosition}/${this.props.patientId}`)
       .then((response) => {
          if(response.status === 200) {
             this.setState({treatments: response.data.treatments});
@@ -50,7 +50,7 @@ class DMFTPopover extends React.Component {
             </RadioGroup>);
 
       return (
-         <TreatmentsPopoverDrawer treatments={this.state.treatments} title={this.props.toothPosition} content={DMFTRadioGroup}>
+         <TreatmentsPopoverDrawer getTreatments={() => this.getTreatments(this.props.toothPosition)} treatments={this.state.treatments} title={this.props.toothPosition} content={DMFTRadioGroup}>
             {this.props.children}
          </TreatmentsPopoverDrawer>
       

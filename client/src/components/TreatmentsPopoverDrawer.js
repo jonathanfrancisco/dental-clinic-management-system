@@ -1,5 +1,5 @@
 import React from 'react';
-import {Timeline, Popover, Drawer,  } from 'antd';
+import {Timeline, Popover, Drawer, Divider} from 'antd';
 import moment from 'moment';
 
 
@@ -9,6 +9,7 @@ class TreatmentsPopoverDrawer extends React.Component {
   state = { visible: false, childrenDrawer: false, visiblePopover: false};
 
   showDrawer = () => {
+   this.props.getTreatments();
    this.setState({
       visible: true,
       visiblePopover: false
@@ -70,7 +71,7 @@ class TreatmentsPopoverDrawer extends React.Component {
                <Timeline>
                   {
                      this.props.treatments.map((treatment) => (
-                        <Timeline.Item key={treatment.id}>{moment(treatment.date_treated).format('MMMM DD, YYYY')} {treatment.description}</Timeline.Item>
+                        <Timeline.Item key={treatment.id}>{moment(treatment.date_treated).format('MMMM DD, YYYY')}<Divider type="vertical" />{treatment.description}</Timeline.Item>
                      ))
                   }
                </Timeline>  

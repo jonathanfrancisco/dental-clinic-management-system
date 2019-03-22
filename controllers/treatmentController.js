@@ -24,10 +24,10 @@ module.exports.getTreatmentsById = async (req, res) => {
 }
 
 module.exports.getTreatmentsByToothPosition = async (req, res) => {
-   const {toothPosition} = req.params;
+   const {toothPosition, patientId} = req.params;
    console.log(toothPosition);
    try {
-      const treatments = await Treatment.query().where('tooth_affected_no', toothPosition).orderBy('date_treated', 'DESC');
+      const treatments = await Treatment.query().where('tooth_affected_no', toothPosition).where('treatment.patient_id', patientId).orderBy('date_treated', 'DESC');
       res.status(200).send({treatments});
    } catch(err) {
       console.log(err);
