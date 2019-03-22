@@ -52,7 +52,7 @@ class AppointmentsPopoverDrawer extends React.Component {
             </Popover>
             <Drawer
                title="Appointments for this date"
-               width="50%"
+               width="30%"
                closable={true}
                onClose={this.onClose}
                visible={this.state.visible}
@@ -61,7 +61,7 @@ class AppointmentsPopoverDrawer extends React.Component {
                {
                   this.props.appointments.map((appointment) => (
                      <Timeline.Item>
-                        {appointment.name} @{moment(appointment.date_time).format('h:MM A')} <Divider type="vertical"/> {appointment.reason}
+                        {appointment.name} @ {moment(appointment.date_time).format('h:MM A')} <Divider type="vertical"/> {appointment.reason}
                      </Timeline.Item>
                   ))
                }
