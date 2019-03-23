@@ -57,7 +57,7 @@ class App extends Component {
                   message: 'System Message',
                   description: 'Logged-in successfully!',
                });
-            },2000);
+            },1000);
            
          }
          return response;
