@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'antd/dist/antd.css';
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
-import { Layout, Icon, notification} from 'antd';
+import { Layout, Icon, notification, Row, Col, Dropdown, Menu, Modal} from 'antd';
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 // MY COMPONENTS
 import ProtectedRoute from './components/hoc/ProtectedRoute';
@@ -20,6 +20,8 @@ import UserAccounts from './pages/UserAccounts';
 import axios from 'axios';
 
 const {Sider, Header} = Layout;
+const {confirm} = Modal;
+ 
 
 
 class App extends Component {
@@ -64,15 +66,30 @@ class App extends Component {
       })
    }
 
+
    handleLogout = () => {
-      axios.post('/api/users/logout')
-      .then((response) => {
-         if(response.status === 200)
-            this.setState({authenticated: false, user: ''});
-      })
-      .catch((err) => {
-         console.log(err);
+
+      confirm({
+         title: 'System Message',
+         content: 'Are you sure you want to Logout?!',
+         okText: 'Yes',
+         okType: 'danger',
+         cancelText: 'No',
+         onOk: () => {
+            axios.post('/api/users/logout')
+            .then((response) => {
+               if(response.status === 200)
+                  this.setState({authenticated: false, user: ''});
+            })
+            .catch((err) => {
+               console.log(err);
+            });
+         },
+         onCancel() {
+            
+         },
       });
+
    }
 
    // TOGGLE FOR NAVIGATION
@@ -87,6 +104,15 @@ class App extends Component {
     }
 
    render() {
+
+   const logoutMenu = (
+      <Menu>
+      <Menu.Item key="1" onClick={this.handleLogout}>
+         <Icon type="logout" /> Logout
+      </Menu.Item>
+      </Menu>
+   );
+
       return (
          <div className="App">
             <Router>
@@ -115,20 +141,29 @@ class App extends Component {
                            }}
                            collapsedWidth={this.state.collapsedWidth}
                            style={{minHeight: '100vh', position: 'fixed', zIndex: 100, boxShadow: '3px 0px 15px 2px #8c8c8c'}}
-                        > 
-                           <h4 style={{textAlign: 'center', margin: 0, padding: '12px 12px 0 12px', color: 'rgba(255,255,255,0.65)'}}>
-                              Logged in as <br /> <span style={{fontWeight: 'bold'}}>{this.state.user.name} </span>
-                           </h4>
+                        >        
                            <div className="logo" />
-                           <SiderNavigation role={this.state.user.role} handleLogout={this.handleLogout}/>
+                           <SiderNavigation role={this.state.user.role} />
                         </Sider>
                         <Layout>
-                           <Header style={{boxShadow: '0px -1px 3px rgba(0, 0, 0, 1)', marginLeft: this.state.leftMargin, background: '#fff', padding: 0, position: 'fixed', zIndex: 100, width: '100%'}}>
-                              <Icon
-                                 className="trigger"
-                                 type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-                                 onClick={this.toggle}
-                                 />
+                           <Header style={{boxShadow: '0px -1px 3px rgba(0, 0, 0, 1)', marginLeft: this.state.leftMargin, paddingRight: this.state.leftMargin, paddingLeft: 0, background: '#fff', position: 'fixed', zIndex: 100, width: '100%'}}>
+                              <Row>
+                                 <Col span={12}>
+                                    <Icon
+                                       className="trigger"
+                                       type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+                                       onClick={this.toggle}
+                                       />
+                                 </Col>
+                                 <Col style={{paddingRight: 16}} align="right" span={12}>
+                                 <Dropdown overlay={logoutMenu} trigger={['click']}>
+                                    <a className="ant-dropdown-link" href="#">
+                                    {this.state.user.name} <Icon type="down" />
+                                    </a>
+                                 </Dropdown>
+                                 </Col>
+                              </Row>
+                            
                            </Header>
                            <Layout style={{marginLeft: this.state.leftMargin, marginTop: 64, minHeight: '100vh'}}>
                              

@@ -46,25 +46,6 @@ const SiderNavigation = withRouter((props) => {
                <Link to="/useraccounts"></Link>
             </Menu.Item>
          )}
-        
-         <Menu.Item key="/logout" onClick={() => {
-            confirm({
-               title: 'System Message',
-               content: 'Are you sure you want to Logout?!',
-               okText: 'Yes',
-               okType: 'danger',
-               cancelText: 'No',
-               onOk() {
-                  props.handleLogout();
-               },
-               onCancel() {
-                  
-               },
-            });
-         }}>
-            <Icon type="logout" />
-            <span>Log out</span>
-         </Menu.Item>
       </Menu>
    );
 });
