@@ -24,11 +24,15 @@ const SiderNavigation = withRouter((props) => {
             <span>Dental Records</span>
             <Link to="/dentalrecords"></Link>
          </Menu.Item>
-         <Menu.Item key="/transactionlog">
-            <Icon type="dollar" />
-            <span>Transaction Log</span>
-            <Link to="/transactionlog"></Link>
-         </Menu.Item>
+
+         {props.role === 'dentalaide' ? null : (
+             <Menu.Item key="/transactionlog">
+             <Icon type="dollar" />
+             <span>Transaction Log</span>
+             <Link to="/transactionlog"></Link>
+          </Menu.Item>
+         )}
+
          <Menu.Item key="/appointments">
             <Icon type="calendar" />
             <span>Appointments</span>
