@@ -63,7 +63,7 @@ class TreatmentsPopoverDrawer extends React.Component {
             </Popover>
             <Drawer
                title="Treatments done on this tooth"
-               width="30%"
+               width="450px"
                closable={true}
                onClose={this.onClose}
                visible={this.state.visible}

@@ -52,7 +52,7 @@ class AppointmentsPopoverDrawer extends React.Component {
             </Popover>
             <Drawer
                title="Appointments for this date"
-               width="30%"
+               width="450px"
                closable={true}
                onClose={this.onClose}
                visible={this.state.visible}
