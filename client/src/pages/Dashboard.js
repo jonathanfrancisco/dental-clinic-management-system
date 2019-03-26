@@ -1,5 +1,5 @@
 import React from 'react';
-import {Tabs, Card, Icon, Row, Col, Layout, Typography} from 'antd';
+import {Tabs, Card, Icon, Row, Col, Layout, Typography, Skeleton} from 'antd';
 import axios from 'axios';
 import VisitChart from '../components/VisitChart';
 
@@ -630,14 +630,19 @@ class Dashboard extends React.Component {
       today_total_gross_income: NaN,
       today_total_receivable: NaN,
       all_total_gross_income: NaN,
-      all_total_receivable: NaN
+      all_total_receivable: NaN,
+      loading: true
    };
 
    componentDidMount() {
       axios.get('/api/dashboard/incomereceivable')
       .then((response) => {
-         if(response.status === 200)
+         if(response.status === 200) {
             this.setState(response.data);
+            setTimeout(() => {
+              this.setState({loading: false}); 
+            }, 300);
+         }
       })
       .catch((err) => {
          console.log(err);
@@ -645,6 +650,13 @@ class Dashboard extends React.Component {
    }
 
    render() {
+
+      if(this.state.loading)
+         return (
+            <Content style={{background: '#FFF',margin: '24px 24px 24px 36px', padding: 21}}>
+               <Skeleton loading={this.state.loading} paragraph={{rows: 14}} active />
+            </Content>
+         );
 
       return (
          <Content style={{margin: '24px 24px 24px 36px'}}>
