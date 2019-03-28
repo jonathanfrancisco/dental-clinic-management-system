@@ -68,7 +68,7 @@ const UpdatePersonalInfoModal = Form.create()(
                      <Col span={12}>
                         <Form.Item label="Occupation">
                            {getFieldDecorator('occupation', {
-                              initialValue: this.props.patient.occupation
+                              initialValue: this.props.patient.occupation || ''
                            })(
                            <Input />
                            )}
@@ -77,7 +77,7 @@ const UpdatePersonalInfoModal = Form.create()(
                      <Col span={12}>
                         <Form.Item label="Civil Status">
                            {getFieldDecorator('civil_status', {
-                              initialValue: this.props.patient.civil_status
+                              initialValue: this.props.patient.civil_status || ''
                            })(
                            <Select>
                               <Option value="single">Single</Option>
@@ -101,7 +101,7 @@ const UpdatePersonalInfoModal = Form.create()(
                      <Col span={12}>
                         <Form.Item label="Contact Number">
                            {getFieldDecorator('contact_number', {
-                              initialValue: this.props.patient.cotact_number
+                              initialValue: this.props.patient.contact_number || ''
                            })(
                               <Input />
                            )}
