@@ -178,7 +178,7 @@ class VisitChart extends React.Component {
                               <Row style={{marginBottom: 12}}>
                                  <Col span={24}>
                                     <Badge count={obj.position} style={{marginRight: 8,fontWeight: 'bold', backgroundColor: '#314659', color: '#f5f5f5'}} />
-                                    {getMonthName(obj.name)}
+                                    {this.state.filterBy === 'month' ? getMonthName(obj.name) : getDayName(obj.name)}
                               </Col>
                               </Row>
                            );
@@ -186,7 +186,7 @@ class VisitChart extends React.Component {
                            <Row style={{marginBottom: 12}}>
                               <Col span={24}>
                                  <Badge count={obj.position} style={{marginRight: 8,fontWeight: 'bold', backgroundColor: '#f5f5f5', color: '#595959'}} />
-                                 {getMonthName(obj.name)}
+                                 {this.state.filterBy === 'month' ? getMonthName(obj.name) : getDayName(obj.name)}
                               </Col>
                            </Row>
                         );

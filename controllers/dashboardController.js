@@ -53,24 +53,30 @@ module.exports.visits = async (req, res) => {
    
    try {
       let visits;
-      
-      if(req.query.filterBy === 'month')
+      let visitsRanked;
+      if(req.query.filterBy === 'month') {
          visits = await Treatment.query()
                      .select(raw(`MONTH(date_treated) as name, COUNT(id) AS 'Number of Visits'`))
                      .whereBetween('date_treated',  [req.query.startDate+' 00:00:00', req.query.endDate+' 23:59:59'])
                      .groupByRaw('MONTH(date_treated)');
+         visitsRanked = await Treatment.query()
+                     .select(raw(`MONTH(date_treated) as name, COUNT(id) AS totalVisits`))
+                     .groupByRaw('MONTH(date_treated)')
+                     .orderBy('totalVisits', 'DESC');
+      }
       else {
          visits = await Treatment.query()
-         .select(raw(`WEEKDAY(date_treated) as name, COUNT(id) AS 'Number of Visits'`))
-         .whereBetween('date_treated',  [req.query.startDate+' 00:00:00', req.query.endDate+' 23:59:59'])
-         .groupByRaw('WEEKDAY(date_treated)');
+                  .select(raw(`WEEKDAY(date_treated) as name, COUNT(id) AS 'Number of Visits'`))
+                  .whereBetween('date_treated',  [req.query.startDate+' 00:00:00', req.query.endDate+' 23:59:59'])
+                  .groupByRaw('WEEKDAY(date_treated)');
+         visitsRanked = await Treatment.query()
+                  .select(raw(`WEEKDAY(date_treated) as name, COUNT(id) AS totalVisits`))
+                  .groupByRaw('WEEKDAY(date_treated)')
+                  .orderBy('totalVisits', 'DESC');         
       }
 
 
-      const visitsRanked = await Treatment.query()
-      .select(raw(`MONTH(date_treated) as name, COUNT(id) AS totalVisits`))
-      .groupByRaw('MONTH(date_treated)')
-      .orderBy('totalVisits', 'DESC');
+ 
       
 
 
