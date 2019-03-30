@@ -30,6 +30,22 @@ const UpdatePersonalInfoModal = Form.create()(
          this.props.form.resetFields();
       }
 
+      
+      validateContactNumber = (rule, value, callback) => {
+
+         const myRegex = /^(09|\+639)\d{9}$/;
+       
+         if(!value)
+            callback();
+         else if(isNaN(parseInt(value)) || (myRegex.exec(value) == null && (value.length < 11 || value.length > 11))) { 
+            console.log(value.length);
+            callback('Invalid Contact Number');
+         }
+         else 
+            callback();
+            
+      }
+
       render() {
          const {form} = this.props;
          const { getFieldDecorator } = form;
@@ -45,11 +61,21 @@ const UpdatePersonalInfoModal = Form.create()(
                >
                <Form layout="vertical" onSubmit={this.handleSubmit}>
                <Row gutter={8}>
-                     <Col span={12}>
+                     <Col span={24}>
                         <Form.Item label="Name">
                            {getFieldDecorator('name', {
                               rules: [{ required: true, message: 'Name is required' }],
                               initialValue: this.props.patient.name
+                           })(
+                           <Input />
+                           )}
+                        </Form.Item>
+                     </Col>
+                     <Col span={12}>
+                        <Form.Item label="Address">
+                           {getFieldDecorator('address', {
+                              rules: [{ required: true, message: 'Address is required' }],
+                              initialValue: this.props.patient.address
                            })(
                            <Input />
                            )}
@@ -88,20 +114,13 @@ const UpdatePersonalInfoModal = Form.create()(
                            )}
                         </Form.Item>
                      </Col>
-                     <Col span={12}>
-                        <Form.Item label="Address">
-                           {getFieldDecorator('address', {
-                              rules: [{ required: true, message: 'Address is required' }],
-                              initialValue: this.props.patient.address
-                           })(
-                           <Input />
-                           )}
-                        </Form.Item>
-                     </Col>
-                     <Col span={12}>
+                     <Col span={24}>
                         <Form.Item label="Contact Number">
                            {getFieldDecorator('contact_number', {
-                              initialValue: this.props.patient.contact_number || ''
+                              initialValue: this.props.patient.contact_number || '',
+                              rules: [
+                                 {validator: this.validateContactNumber}
+                              ]
                            })(
                               <Input />
                            )}

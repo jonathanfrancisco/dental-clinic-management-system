@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, Form, Input,Row, Col, DatePicker, Select, Button, Icon} from 'antd';
+import {Modal, Form, Input,Row, Col, DatePicker, Select, Button, Icon, InputNumber} from 'antd';
 import moment from 'moment';
 const {Option} = Select;
 
@@ -28,6 +28,21 @@ const CreateDentalRecordModal = Form.create()(
       hideModal = () => {
          this.setState({visible: false});
          this.props.form.resetFields();
+      }
+
+      validateContactNumber = (rule, value, callback) => {
+
+         const myRegex = /^(09|\+639)\d{9}$/;
+       
+         if(!value)
+            callback();
+         else if(isNaN(parseInt(value)) || (myRegex.exec(value) == null && (value.length < 11 || value.length > 11))) { 
+            console.log(value.length);
+            callback('Invalid Contact Number');
+         }
+         else 
+            callback();
+            
       }
 
       render() {
@@ -103,7 +118,11 @@ const CreateDentalRecordModal = Form.create()(
                   <Row>
                      <Col span={24}>
                         <Form.Item label="Contact Number">
-                           {getFieldDecorator('contact_number')(
+                           {getFieldDecorator('contact_number', {
+                              rules: [
+                                 {validator: this.validateContactNumber}
+                              ]
+                           })(
                               <Input />
                            )}
                         </Form.Item>
