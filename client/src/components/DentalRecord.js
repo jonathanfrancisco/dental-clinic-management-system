@@ -79,6 +79,7 @@ class DentalRecord extends React.Component {
      
       const lastVisit = !this.state.patient.last_visit ? (<Tag color="geekblue">New Record</Tag>) : moment(this.state.patient.last_visit).format('MMMM, DD YYYY');
       const birthday = moment(this.state.patient.birthday).format('MMMM DD, YYYY');
+      const age = moment().diff(this.state.patient.birthday, 'years');
       return (
          <React.Fragment>
             <div style={{marginBottom: 8}}>
@@ -93,15 +94,16 @@ class DentalRecord extends React.Component {
             </div>
                {this.state.loading ? (<Skeleton loading={this.state.loading} paragraph={{rows: 14}} active />) : (
                   <React.Fragment>
-                  <Row>
+                  <Row type="flex">
                      <Col span={8}><DescriptionItem title="Code" content={this.state.patient.code}/></Col>
                      <Col span={8}><DescriptionItem title="Name" content={this.state.patient.name} /></Col>
                      <Col span={8}><DescriptionItem title="Last Visit" content={lastVisit}/></Col>
                      <Col span={8}><DescriptionItem title="Birthday" content={birthday} /></Col>
+                     <Col span={8}><DescriptionItem title="Age" content={age} /></Col>
+                     <Col span={8}><DescriptionItem title="Address" content={this.state.patient.address} /></Col>
                      <Col span={8}><DescriptionItem title="Occupation" content={this.state.patient.occupation} /></Col>
                      <Col span={8}><DescriptionItem title="Civil Status" content={this.state.patient.civil_status} /></Col>
-                     <Col span={12}><DescriptionItem title="Address" content={this.state.patient.address} /></Col>
-                     <Col span={12}><DescriptionItem title="Contact Number" content={this.state.patient.contact_number} /></Col>
+                     <Col span={8}><DescriptionItem title="Contact Number" content={this.state.patient.contact_number} /></Col>
                   </Row>
                   <Tabs defaultActiveKey="2">
                       <TabPane tab="Treatments and/or Procedures" key="2">
