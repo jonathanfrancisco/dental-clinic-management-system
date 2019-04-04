@@ -60,21 +60,21 @@ class InstallmentPaymentsHistoryModal extends React.Component {
             title: <Text strong>Amount Paid</Text>,
             dataIndex: 'amount_paid',
             render: (text, record) => {
-               return record.amount_paid;
+               return '₱'+record.amount_paid.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
          },
          {
             title: <Text strong>Current Balance</Text>,
             dataIndex: 'current_balance_before',
             render: (text, record) => {
-               return record.current_balance_before;
+               return '₱'+record.current_balance_before.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
          },
          {
             title: <Text strong>New Balance</Text>,
             dataIndex: 'new_balance_after',
             render: (text, record) => {
-               return record.new_balance_after === 0 ? 'Fully Paid' : record.new_balance_after;
+               return record.new_balance_after === 0 ? 'Fully Paid' : '₱'+record.new_balance_after.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
          },
          {
