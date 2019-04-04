@@ -2,6 +2,7 @@ const Treatment = require('../models/Treatment');
 const PaymentTransaction = require('../models/PaymentTransaction');
 const Patient = require('../models/Patient');
 const {raw} = require('objection');
+const moment = require('moment');
 
 
 module.exports.getTreatmentsById = async (req, res) => {
@@ -38,6 +39,7 @@ module.exports.add = async (req, res) => {
    const newTreatment = req.body;
    const {id: patient_id} = req.params;
    newTreatment.patient_id = parseInt(patient_id);
+   newTreatment.date_treated = moment(Date.now()).format('YYYY-MM-DD');
    try {
 
       if(newTreatment.payment_type === 'no-charge') {

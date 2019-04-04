@@ -1,5 +1,6 @@
 const PaymentTransaction = require('../models/PaymentTransaction');
 const {raw} = require('objection');
+const moment = require('moment');
 
 module.exports.payments = async (req, res) => {
 
@@ -85,6 +86,7 @@ module.exports.addPaymentInstallment = async (req, res) => {
    const {id} = req.params;
   
    const newPaymentTransaction = req.body;
+   newPaymentTransaction.date_paid = moment(Date.now()).format('YYYY-MM-DD');
    newPaymentTransaction.new_balance_after = newPaymentTransaction.current_balance_before - newPaymentTransaction.amount_paid;
    newPaymentTransaction.treatment_id = parseInt(id);
    newPaymentTransaction.user_id = req.user.id;

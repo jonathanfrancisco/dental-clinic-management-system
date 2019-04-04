@@ -53,7 +53,7 @@ const PayInstallmentModal = Form.create()(
                >
                <Form layout="vertical" onSubmit={this.handleSubmit}>
                   <Row gutter={8}>
-                     <Col span={12}>
+                     <Col span={24}>
                         <Form.Item label="Amount Paid">
                            {getFieldDecorator('amount_paid', {
                               rules: [
@@ -65,7 +65,7 @@ const PayInstallmentModal = Form.create()(
                            )}
                         </Form.Item>
                      </Col>
-                     <Col span={12}>
+                     {/* <Col span={12}>
                         <Form.Item label="Date Paid">
                            {getFieldDecorator('date_paid', {
                               rules: [{ required: true, message: 'Date Paid is required.' }],
@@ -73,7 +73,7 @@ const PayInstallmentModal = Form.create()(
                            <DatePicker disabledDate={(current) => current && current > moment()} format="MMMM DD, YYYY" style={{width: '100%'}} />
                            )}
                         </Form.Item>
-                     </Col>
+                     </Col> */}
                   </Row>
                   <Button hidden htmlType="submit"></Button>
                </Form>

@@ -50,7 +50,7 @@ class TreatmentsTable extends React.Component {
    
    handleAddTreatment = (values) => {
       const hide = message.loading('Adding New Treatment...', 0);
-      values.date_treated = values.date_treated.format('YYYY-MM-DD');
+      // values.date_treated = values.date_treated.format('YYYY-MM-DD');
       axios.post(`/api/treatments/${this.props.patientId}/add`, values)
       .then((response) => {
          if(response.status === 200) {
@@ -69,7 +69,7 @@ class TreatmentsTable extends React.Component {
 
    handlePayInstallment = (id, values) => {
       const hide = message.loading('Processing Payment...', 0);
-      values.date_paid = values.date_paid.format('YYYY-MM-DD');
+      // values.date_paid = values.date_paid.format('YYYY-MM-DD');
       axios.post(`/api/paymentTransactions/${id}/add`, values)
       .then((response) => {
          if(response.status === 200) {

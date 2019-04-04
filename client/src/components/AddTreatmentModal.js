@@ -70,7 +70,7 @@ const AddTreatmentModal = Form.create()(
                >
                <Form layout="vertical" onSubmit={this.handleSubmit}>
                   <Row gutter={8}>
-                     <Col span={12}>
+                     <Col span={24}>
                         <Form.Item label="Description">
                            {getFieldDecorator('description', {
                               rules: [{ required: true, message: 'Description is required.' }],
@@ -146,7 +146,7 @@ const AddTreatmentModal = Form.create()(
                            )}
                         </Form.Item>
                      </Col>
-                     <Col span={12}>
+                     {/* <Col span={12}>
                         <Form.Item label="Date Treated">
                            {getFieldDecorator('date_treated', {
                               rules: [{required: true, message: 'Date Treated is required.'}]
@@ -154,7 +154,7 @@ const AddTreatmentModal = Form.create()(
                               <DatePicker disabledDate={(current) => current && current > moment()} format="MMMM DD, YYYY" style={{width: '100%'}} />
                            )}
                         </Form.Item>
-                     </Col>
+                     </Col> */}
                      <Col span={12}>
                         <Form.Item label="Treated By">
                            {getFieldDecorator('user_id', {
