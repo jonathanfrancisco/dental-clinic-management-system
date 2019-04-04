@@ -89,9 +89,9 @@ class InstallmentPaymentsHistoryModal extends React.Component {
 
       return (
          <React.Fragment>
-            <a onClick={this.showModal} target="_blank" rel="noopener noreferrer">View Installment Payments History</a>
+            <a onClick={this.showModal} target="_blank" rel="noopener noreferrer">View Installment Payment Transactions</a>
             <Modal
-               title="Installment Payments History"
+               title="Installment Payment Transactions"
                visible={this.state.visible}
                okButtonProps={{style:{display: 'none'}}}
                cancelText={<React.Fragment><Icon type="close" />Close</React.Fragment>}
