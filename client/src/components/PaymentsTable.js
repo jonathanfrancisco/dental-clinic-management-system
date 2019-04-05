@@ -14,8 +14,7 @@ class PaymentsTable extends React.Component {
       paymentTransactions: [],
       search: '',
       selectedFilterBy: '',
-      rangeDate: [],
-      loading: true,
+      rangeDate: []
    };
 
    componentDidMount() {
