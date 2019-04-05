@@ -17,7 +17,8 @@ module.exports.incomereceivable = async (req, res) => {
       const treatments = await Treatment
                         .query()
                         .select(raw(`(SELECT treatment.total_amount_to_pay - SUM(payment_transaction.amount_paid) FROM payment_transaction WHERE payment_transaction.treatment_id = treatment.id AND payment_transaction.date_paid BETWEEN '${startOfDay}' AND '${endOfDay}') as total_receivable`))
-                        .whereBetween('treatment.date_treated', [startOfDay, endOfDay]);
+                        .whereBetween('treatment.date_treated', [startOfDay, endOfDay])
+                        .where('treatment.payment_type', 'installment');
       let todayTotalReceivable = 0;
       treatments.forEach((treatment) => {
          todayTotalReceivable += parseInt(treatment.total_receivable);
@@ -30,6 +31,7 @@ module.exports.incomereceivable = async (req, res) => {
       const allTreatments = await Treatment
                         .query()
                         .select('treatment.id',raw(`(SELECT treatment.total_amount_to_pay - SUM(payment_transaction.amount_paid) FROM payment_transaction WHERE payment_transaction.treatment_id = treatment.id) as total_receivable`))
+                        .where('treatment.payment_type', 'installment')
       let allTotalReceivable = 0;
       allTreatments.forEach((treatment) => {
             allTotalReceivable += parseInt(treatment.total_receivable) || 0;
