@@ -15,7 +15,7 @@ class ChildTeethChart extends Model {
             relation: Model.HasOneRelation,
             modelClass: Patient,
             join: {
-               from: 'patient_child_teeth_chart.patient_id',
+               from: 'patient_child_teeth_chart.id',
                to: 'patient.id'
             }
          }
