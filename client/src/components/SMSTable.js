@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table, Typography, Row, Col, Button, Icon, Input, DatePicker, Tag} from 'antd';
 import moment from 'moment';
+import { filter } from 'bluebird';
 
 const {Search} = Input;
 const {RangePicker} = DatePicker;
@@ -13,7 +14,7 @@ for (let i = 0; i < 10; i++) {
       key: i,
       name: `Edward King ${i}`,
       contact_number: '123456789',
-      last_visit: `London, Park Lane no. ${i}`,
+      last_visit: '2018-10-12',
       total_balance: 120,
       next_appointment: Date.now()
    });
@@ -24,7 +25,7 @@ data.push(
       key: 100,
       name: `Putanginamo`,
       contact_number: '',
-      last_visit: `London, Park Lane no`,
+      last_visit: '2019-04-05',
       total_balance: 120,
       next_appointment: Date.now()
    }
@@ -35,7 +36,7 @@ data.push(
       key: 101,
       name: `Putanginamo`,
       contact_number: '09212451903',
-      last_visit: `London, Park Lane no`,
+      last_visit: '2017-08-05',
       total_balance: 0,
       next_appointment: Date.now()
    }
@@ -47,7 +48,7 @@ data.push(
       key: 102,
       name: `Gagu`,
       contact_number: '09212451903',
-      last_visit: `London, Park Lane no`,
+      last_visit: '2015-10-12',
       total_balance: 0,
       next_appointment: null
    }
@@ -55,13 +56,13 @@ data.push(
 
 
 
-
-
 class SMSTable extends React.Component {
 
    state = {
       loading: false,
-      selectedRowKeys: [], // Check here to configure the default column
+      selectedRowKeys: [],
+      lastVisitRange: [],
+      appointmentRange: []
    };
 
    lastVisitFilterProps = (dataIndex) => ({
@@ -70,20 +71,25 @@ class SMSTable extends React.Component {
       }) => (
          <div style={{ padding: 8 }}>
             <RangePicker 
-               onChange={(dates) => setSelectedKeys(dates ? [dates] : [])}
+               value={this.state.lastVisitFilter}
+               onChange={(dates) => {
+                     this.setState({lastVisitFilter: dates ? dates: []});
+                     setSelectedKeys(dates ? [dates] : [])
+                  }
+               }
                disabledDate={(current) => current && current >= moment()} format="MMMM DD, YYYY" />
             <Row style={{marginTop: 8}}>
                <Col align="right">
                   <Button
                      type="primary"
-                     onClick={() => this.handleFilter(selectedKeys, confirm)}
+                     onClick={() => this.handleLastVisitFilter(selectedKeys, confirm)}
                      size="small"
                      style={{ width: 90, marginRight: 8 }}
                   >
                      Filter
                   </Button>    
                   <Button
-                     onClick={() => this.handleReset(clearFilters)}
+                     onClick={() => this.handleLastVisitReset(clearFilters)}
                      size="small"
                      style={{ width: 90 }}
                   >
@@ -91,24 +97,24 @@ class SMSTable extends React.Component {
                   </Button>
                </Col>
             </Row>
-         
-      
          </div>
       ),
       filterIcon: filtered => <Icon type="schedule" style={{ color: filtered ? '#1890ff' : undefined }} />,
-      onFilter: (value, record) => {
-         console.log(value, record);
+      onFilter: (filterValue, record) => {
+         return moment(record[dataIndex]).isBetween(filterValue[0], filterValue[1]);
       },
    })
 
-   handleFilter = (selectedKeys, confirm) => {
+   handleLastVisitFilter = (selectedKeys, confirm) => {
       confirm();
-      console.log('Handle filter: ', selectedKeys);
+      console.log('Handle last visit filter: ', selectedKeys);
+      console.log(confirm);
+      this.setState({lastVisitFilter: selectedKeys[0]});
    }
 
-   handleReset = (clearFilters) => {
+   handleLastVisitReset = (clearFilters) => {
       clearFilters();
-      console.log('Handle reset');
+      this.setState({lastVisitFilter: []});
    }
 
 
@@ -185,6 +191,9 @@ class SMSTable extends React.Component {
          }, {
             title: <Text strong>Last Visit</Text>,
             dataIndex: 'last_visit',
+            render: (text, record) => {
+               return moment(record.last_visit).format('MMMM DD, YYYY');
+            }, 
             ...this.lastVisitFilterProps('last_visit')
          },{
             title: <Text strong>Total Balance</Text>,
