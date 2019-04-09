@@ -61,8 +61,10 @@ class SMSTable extends React.Component {
    state = {
       loading: false,
       selectedRowKeys: [],
+      displayedData: [],
       lastVisitRange: [],
-      appointmentRange: []
+      appointmentRange: [],
+      currentDataSource: [...data]
    };
 
    lastVisitFilterProps = (dataIndex) => ({
@@ -100,15 +102,13 @@ class SMSTable extends React.Component {
          </div>
       ),
       filterIcon: filtered => <Icon type="schedule" style={{ color: filtered ? '#1890ff' : undefined }} />,
-      onFilter: (filterValue, record) => {
+      onFilter: (filterValue, record, a) => {
          return moment(record[dataIndex]).isBetween(filterValue[0], filterValue[1]);
       },
    })
 
    handleLastVisitFilter = (selectedKeys, confirm) => {
       confirm();
-      console.log('Handle last visit filter: ', selectedKeys);
-      console.log(confirm);
       this.setState({lastVisitFilter: selectedKeys[0]});
    }
 
@@ -142,9 +142,9 @@ class SMSTable extends React.Component {
             {
                key: 'all',
                text: 'Select all',
-               onSelect: (changableRowKeys) => {
+               onSelect: (changableRowKeys) => { 
                   let selectedRowKeys = [];
-                  data.forEach((record) => {
+                  this.state.currentDataSource.forEach((record) => {
                      if(record.contact_number)
                         selectedRowKeys.push(record.key);
                   });
@@ -156,7 +156,7 @@ class SMSTable extends React.Component {
                text: 'Select has balance',
                onSelect: (changableRowKeys) => {
                   let selectedRowKeys = [];
-                  data.forEach((record) => {
+                  this.state.currentDataSource.forEach((record) => {
                      if(record.total_balance > 0 && record.contact_number)
                         selectedRowKeys.push(record.key);
                   });
@@ -168,7 +168,7 @@ class SMSTable extends React.Component {
                text: 'Select has appointment',
                onSelect: (changableRowKeys) => {
                   let selectedRowKeys = [];
-                  data.forEach((record) => {
+                  this.state.currentDataSource.forEach((record) => {
                      if(record.next_appointment && record.contact_number)
                         selectedRowKeys.push(record.key);
                   });
@@ -237,7 +237,10 @@ class SMSTable extends React.Component {
                   <Button disabled={!hasSelected} type="primary">Send Balance Notice</Button>
                </Col>
             </Row>
-            <Table 
+            <Table
+               onChange={(pagination, filters, sorter, {currentDataSource}) => {
+                  this.setState({currentDataSource});
+               }} 
                loading={this.state.loading}
                rowSelection={rowSelection}
                columns={columns}
