@@ -16,7 +16,7 @@ for (let i = 0; i < 10; i++) {
       contact_number: '123456789',
       last_visit: '2018-10-12',
       total_balance: 120,
-      next_appointment: Date.now()
+      next_appointment: '2015-08-05'
    });
 }
 
@@ -27,7 +27,7 @@ data.push(
       contact_number: '',
       last_visit: '2019-04-05',
       total_balance: 120,
-      next_appointment: Date.now()
+      next_appointment: '2019-04-07'
    }
 );
 
@@ -38,7 +38,7 @@ data.push(
       contact_number: '09212451903',
       last_visit: '2017-08-05',
       total_balance: 0,
-      next_appointment: Date.now()
+      next_appointment: '2019-04-08'
    }
 );
 
@@ -50,7 +50,7 @@ data.push(
       contact_number: '09212451903',
       last_visit: '2015-10-12',
       total_balance: 0,
-      next_appointment: null
+      next_appointment: '2019-04-11'
    }
 );
 
@@ -62,8 +62,8 @@ class SMSTable extends React.Component {
       loading: false,
       selectedRowKeys: [],
       displayedData: [],
-      lastVisitRange: [],
-      appointmentRange: [],
+      lastVisitFilter: [],
+      nextAppointmmentFilter: [],
       currentDataSource: [...data]
    };
 
@@ -116,6 +116,58 @@ class SMSTable extends React.Component {
       clearFilters();
       this.setState({lastVisitFilter: []});
    }
+
+   nextAppointmentFilterProps = (dataIndex) => ({
+      filterDropdown: ({
+         setSelectedKeys, selectedKeys, confirm, clearFilters,
+      }) => (
+         <div style={{ padding: 8 }}>
+            <RangePicker 
+               value={this.state.nextAppointmmentFilter}
+               onChange={(dates) => {
+                     this.setState({nextAppointmmentFilter: dates ? dates: []});
+                     setSelectedKeys(dates ? [dates] : [])
+                  }
+               }
+               disabledDate={(current) => current && current <= moment()} format="MMMM DD, YYYY" />
+            <Row style={{marginTop: 8}}>
+               <Col align="right">
+                  <Button
+                     type="primary"
+                     onClick={() => this.handleNextAppointmentFilter(selectedKeys, confirm)}
+                     size="small"
+                     style={{ width: 90, marginRight: 8 }}
+                  >
+                     Filter
+                  </Button>    
+                  <Button
+                     onClick={() => this.handleNextAppointmentReset(clearFilters)}
+                     size="small"
+                     style={{ width: 90 }}
+                  >
+                     Reset
+                  </Button>
+               </Col>
+            </Row>
+         </div>
+      ),
+      filterIcon: filtered => <Icon type="schedule" style={{ color: filtered ? '#1890ff' : undefined }} />,
+      onFilter: (filterValue, record, a) => {
+         return moment(record[dataIndex]).isBetween(filterValue[0], filterValue[1]);
+      },
+   })
+
+   handleNextAppointmentFilter = (selectedKeys, confirm) => {
+      confirm();
+      this.setState({nextAppointmmentFilter: selectedKeys[0]});
+   }
+
+   handleNextAppointmentReset = (clearFilters) => {
+      clearFilters();
+      this.setState({nextAppointmmentFilter: []});
+   }
+
+
 
 
    onSelectChange = (selectedRowKeys) => {
@@ -201,6 +253,10 @@ class SMSTable extends React.Component {
          },{
             title: <Text strong>Next Appointment</Text>,
             dataIndex: 'next_appointment',
+            render: (text, record) => {
+               return moment(record.next_appointment).format('MMMM DD, YYYY');
+            },
+            ...this.nextAppointmentFilterProps('next_appointment')
          }
       ];
 
