@@ -1,7 +1,6 @@
 import React from 'react';
 import {Table, Typography, Row, Col, Button, Icon, Input, DatePicker, Tag} from 'antd';
 import moment from 'moment';
-import { filter } from 'bluebird';
 
 const {Search} = Input;
 const {RangePicker} = DatePicker;
