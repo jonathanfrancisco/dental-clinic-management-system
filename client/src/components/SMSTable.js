@@ -14,7 +14,7 @@ for (let i = 0; i < 10; i++) {
       name: `Edward King ${i}`,
       contact_number: '123456789',
       last_visit: '2018-10-12',
-      total_balance: 120,
+      total_balance: 1500  ,
       next_appointment: '2015-08-05'
    });
 }
@@ -49,9 +49,21 @@ data.push(
       contact_number: '09212451903',
       last_visit: '2015-10-12',
       total_balance: 0,
-      next_appointment: '2019-04-11'
+      next_appointment: ''
    }
 );
+
+data.push(
+   {
+      key: 103,
+      name: `Gagu`,
+      contact_number: '09212451903',
+      last_visit: '2015-10-12',
+      total_balance: 100,
+      next_appointment: ''
+   }
+);
+
 
 
 
@@ -60,10 +72,15 @@ class SMSTable extends React.Component {
    state = {
       loading: false,
       selectedRowKeys: [],
-      displayedData: [],
       lastVisitFilter: [],
       nextAppointmmentFilter: [],
-      currentDataSource: [...data]
+      currentDataSource: [...data],
+      customMessageButton: false,
+      balanceNoticeButton: false,
+      appointmentNoticeButton: false,
+      disabledBalanceArr: [],
+      disabledAppointmentArr: []
+      
    };
 
    lastVisitFilterProps = (dataIndex) => ({
@@ -166,16 +183,107 @@ class SMSTable extends React.Component {
       this.setState({nextAppointmmentFilter: []});
    }
 
-
-
-
-   onSelectChange = (selectedRowKeys) => {
-      this.setState({ selectedRowKeys });
+   onSelectChange = async (selectedRowKeys) => {
+      await this.setState({ selectedRowKeys });
+      this.updateButtons();
    }
 
-   onUnselectAll = () => {
-      this.setState({selectedRowKeys: []});
-   }  
+   onUnselectAll = async () => {
+      await this.setState({selectedRowKeys: []});
+      this.updateButtons();
+   }
+   
+
+   // UPDATES THE APPROPRIATE BUTTONS TO BE ENABLED
+   // THE ALGORITHM IS QUITE A MESS :(
+   updateButtons = () => {
+
+      this.state.disabledBalanceArr.forEach((element) => {
+         const isExistArr = this.state.selectedRowKeys.filter((key) => key == element.key);
+         if(isExistArr.length <= 0) {
+            const newDisabledBalanceArr = [...this.state.disabledBalanceArr];
+            for(var i = 0; i<newDisabledBalanceArr.length; i++) {
+               if(newDisabledBalanceArr[i].key === element.key) {
+                  newDisabledBalanceArr.splice(i, 1);
+               }
+            }
+            this.setState({
+               disabledBalanceArr: newDisabledBalanceArr
+            });
+         }
+      });
+
+      this.state.disabledAppointmentArr.forEach((element) => {
+         const isExistArr = this.state.selectedRowKeys.filter((key) => key == element.key);
+         if(isExistArr.length <= 0) {
+            const newDisabledAppointmentArr = [...this.state.disabledAppointmentArr];
+            for(var i = 0; i<newDisabledAppointmentArr.length; i++) {
+               if(newDisabledAppointmentArr[i].key === element.key) {
+                  newDisabledAppointmentArr.splice(i, 1);
+               }
+            }
+            this.setState({
+               disabledAppointmentArr: newDisabledAppointmentArr
+            });
+         }
+      });
+
+   
+      if(this.state.selectedRowKeys.length == 0) {
+         this.setState({
+            customMessageButton: false,
+            balanceNoticeButton: false,
+            appointmentNoticeButton: false
+         });
+      }
+      else {
+
+         let balanceNoticeButton = false;
+         let appointmentNoticeButton = false;
+         
+         this.state.selectedRowKeys.forEach((selectedRowKey) => { 
+            
+            const obj = this.state.currentDataSource.find((element) => element.key == selectedRowKey);
+            
+            if(obj.total_balance > 0 && this.state.disabledBalanceArr.length <= 0)
+               balanceNoticeButton = true;
+            else if(obj.total_balance <= 0) {
+               balanceNoticeButton = false; 
+               const newDisabledBalanceArr = [...this.state.disabledBalanceArr];
+               const isExist = newDisabledBalanceArr.find((element) => element.key == selectedRowKey);
+               if(!isExist)
+                  newDisabledBalanceArr.push(obj);
+               this.setState({
+                  disabledBalanceArr: newDisabledBalanceArr
+               });
+            }
+            
+            if(obj.next_appointment && this.state.disabledAppointmentArr.length <= 0) {
+               appointmentNoticeButton = true;
+            }
+            else if(!obj.next_appointment) {
+               appointmentNoticeButton = false;
+               const newDisabledAppointmentArr = [...this.state.disabledAppointmentArr];
+               const isExist = newDisabledAppointmentArr.find((element) => element.key == selectedRowKey);
+               if(!isExist)
+                  newDisabledAppointmentArr.push(obj);
+               this.setState({
+                  disabledAppointmentArr: newDisabledAppointmentArr
+               });
+            }
+            
+         });
+
+         this.setState({
+            customMessageButton: true,
+            balanceNoticeButton,
+            appointmentNoticeButton
+         });
+
+         
+      }
+      
+   }
 
    render() {
 
@@ -193,37 +301,40 @@ class SMSTable extends React.Component {
             {
                key: 'all',
                text: 'Select all',
-               onSelect: (changableRowKeys) => { 
+               onSelect: async (changableRowKeys) => { 
                   let selectedRowKeys = [];
                   this.state.currentDataSource.forEach((record) => {
                      if(record.contact_number)
                         selectedRowKeys.push(record.key);
                   });
-                  this.setState({selectedRowKeys});
+                  await this.setState({selectedRowKeys});
+                  this.updateButtons();
                },
             },
             {
                key: 'balance',
                text: 'Select has balance',
-               onSelect: (changableRowKeys) => {
+               onSelect: async (changableRowKeys) => {
                   let selectedRowKeys = [];
                   this.state.currentDataSource.forEach((record) => {
                      if(record.total_balance > 0 && record.contact_number)
                         selectedRowKeys.push(record.key);
                   });
-                  this.setState({selectedRowKeys});
+                  await this.setState({selectedRowKeys});
+                  this.updateButtons();
                },
             },
             {
                key: 'appointment',
                text: 'Select has appointment',
-               onSelect: (changableRowKeys) => {
+               onSelect: async (changableRowKeys) => {
                   let selectedRowKeys = [];
                   this.state.currentDataSource.forEach((record) => {
                      if(record.next_appointment && record.contact_number)
                         selectedRowKeys.push(record.key);
                   });
-                  this.setState({selectedRowKeys});
+                  await this.setState({selectedRowKeys});
+                  this.updateButtons();
                }
             }
          ],
@@ -248,12 +359,15 @@ class SMSTable extends React.Component {
             ...this.lastVisitFilterProps('last_visit')
          },{
             title: <Text strong>Total Balance</Text>,
-            dataIndex: 'total_balance'
+            dataIndex: 'total_balance',
+            render: (text, record) => {
+               return record.total_balance > 0 ? <Tag color="red">{'₱'+record.total_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Tag> : <Tag>None</Tag>
+            }
          },{
             title: <Text strong>Next Appointment</Text>,
             dataIndex: 'next_appointment',
             render: (text, record) => {
-               return moment(record.next_appointment).format('MMMM DD, YYYY');
+               return !record.next_appointment? <Tag>None</Tag> : moment(record.next_appointment).format('MMMM DD, YYYY');
             },
             ...this.nextAppointmentFilterProps('next_appointment')
          }
@@ -287,9 +401,9 @@ class SMSTable extends React.Component {
                   </span>
                </Col>
                <Col span={16} align="right">
-                  <Button disabled={!hasSelected} style={{marginRight: 8}} type="primary">Send Custom Message</Button>
-                  <Button disabled={!hasSelected} style={{marginRight: 8}} type="primary">Send Appointment Notice</Button>
-                  <Button disabled={!hasSelected} type="primary">Send Balance Notice</Button>
+                  <Button disabled={!this.state.customMessageButton} style={{marginRight: 8}} type="primary">Send Custom Message</Button>
+                  <Button disabled={!this.state.balanceNoticeButton} style={{marginRight: 8}} type="primary">Send Balance Notice</Button>
+                  <Button disabled={!this.state.appointmentNoticeButton} type="primary">Send Appointment Notice</Button>
                </Col>
             </Row>
             <Table
