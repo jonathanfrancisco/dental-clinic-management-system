@@ -14,7 +14,7 @@ const balanceStatus = (paymentType, balance) => {
    else if(paymentType === 'no-charge')
       return <Tag color="green">No Charge</Tag>
    else if(paymentType === 'installment') 
-      return balance == 0 ?  <Tag color="blue">Fully Paid</Tag> : <Tag color="volcano">{'₱'+balance.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Tag>;
+      return balance == 0 ?  <Tag color="blue">Fully Paid</Tag> : <Tag color="red">{'₱'+balance.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Tag>;
 }
 
 
