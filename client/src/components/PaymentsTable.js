@@ -1,7 +1,9 @@
 import React from 'react';
-import {Table, message, Row, Col, Radio, Input, DatePicker, Tag, Typography} from 'antd';
+import {Table, message, Row, Col, Radio, Input, DatePicker, Tag, Typography, Button, Icon} from 'antd';
 import moment from 'moment';
 import axios from 'axios';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const {RangePicker} = DatePicker;
 const {Search} = Input;
@@ -102,11 +104,98 @@ paymentTransactions
       this.getPaymentTransactions(this.state.search, this.state.rangeDate);
     }
 
-    onRangePickerChange =  async (dates, dateStrings) => {
+   onRangePickerChange =  async (dates, dateStrings) => {
       await this.setState({selectedFilterBy: ''});
       await this.setState({rangeDate: dates});
       this.getPaymentTransactions(this.state.search, this.state.rangeDate);
-    }
+   }
+
+   handlePrint = () => {
+      
+      const body = [];
+      let total = 0;
+      this.state.paymentTransactions.forEach(({date_paid, amount_paid, payment_type, from, received_by}) => {
+         total += amount_paid;
+         body.push({
+            date_paid: moment(date_paid).format('MMMM DD, YYYY'),
+            amount_paid: amount_paid.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+            payment_type,
+            from,
+            received_by
+         });
+      });
+
+      const doc = new jsPDF({
+         format: [612, 792]
+      });
+      const totalPagesExp = "{total_pages_count_string}";
+
+        // Header
+        const pageSize = doc.internal.pageSize;
+        const pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+        const pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+        
+        doc.setFontSize(16);
+        doc.setFontStyle('bold');
+        doc.text('Andres Dental Clinic', pageWidth - 68, 10);
+        doc.setFontSize(10);
+        doc.setTextColor(53, 53, 53);
+        doc.setFontStyle('normal');
+        doc.text('One.O.5ive Department Store', pageWidth - 60, 14);
+        doc.text('J. P. Rizal Street, Barangay 18', pageWidth - 62, 18);
+        doc.text('Laoag City, 2900 Ilocos Norte', pageWidth - 60, 22);
+        doc.text('09212451903', pageWidth - 35, 26);
+        doc.setFontSize(14);
+        doc.setTextColor(0,0, 0);
+        doc.setFontStyle('bold');
+        doc.text('Transaction Log', 15, 32);
+        const [startDate, endDate] = this.state.rangeDate;
+        doc.setFontStyle('normal');
+        doc.setFontSize(10);
+
+        if(startDate && endDate) {
+           doc.setTextColor(53, 53, 53);
+           doc.text(`(${moment(startDate).format('MMMM DD, YYYY')} - ${moment(endDate).format('MMMM DD, YYYY')})`, 54, 32);
+           doc.setTextColor(0,0, 0);
+        }
+
+      doc.autoTable({
+         columns: [
+            {header: 'Date Paid', dataKey: 'date_paid'},
+            {header: 'Amount Paid', dataKey: 'amount_paid'},
+            {header: 'Payment Type', dataKey: 'payment_type'},
+            {header: 'From', dataKey: 'from'},
+            {header: 'Received By', dataKey: 'received_by'},
+         ],
+         body,
+         didDrawPage: (data) => {
+            // Footer
+            var str = "Page " + doc.internal.getNumberOfPages()
+            // Total page number plugin only available in jspdf v1.0+
+            if (typeof doc.putTotalPages === 'function') {
+                str = str + " of " + totalPagesExp;
+            }
+            doc.setFontStyle('normal');
+
+            // jsPDF 1.4+ uses getWidth, <1.4 uses .width
+            doc.text(str, data.settings.margin.left, pageHeight - 10);
+            doc.text(`Generated on ${moment(Date.now()).format('MMMM DD, YYYY hh:mmA')}`,  pageWidth - 73, pageHeight - 10);
+
+        },
+        startY: 34,
+        showHead: 'firstPage',
+      });
+      
+      doc.line(15,doc.autoTable.previous.finalY + 3, pageWidth-15, doc.autoTable.previous.finalY + 3); // horizontal line  
+      doc.setFontStyle('bold');
+      doc.text('TOTAL:', 15, doc.autoTable.previous.finalY + 8);
+      doc.text(`${total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`, 48, doc.autoTable.previous.finalY + 8);
+      if (typeof doc.putTotalPages === 'function') 
+         doc.putTotalPages(totalPagesExp);
+     
+      doc.autoPrint();
+      window.open(doc.output('bloburl'), '_blank');   
+   }
 
 
    render() {
@@ -174,6 +263,11 @@ paymentTransactions
                </Col>
                <Col style={{marginBottom:8}} span={12}>
                   <RangePicker allowClear={true} value={this.state.rangeDate} format="MMMM DD, YYYY" onChange={this.onRangePickerChange} style={{width: '100%'}} />  
+               </Col>
+            </Row>
+            <Row>
+               <Col align="right">
+                  <Button onClick={this.handlePrint} type="primary"><Icon type="printer" /> Print Transaction Log</Button>
                </Col>
             </Row>
             <Table
