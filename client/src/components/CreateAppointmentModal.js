@@ -93,7 +93,7 @@ const CreateAppointmentModal = Form.create()(
                            {getFieldDecorator('date_time', {
                               rules: [{ required: true, message: 'Date and Time is required.' }],
                            })(
-                              <DatePicker disabledDate={(current) => current && current < moment()} placeholder="Select date and time" style={{width: '100%'}} showTime={{use12Hours: true, format: 'HH:mm'}} format="MMMM DD, YYYY hh:mm A" />
+                              <DatePicker disabledDate={(current) => current && current < moment()} placeholder="Select date and time" style={{width: '100%'}} showTime={{use12Hours: true, format: 'HH:mm'}} format="MMMM DD, YYYY h:mm A" />
                            )}
                         </Form.Item>
                      </Col>

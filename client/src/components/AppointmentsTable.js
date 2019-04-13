@@ -19,7 +19,7 @@ class AppointmentsTable extends React.Component {
    };
 
    handleAppointmentCreate = (values) => {
-      values.date_time = moment(values.date_time).format('YYYY-MM-DD HH:MM:SS');
+      values.date_time = values.date_time.format('YYYY-MM-DD HH:mm');
       const hide = message.loading('Creating New Appointment...', 0);
       axios.post('/api/appointments/create/in-person', values)
       .then((response) => {
@@ -48,7 +48,7 @@ class AppointmentsTable extends React.Component {
       const {value: filterBy} = e.target;
       await this.setState({selectedFilterBy: filterBy});
       if(filterBy === 'day')
-         await this.setState({rangeDate: [moment(), moment()]});
+         await this.setState({rangeDate: [moment(), moment()]});  
       else if(filterBy === 'week')
          await this.setState({rangeDate: [moment().startOf('week'), moment().endOf('week')]});
       else if(filterBy === 'month')

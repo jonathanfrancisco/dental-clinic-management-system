@@ -61,7 +61,7 @@ class AppointmentsPopoverDrawer extends React.Component {
                {
                   this.props.appointments.map((appointment) => (
                      <Timeline.Item>
-                        {appointment.name} @ {moment(appointment.date_time).format('h:MM A')} <Divider type="vertical"/> {appointment.reason}
+                        {appointment.name} @ {moment(appointment.date_time).format('h:mm A')} <Divider type="vertical"/> {appointment.reason}
                      </Timeline.Item>
                   ))
                }
