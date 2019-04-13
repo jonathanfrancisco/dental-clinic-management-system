@@ -40,7 +40,7 @@ const SiderNavigation = withRouter((props) => {
          </Menu.Item>
          <Menu.Item key="/sms">
             <Icon type="message" />
-            <span>SMS Text Messaging</span>
+            <span>SMS</span>
             <Link to="/sms"></Link>
          </Menu.Item>
          {props.role === 'dentalaide' ? null : (

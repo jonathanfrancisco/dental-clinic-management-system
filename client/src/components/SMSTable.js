@@ -359,12 +359,12 @@ class SMSTable extends React.Component {
 
       return (
          <React.Fragment>
-            <Title level={4} style={{margin: 0}}>SMS Text Messaging</Title>
+            <Title level={4} style={{margin: 0}}>SMS</Title>
             <Row>
                <Col span={24}>
                   <Search 
                      style={{width: '100%', zIndex: -999}}
-                     placeholder="search patient by name"
+                     placeholder="search recipient by name"
                      enterButton
                      // onSearch={(value) => this.props.getAppointments(value, this.state.rangeDate)}
                   />     
