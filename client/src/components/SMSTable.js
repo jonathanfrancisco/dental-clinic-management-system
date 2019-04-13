@@ -1,69 +1,11 @@
 import React from 'react';
-import {Table, Typography, Row, Col, Button, Icon, Input, DatePicker, Tag} from 'antd';
+import {Table, Typography, Row, Col, Button, Icon, Input, DatePicker, Tag, message} from 'antd';
 import moment from 'moment';
+import axios from 'axios';
 
 const {Search} = Input;
 const {RangePicker} = DatePicker;
 const {Title, Text} = Typography;
-
-const data = [];
-
-for (let i = 0; i < 10; i++) {
-   data.push({
-      key: i,
-      name: `Edward King ${i}`,
-      contact_number: '123456789',
-      last_visit: '2018-10-12',
-      total_balance: 1500  ,
-      next_appointment: '2015-08-05'
-   });
-}
-
-data.push(
-   {
-      key: 100,
-      name: `Putanginamo`,
-      contact_number: '',
-      last_visit: '2019-04-05',
-      total_balance: 120,
-      next_appointment: '2019-04-07'
-   }
-);
-
-data.push(
-   {
-      key: 101,
-      name: `Putanginamo`,
-      contact_number: '09212451903',
-      last_visit: '2017-08-05',
-      total_balance: 0,
-      next_appointment: '2019-04-08'
-   }
-);
-
-
-data.push(
-   {
-      key: 102,
-      name: `Gagu`,
-      contact_number: '09212451903',
-      last_visit: '2015-10-12',
-      total_balance: 0,
-      next_appointment: ''
-   }
-);
-
-data.push(
-   {
-      key: 103,
-      name: `Gagu`,
-      contact_number: '09212451903',
-      last_visit: '2015-10-12',
-      total_balance: 100,
-      next_appointment: ''
-   }
-);
-
 
 
 
@@ -71,10 +13,12 @@ class SMSTable extends React.Component {
 
    state = {
       loading: false,
+      searchInput: '',
+      recipients: [],
       selectedRowKeys: [],
       lastVisitFilter: [],
       nextAppointmmentFilter: [],
-      currentDataSource: [...data],
+      currentDataSource: [],
       customMessageButton: false,
       balanceNoticeButton: false,
       appointmentNoticeButton: false,
@@ -82,6 +26,45 @@ class SMSTable extends React.Component {
       disabledAppointmentArr: []
       
    };
+
+   componentDidMount() {
+      this.getRecipients();
+   }
+
+   getRecipients = (searchValue) => {
+      this.setState({loading: true, search: searchValue});
+      if(searchValue) {
+         const hide = message.loading('Searching...', 0);
+         axios.get('/api/sms/', {
+            params: {search: searchValue}
+         })
+         .then((response) => {
+            if(response.status === 200) {
+               hide();
+               this.setState({recipients: response.data.recipients, currentDataSource: response.data.recipients});
+               setTimeout(() => {
+                  this.setState({loading: false});
+                  message.info(`${response.data.recipients.length} Record(s) found`);
+               },500); 
+            }
+         })
+         .catch((err) => {
+            console.log(err);
+            hide();
+            message.error('Something went wrong! Please, try again.');
+         });
+         
+      }
+      else {
+         axios.get('/api/sms/')
+         .then((response) => {
+            this.setState({recipients: response.data.recipients, currentDataSource:response.data.recipients, loading: false});
+         })
+         .catch((err) => {
+            console.log(err);
+         });
+      }
+   }
 
    lastVisitFilterProps = (dataIndex) => ({
       filterDropdown: ({
@@ -199,11 +182,11 @@ class SMSTable extends React.Component {
    updateButtons = () => {
 
       this.state.disabledBalanceArr.forEach((element) => {
-         const isExistArr = this.state.selectedRowKeys.filter((key) => key == element.key);
+         const isExistArr = this.state.selectedRowKeys.filter((key) => key == element.id);
          if(isExistArr.length <= 0) {
             const newDisabledBalanceArr = [...this.state.disabledBalanceArr];
             for(var i = 0; i<newDisabledBalanceArr.length; i++) {
-               if(newDisabledBalanceArr[i].key === element.key) {
+               if(newDisabledBalanceArr[i].id === element.id) {
                   newDisabledBalanceArr.splice(i, 1);
                }
             }
@@ -214,11 +197,11 @@ class SMSTable extends React.Component {
       });
 
       this.state.disabledAppointmentArr.forEach((element) => {
-         const isExistArr = this.state.selectedRowKeys.filter((key) => key == element.key);
+         const isExistArr = this.state.selectedRowKeys.filter((key) => key == element.id);
          if(isExistArr.length <= 0) {
             const newDisabledAppointmentArr = [...this.state.disabledAppointmentArr];
             for(var i = 0; i<newDisabledAppointmentArr.length; i++) {
-               if(newDisabledAppointmentArr[i].key === element.key) {
+               if(newDisabledAppointmentArr[i].id === element.id) {
                   newDisabledAppointmentArr.splice(i, 1);
                }
             }
@@ -243,14 +226,13 @@ class SMSTable extends React.Component {
          
          this.state.selectedRowKeys.forEach((selectedRowKey) => { 
             
-            const obj = this.state.currentDataSource.find((element) => element.key == selectedRowKey);
-            
+            const obj = this.state.currentDataSource.find((element) => element.id == selectedRowKey);
             if(obj.total_balance > 0 && this.state.disabledBalanceArr.length <= 0)
                balanceNoticeButton = true;
             else if(obj.total_balance <= 0) {
                balanceNoticeButton = false; 
                const newDisabledBalanceArr = [...this.state.disabledBalanceArr];
-               const isExist = newDisabledBalanceArr.find((element) => element.key == selectedRowKey);
+               const isExist = newDisabledBalanceArr.find((element) => element.id == selectedRowKey);
                if(!isExist)
                   newDisabledBalanceArr.push(obj);
                this.setState({
@@ -264,7 +246,7 @@ class SMSTable extends React.Component {
             else if(!obj.next_appointment) {
                appointmentNoticeButton = false;
                const newDisabledAppointmentArr = [...this.state.disabledAppointmentArr];
-               const isExist = newDisabledAppointmentArr.find((element) => element.key == selectedRowKey);
+               const isExist = newDisabledAppointmentArr.find((element) => element.id == selectedRowKey);
                if(!isExist)
                   newDisabledAppointmentArr.push(obj);
                this.setState({
@@ -305,7 +287,7 @@ class SMSTable extends React.Component {
                   let selectedRowKeys = [];
                   this.state.currentDataSource.forEach((record) => {
                      if(record.contact_number)
-                        selectedRowKeys.push(record.key);
+                        selectedRowKeys.push(record.id);
                   });
                   await this.setState({selectedRowKeys});
                   this.updateButtons();
@@ -318,7 +300,7 @@ class SMSTable extends React.Component {
                   let selectedRowKeys = [];
                   this.state.currentDataSource.forEach((record) => {
                      if(record.total_balance > 0 && record.contact_number)
-                        selectedRowKeys.push(record.key);
+                        selectedRowKeys.push(record.id);
                   });
                   await this.setState({selectedRowKeys});
                   this.updateButtons();
@@ -331,7 +313,7 @@ class SMSTable extends React.Component {
                   let selectedRowKeys = [];
                   this.state.currentDataSource.forEach((record) => {
                      if(record.next_appointment && record.contact_number)
-                        selectedRowKeys.push(record.key);
+                        selectedRowKeys.push(record.id);
                   });
                   await this.setState({selectedRowKeys});
                   this.updateButtons();
@@ -408,13 +390,14 @@ class SMSTable extends React.Component {
             </Row>
             <Table
                onChange={(pagination, filters, sorter, {currentDataSource}) => {
+                  console.log('Current on change data source: ',currentDataSource);
                   this.setState({currentDataSource});
                }} 
                loading={this.state.loading}
                rowSelection={rowSelection}
                columns={columns}
-               dataSource={data}
-               rowKey={(record) => record.key}
+               dataSource={this.state.recipients}
+               rowKey={(record) => record.id}
                pagination={
                   {
                      position: 'both',
