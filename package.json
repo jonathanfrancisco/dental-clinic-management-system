@@ -28,5 +28,8 @@
     "mysql2": "^1.6.5",
     "nanoid": "^2.0.1",
     "objection": "^1.6.0"
+  },
+  "devDependencies": {
+    "dotenv": "^7.0.0"
   }
 }
