@@ -360,7 +360,7 @@ class SMSTable extends React.Component {
          hideDefaultSelections: true,
          onSelection: this.onSelection,
          getCheckboxProps: record => ({
-               disabled: !record.contact_number || !record.last_visit, // Column configuration not to be checked
+               disabled: !record.contact_number, // Column configuration not to be checked
             }),
          selections: [
             {
