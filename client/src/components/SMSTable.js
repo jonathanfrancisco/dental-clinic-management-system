@@ -66,6 +66,12 @@ class SMSTable extends React.Component {
       }
    }
 
+   handleSearchErased = (e) => {
+      const {value} = e.target;
+     if(value === '')
+      this.getRecipients(value);
+   }
+
    lastVisitFilterProps = (dataIndex) => ({
       filterDropdown: ({
          setSelectedKeys, selectedKeys, confirm, clearFilters,
@@ -225,8 +231,9 @@ class SMSTable extends React.Component {
          let appointmentNoticeButton = false;
          
          this.state.selectedRowKeys.forEach((selectedRowKey) => { 
-            
+            // CHECKPOINT April 14 5:01AM
             const obj = this.state.currentDataSource.find((element) => element.id == selectedRowKey);
+            console.log('obj gagu: ', obj);
             if(obj.total_balance > 0 && this.state.disabledBalanceArr.length <= 0)
                balanceNoticeButton = true;
             else if(obj.total_balance <= 0) {
@@ -363,10 +370,11 @@ class SMSTable extends React.Component {
             <Row>
                <Col span={24}>
                   <Search 
-                     style={{width: '100%', zIndex: -999}}
-                     placeholder="search recipient by name"
-                     enterButton
-                     // onSearch={(value) => this.props.getAppointments(value, this.state.rangeDate)}
+                    style={{width: '100%', zIndex: -999}}
+                    placeholder="search recipient by name"
+                    enterButton
+                    onSearch={(value) => this.getRecipients(value)}
+                    onChange={this.handleSearchErased}
                   />     
                </Col>
             </Row>
