@@ -89,7 +89,7 @@ module.exports.sendAppointmentNotice = (req, res) => {
    try {
       recipients.forEach((recipient) => {
          new AWS.SNS({apiVersion: '2010-03-31'}).publish({
-            Message: `FROM: CAPSTONE PROJECT - DCMS\nMESSAGE:\nHello, ${recipient.name}! This is a reminder of your appointment on ${moment(recipient.next_appointment).format('MMMM DD, YYYY')} @ ${moment(recipient.next_appointment).format('hh:mm A')}`,
+            Message: `FROM: CAPSTONE PROJECT - DCMS\nMESSAGE:\nHello, ${recipient.name}! This is a reminder of your appointment on ${moment(recipient.next_appointment).format('MMMM DD, YYYY')} @ ${moment(recipient.next_appointment).format('h:mm A')}`,
             PhoneNumber: `+63${recipient.contact_number.substring(1, 11)}`
          }).send((err, data) => {
             if(err)
