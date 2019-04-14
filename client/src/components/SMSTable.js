@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Typography, Row, Col, Button, Icon, Input, DatePicker, Tag, message} from 'antd';
+import {Table, Typography, Row, Col, Button, Icon, Input, DatePicker, Tag, message, Divider} from 'antd';
 import moment from 'moment';
 import axios from 'axios';
 import SendCustomMessageModal from './SendCustomMessageModal';
@@ -432,7 +432,11 @@ class SMSTable extends React.Component {
             title: <Text strong>Next Appointment</Text>,
             dataIndex: 'next_appointment',
             render: (text, record) => {
-               return !record.next_appointment? <Tag>None</Tag> : moment(record.next_appointment).format('MMMM DD, YYYY');
+               return !record.next_appointment? <Tag>None</Tag> : (  <React.Fragment>
+                  <Text>{moment(record.next_appointment).format('MMMM DD, YYYY')}</Text>
+                  <Divider type="vertical"/>
+                  <Text>{moment(record.next_appointment).format('h:mm A')}</Text>
+               </React.Fragment>);
             },
             ...this.nextAppointmentFilterProps('next_appointment')
          }
