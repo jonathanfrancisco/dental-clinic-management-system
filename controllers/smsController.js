@@ -1,5 +1,9 @@
 const Patient = require('../models/Patient');
 const {raw} = require('objection');
+const moment = require('moment');
+
+const AWS = require('aws-sdk');
+AWS.config.update({region: 'us-east-1'});
 
 
 module.exports.getRecipients = async (req, res) => {
@@ -36,5 +40,65 @@ module.exports.getRecipients = async (req, res) => {
    } catch(err) {
       console.log(err);
       return res.status(500).send({message: 'Internal server error'});
+   }
+}
+
+module.exports.sendCustomMessage = (req, res) => {
+
+   const {message, recipients} = req.body;
+   try {
+      recipients.forEach((recipient) => {
+         new AWS.SNS({apiVersion: '2010-03-31'}).publish({
+            Message: `FROM: ANDRES DENTAL CLINIC\nMESSAGE:\n${message}`,
+            PhoneNumber: `+63${recipient.contact_number.substring(1, 11)}`
+         }).send((err, data) => {
+            if(err)
+               throw new Error(err);
+         });
+      });
+      return res.sendStatus(200);
+   } catch(err) {
+      console.log(err);
+      return res.sendStatus(500);
+   }
+   
+}
+
+module.exports.sendBalanceNotice = (req, res) => {
+   const {recipients} = req.body;
+   try {
+      recipients.forEach((recipient) => {
+         new AWS.SNS({apiVersion: '2010-03-31'}).publish({
+            Message: `FROM: CAPSTONE PROJECT - DCMS\nMESSAGE:\nHello, ${recipient.name}! You have a total remaining balance of ₱${recipient.total_balance.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} on your record. Kindly visit us anytime regarding about your balance.`,
+            PhoneNumber: `+63${recipient.contact_number.substring(1, 11)}`
+         }).send((err, data) => {
+            if(err)
+               throw new Error(err);
+         });
+      });
+      return res.sendStatus(200);
+   } catch(err) {
+      console.log(err);
+      return res.sendStatus(500);
+   }
+}
+
+
+module.exports.sendAppointmentNotice = (req, res) => {
+   const {recipients} = req.body;
+   try {
+      recipients.forEach((recipient) => {
+         new AWS.SNS({apiVersion: '2010-03-31'}).publish({
+            Message: `FROM: CAPSTONE PROJECT - DCMS\nMESSAGE:\nHello, ${recipient.name}! This is a reminder of your appointment on ${moment(recipient.next_appointment).format('MMMM DD, YYYY')} @ ${moment(recipient.next_appointment).format('hh:mm A')}`,
+            PhoneNumber: `+63${recipient.contact_number.substring(1, 11)}`
+         }).send((err, data) => {
+            if(err)
+               throw new Error(err);
+         });
+      });
+      return res.sendStatus(200);
+   } catch(err) {
+      console.log(err);
+      return res.sendStatus(500);
    }
 }

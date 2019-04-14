@@ -2,6 +2,7 @@ import React from 'react';
 import {Table, Typography, Row, Col, Button, Icon, Input, DatePicker, Tag, message} from 'antd';
 import moment from 'moment';
 import axios from 'axios';
+import SendCustomMessageModal from './SendCustomMessageModal';
 
 const {Search} = Input;
 const {RangePicker} = DatePicker;
@@ -66,6 +67,82 @@ class SMSTable extends React.Component {
       }
    }
 
+   handleSendCustomMessage = (customMessage) => {
+      const recipients = []; 
+      this.state.selectedRowKeys.forEach((id) => {
+         const recipient = this.state.currentDataSource.find((obj) => obj.id == id);
+         recipients.push(recipient);
+      });
+
+      const hide = message.loading(`Sending message to ${recipients.length} recipient(s)`, 0);
+      axios.post('/api/sms/sendCustomMessage', {
+         message: customMessage,
+         recipients
+      })
+      .then((response) => {
+         if(response.status === 200) {
+            hide();
+            message.success('Message(s) Successfully Sent');
+         }
+      })
+      .catch((err) => {
+         console.log(err);
+         hide();
+         message.error('Something went wrong! Please, try again.');
+      });
+
+   }
+
+   handleSendBalanceNotice = () => {
+      const recipients = []; 
+      this.state.selectedRowKeys.forEach((id) => {
+         const recipient = this.state.currentDataSource.find((obj) => obj.id == id);
+         recipients.push(recipient);
+      });
+
+      const hide = message.loading(`Sending message to ${recipients.length} recipient(s)`, 0);
+      axios.post('/api/sms/sendBalanceNotice', {
+         recipients
+      })
+      .then((response) => {
+         if(response.status === 200) {
+            hide();
+            message.success('Message(s) Successfully Sent');
+         }
+      })
+      .catch((err) => {
+         console.log(err);
+         hide();
+         message.error('Something went wrong! Please, try again.');
+      });
+
+   }
+
+   handleSendAppointmentNotice = () => {
+      const recipients = []; 
+      this.state.selectedRowKeys.forEach((id) => {
+         const recipient = this.state.currentDataSource.find((obj) => obj.id == id);
+         recipients.push(recipient);
+      });
+
+      const hide = message.loading(`Sending message to ${recipients.length} recipient(s)`, 0);
+      axios.post('/api/sms/sendAppointmentNotice', {
+         recipients
+      })
+      .then((response) => {
+         if(response.status === 200) {
+            hide();
+            message.success('Message(s) Successfully Sent');
+         }
+      })
+      .catch((err) => {
+         console.log(err);
+         hide();
+         message.error('Something went wrong! Please, try again.');
+      });
+
+   }
+   
    handleSearchErased = (e) => {
       const {value} = e.target;
      if(value === '')
@@ -233,7 +310,6 @@ class SMSTable extends React.Component {
          this.state.selectedRowKeys.forEach((selectedRowKey) => { 
             // CHECKPOINT April 14 5:01AM
             const obj = this.state.currentDataSource.find((element) => element.id == selectedRowKey);
-            console.log('obj gagu: ', obj);
             if(obj.total_balance > 0 && this.state.disabledBalanceArr.length <= 0)
                balanceNoticeButton = true;
             else if(obj.total_balance <= 0) {
@@ -391,14 +467,13 @@ class SMSTable extends React.Component {
                   </span>
                </Col>
                <Col span={16} align="right">
-                  <Button disabled={!this.state.customMessageButton} style={{marginRight: 8}} type="primary">Send Custom Message</Button>
-                  <Button disabled={!this.state.balanceNoticeButton} style={{marginRight: 8}} type="primary">Send Balance Notice</Button>
-                  <Button disabled={!this.state.appointmentNoticeButton} type="primary">Send Appointment Notice</Button>
+                  <SendCustomMessageModal disabled={!this.state.customMessageButton} sendCustomMessage={this.handleSendCustomMessage} />
+                  <Button disabled={!this.state.balanceNoticeButton} onClick={this.handleSendBalanceNotice} style={{marginRight: 8}} type="primary">Send Balance Notice</Button>
+                  <Button disabled={!this.state.appointmentNoticeButton} onClick={this.handleSendAppointmentNotice} type="primary">Send Appointment Notice</Button>
                </Col>
             </Row>
             <Table
                onChange={(pagination, filters, sorter, {currentDataSource}) => {
-                  console.log('Current on change data source: ',currentDataSource);
                   this.setState({currentDataSource});
                }} 
                loading={this.state.loading}
