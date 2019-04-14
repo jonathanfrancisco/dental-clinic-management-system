@@ -284,7 +284,7 @@ class SMSTable extends React.Component {
          hideDefaultSelections: true,
          onSelection: this.onSelection,
          getCheckboxProps: record => ({
-               disabled: !record.contact_number, // Column configuration not to be checked
+               disabled: !record.contact_number || !record.last_visit, // Column configuration not to be checked
             }),
          selections: [
             {
@@ -343,7 +343,7 @@ class SMSTable extends React.Component {
             title: <Text strong>Last Visit</Text>,
             dataIndex: 'last_visit',
             render: (text, record) => {
-               return moment(record.last_visit).format('MMMM DD, YYYY');
+               return !record.last_visit ? <Tag color="geekblue">New Record</Tag> : moment(record.last_visit).format('MMMM DD, YYYY');
             }, 
             ...this.lastVisitFilterProps('last_visit')
          },{
