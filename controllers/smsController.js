@@ -21,7 +21,7 @@ module.exports.getRecipients = async (req, res) => {
                           'patient.contact_number',
                           raw('(SELECT date_treated FROM treatment WHERE treatment.patient_id = patient.id ORDER BY UNIX_TIMESTAMP(date_treated) DESC LIMIT 1) as last_visit'),
                           raw('(SELECT SUM((SELECT treatment.total_amount_to_pay - SUM(payment_transaction.amount_paid) FROM payment_transaction WHERE payment_transaction.treatment_id = treatment.id GROUP BY treatment.id)) as total FROM treatment WHERE treatment.patient_id = patient.id)   as total_balance'),
-                          raw(`(SELECT date_time FROM appointment WHERE appointment.patient_id = patient.id AND UNIX_TIMESTAMP(appointment.date_time) > ${todayInUnix} ORDER BY UNIX_TIMESTAMP(date_time) DESC LIMIT 1) as next_appointment`)
+                          raw(`(SELECT date_time FROM appointment WHERE appointment.patient_id = patient.id AND UNIX_TIMESTAMP(appointment.date_time) > ${todayInUnix} AND appointment.status = 'confirmed' ORDER BY UNIX_TIMESTAMP(date_time) DESC LIMIT 1) as next_appointment`)
                         )
       }
       
