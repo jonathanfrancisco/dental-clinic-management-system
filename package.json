@@ -28,7 +28,8 @@
     "morgan": "^1.9.1",
     "mysql2": "^1.6.5",
     "nanoid": "^2.0.1",
-    "objection": "^1.6.0"
+    "objection": "^1.6.0",
+    "twilio": "^3.30.1"
   },
   "devDependencies": {
     "dotenv": "^7.0.0"
