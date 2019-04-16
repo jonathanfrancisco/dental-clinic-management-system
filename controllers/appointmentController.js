@@ -22,10 +22,9 @@ module.exports.createInPersonAppointment = async (req, res) => {
 module.exports.declineCancelAppointment = async (req, res) => {
    const {id, date_time, name, contact_number, type, reasonMessage} = req.body;
    const newStatus = type === 'decline' ? 'declined' : 'cancelled';
-   const appointmentDate = moment(date_time).format('MMMM DD, YYYY h:mm A');
    const message = type === 'decline' ? 
-                  `Hello, ${name}! Unfortunately, your request of appointment on ${moment(appointmentDate).format('MMMM DD, YYYY')} @ ${moment(appointmentDate).format('h:mm A')} has been declined. Reason: "${reasonMessage}"` : 
-                  `Hello, ${name}! Unfortunately, your scheduled appointment on ${moment(appointmentDate).format('MMMM DD, YYYY')} @ ${moment(appointmentDate).format('h:mm A')} has been cancelled. Reason: "${reasonMessage}"`;
+                  `Hello, ${name}! Unfortunately, your request of appointment on ${moment(date_time).format('MMMM DD, YYYY')} @ ${moment(date_time).format('h:mm A')} has been declined. Reason: "${reasonMessage}"` : 
+                  `Hello, ${name}! Unfortunately, your scheduled appointment on ${moment(date_time).format('MMMM DD, YYYY')} @ ${moment(date_time).format('h:mm A')} has been cancelled. Reason: "${reasonMessage}"`;
    try {
       const declineCancelAppointment = await Appointment.query().patchAndFetchById(id,{
          status: newStatus
@@ -43,6 +42,7 @@ module.exports.declineCancelAppointment = async (req, res) => {
             Message: `FROM: ANDRES DENTAL CLINIC\n\n${message}`,
             PhoneNumber: `+63${contact_number.substring(1, 11)}`
          }).send((err, data) => {
+            console.log(data);
             if(err)
                throw new Error(err);
          });
