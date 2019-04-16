@@ -54,7 +54,7 @@ module.exports.sendCustomMessage = async (req, res) => {
       recipients.forEach((recipient) => {
          twilio.messages.create({
             from: '+18479062302',
-            body: `FROM: ANDRES DENTAL CLINIC\nMESSAGE:\n${message}`,
+            body: `FROM: ANDRES DENTAL CLINIC\n\n${message}`,
             to: `+63${recipient.contact_number.substring(1, 11)}`
          }).then(message => console.log(message.to, message.body)).done();
       });
@@ -62,7 +62,7 @@ module.exports.sendCustomMessage = async (req, res) => {
       // // USING AWS SNS SMS API
       // recipients.forEach((recipient) => {
       //    new AWS.SNS({apiVersion: '2010-03-31'}).publish({
-      //       Message: `FROM: ANDRES DENTAL CLINIC\nMESSAGE:\n${message}`,
+      //       Message: `FROM: ANDRES DENTAL CLINIC\n\n${message}`,
       //       PhoneNumber: `+63${recipient.contact_number.substring(1, 11)}`
       //    }).send((err, data) => {
       //       if(err)
@@ -88,7 +88,7 @@ module.exports.sendBalanceNotice = (req, res) => {
       recipients.forEach((recipient) => {
          twilio.messages.create({
             from: '+18479062302',
-            body: `FROM: CAPSTONE PROJECT - DCMS\nMESSAGE:\nHello, ${recipient.name}! You have a total remaining balance of ₱${recipient.total_balance.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} on your record. Kindly visit us anytime regarding about your balance.`,
+            body: `FROM: ANDRES DENTAL CLINIC\n\nHello, ${recipient.name}! You have a total remaining balance of ₱${recipient.total_balance.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} on your record. Kindly visit us anytime regarding about your balance.`,
             to: `+63${recipient.contact_number.substring(1, 11)}`
          }).then(message => console.log(message.to, message.body)).done();
       });
@@ -96,7 +96,7 @@ module.exports.sendBalanceNotice = (req, res) => {
       // // USING AWS SNS SMS API
       // recipients.forEach((recipient) => {
       //    new AWS.SNS({apiVersion: '2010-03-31'}).publish({
-      //       Message: `FROM: CAPSTONE PROJECT - DCMS\nMESSAGE:\nHello, ${recipient.name}! You have a total remaining balance of ₱${recipient.total_balance.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} on your record. Kindly visit us anytime regarding about your balance.`,
+      //       Message: `FROM: ANDRES DENTAL CLINIC\n\nHello, ${recipient.name}! You have a total remaining balance of ₱${recipient.total_balance.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} on your record. Kindly visit us anytime regarding about your balance.`,
       //       PhoneNumber: `+63${recipient.contact_number.substring(1, 11)}`
       //    }).send((err, data) => {
       //       if(err)
@@ -121,7 +121,7 @@ module.exports.sendAppointmentNotice = (req, res) => {
       recipients.forEach((recipient) => {
          twilio.messages.create({
             from: '+18479062302',
-            body: `FROM: CAPSTONE PROJECT - DCMS\nMESSAGE:\nHello, ${recipient.name}! This is a reminder of your appointment on ${moment(recipient.next_appointment).format('MMMM DD, YYYY')} @ ${moment(recipient.next_appointment).format('h:mm A')}`,
+            body: `FROM: ANDRES DENTAL CLINIC\n\nHello, ${recipient.name}! This is a reminder of your appointment on ${moment(recipient.next_appointment).format('MMMM DD, YYYY')} @ ${moment(recipient.next_appointment).format('h:mm A')}`,
             to: `+63${recipient.contact_number.substring(1, 11)}`
          }).then(message => console.log(message.to, message.body)).done();
       });
@@ -129,7 +129,7 @@ module.exports.sendAppointmentNotice = (req, res) => {
       // // USING SNS SMS API
       // recipients.forEach((recipient) => {
       //    new AWS.SNS({apiVersion: '2010-03-31'}).publish({
-      //       Message: `FROM: CAPSTONE PROJECT - DCMS\nMESSAGE:\nHello, ${recipient.name}! This is a reminder of your appointment on ${moment(recipient.next_appointment).format('MMMM DD, YYYY')} @ ${moment(recipient.next_appointment).format('h:mm A')}`,
+      //       Message: `FROM: ANDRES DENTAL CLINIC\n\nHello, ${recipient.name}! This is a reminder of your appointment on ${moment(recipient.next_appointment).format('MMMM DD, YYYY')} @ ${moment(recipient.next_appointment).format('h:mm A')}`,
       //       PhoneNumber: `+63${recipient.contact_number.substring(1, 11)}`
       //    }).send((err, data) => {
       //       if(err)
