@@ -2,6 +2,8 @@ const Appointment = require('../models/Appointment');
 const {raw} = require('objection');
 const moment = require('moment');
 const twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+const AWS = require('aws-sdk');
+AWS.config.update({region: 'us-east-1'});
 
 module.exports.createInPersonAppointment = async (req, res) => {
    const newAppointment = req.body;
@@ -28,11 +30,23 @@ module.exports.declineCancelAppointment = async (req, res) => {
       const declineCancelAppointment = await Appointment.query().patchAndFetchById(id,{
          status: newStatus
       }).then(() => {
-         twilio.messages.create({
-            from: '+1847906 2302',
-            body: `FROM: ANDRES DENTAL CLINIC\n\n${message}`,
-            to: `+63${contact_number.substring(1, 11)}`
-         }).then(message => console.log(message.to, message.body));
+
+         // // USING TWILIO SMS API
+         // twilio.messages.create({
+         //    from: '+1847906 2302',
+         //    body: `FROM: ANDRES DENTAL CLINIC\n\n${message}`,
+         //    to: `+63${contact_number.substring(1, 11)}`
+         // }).then(message => console.log(message.to, message.body));
+
+         // USING AWS SNS SMS API
+         new AWS.SNS({apiVersion: '2010-03-31'}).publish({
+            Message: `FROM: ANDRES DENTAL CLINIC\n\n${message}`,
+            PhoneNumber: `+63${contact_number.substring(1, 11)}`
+         }).send((err, data) => {
+            if(err)
+               throw new Error(err);
+         });
+
       });
       return res.sendStatus(200);
    } catch(err) {
