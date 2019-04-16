@@ -4,5 +4,6 @@ const appointmentController = require('../controllers/appointmentController');
 
 Router.get('/', appointmentController.appointments);
 Router.post('/create/in-person', appointmentController.createInPersonAppointment);
+Router.patch('/decline-cancel', appointmentController.declineCancelAppointment);
 
 module.exports = Router;

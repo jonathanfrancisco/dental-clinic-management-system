@@ -1,6 +1,7 @@
 import React from 'react';
 import {message, Menu, Dropdown,Badge, Icon, Button, Table, Row, Col, Input, Typography, DatePicker, Radio, Divider} from 'antd';
 import moment from 'moment';
+import DeclineCancelAppointmentModal from './DeclineCancelAppointmentModal';
 
 import CreateAppointmentModal from './CreateAppointmentModal';
 import axios from 'axios';
@@ -44,6 +45,26 @@ class AppointmentsTable extends React.Component {
          this.props.getAppointments(value, this.state.rangeDate);
    }
 
+   handleDeclineCancelAppointment = (values) => {
+      
+      const hide = message.loading(`${values.type === 'cancel' ? 'Cancelling' : 'Declining'} appointment...`, 0);
+      axios.patch('/api/appointments/decline-cancel',values)
+      .then((response) => {
+         if(response.status === 200) {
+            hide();
+            message.success(`Appointment Successfully ${values.type === 'cancel' ? 'Cancelled' : 'Declined'} `);
+            this.props.getAppointments(this.state.search, this.state.rangeDate);
+         }
+      })
+      .catch((err) => {
+         console.log(err);
+         hide();
+         message.error('Something went wrong! Please, try again.');
+      });
+     
+   }
+
+
    onRadioChange = async (e) => {
       const {value: filterBy} = e.target;
       await this.setState({selectedFilterBy: filterBy});
@@ -65,6 +86,7 @@ class AppointmentsTable extends React.Component {
     }
 
    render() {
+
       const columns = [
          {
             title: <Text strong>Date and Time</Text>,
@@ -117,6 +139,9 @@ class AppointmentsTable extends React.Component {
                : record.status === 'pending' ? (    
                   <Badge status="processing" text={<Text style={{color: '#108ee9'}}>Pending</Text>}/>
                ) 
+               : record.status === 'declined' ? (
+                  (<Badge status="error" text={<Text style={{color: '#ff7875'}}>Declined</Text>}/>)
+               )
                : (<Badge status="error" text={<Text style={{color: '#ff7875'}}>Cancelled</Text>}/>) }
          },
          {
@@ -125,14 +150,16 @@ class AppointmentsTable extends React.Component {
             render: (text, record) => {
 
                const isAppointmentPast = moment(record.date_time).format('X') < moment(Date.now()).format('X');
-
                const menu = record.status === 'pending' ? (
                   <Menu>
                      <Menu.Item> 
                         Confirm Appointment
                      </Menu.Item>
                      <Menu.Item>
-                        Cancel Appointment
+                        {record.contact_number ? <DeclineCancelAppointmentModal 
+                                                   onDeclineCancel={this.handleDeclineCancelAppointment} 
+                                                   appointment={{id: record.id, date_time: record.date_time, name: record.name, contact_number: record.contact_number}} type="decline" /> 
+                                                   :  'No Contact Number Cancel?' } 
                      </Menu.Item>
                   </Menu>
                ) : (
@@ -149,26 +176,24 @@ class AppointmentsTable extends React.Component {
    
                         ) : (
                            <Menu.Item>
-                              Cancel Appointment
+                               {record.contact_number ? <DeclineCancelAppointmentModal 
+                                                         onDeclineCancel={this.handleDeclineCancelAppointment} 
+                                                         appointment={{id: record.id, date_time: record.date_time, name: record.name, contact_number: record.contact_number}} type="cancel" /> 
+                                                         : 'No Contact Number' } 
                            </Menu.Item>
                         )
                      }
                   </Menu>
                );
 
-               if(record.status === 'cancelled' 
-                  ||(record.status === 'pending' && isAppointmentPast)
-                  ||(record.status === 'confirmed' && isAppointmentPast))
-                     return (
-                        <Dropdown disabled>
-                           <Button>
-                              Actions <Icon type="down" />
-                           </Button>
-                        </Dropdown>
-                     );
+               const disabledDropdown = (record.status === 'cancelled'
+                                    || record.status === 'declined'
+                                    || (record.status === 'pending' && isAppointmentPast)
+                                    || (record.status === 'confirmed' && isAppointmentPast)
+               ) ?  true : false;
               
                return (
-                  <Dropdown overlay={menu} trigger={['click']}>
+                  <Dropdown disabled={disabledDropdown} overlay={menu} trigger={['click']}>
                      <Button>
                         Actions <Icon type="down" />
                      </Button>

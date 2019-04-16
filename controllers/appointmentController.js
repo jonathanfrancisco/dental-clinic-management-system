@@ -1,6 +1,7 @@
 const Appointment = require('../models/Appointment');
 const {raw} = require('objection');
 const moment = require('moment');
+const twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 module.exports.createInPersonAppointment = async (req, res) => {
    const newAppointment = req.body;
@@ -16,6 +17,29 @@ module.exports.createInPersonAppointment = async (req, res) => {
    }
 }
 
+module.exports.declineCancelAppointment = async (req, res) => {
+   const {id, date_time, name, contact_number, type, reasonMessage} = req.body;
+   const newStatus = type === 'decline' ? 'declined' : 'cancelled';
+   const appointmentDate = moment(date_time).format('MMMM DD, YYYY h:mm A');
+   const message = type === 'decline' ? 
+                  `Hello, ${name}! Unfortunately, your request of appointment on ${moment(appointmentDate).format('MMMM DD, YYYY')} @ ${moment(appointmentDate).format('h:mm A')} has been declined. Reason: "${reasonMessage}"` : 
+                  `Hello, ${name}! Unfortunately, your scheduled appointment on ${moment(appointmentDate).format('MMMM DD, YYYY')} @ ${moment(appointmentDate).format('h:mm A')} has been cancelled. Reason: "${reasonMessage}"`;
+   try {
+      const declineCancelAppointment = await Appointment.query().patchAndFetchById(id,{
+         status: newStatus
+      }).then(() => {
+         twilio.messages.create({
+            from: '+1847906 2302',
+            body: `FROM: ANDRES DENTAL CLINIC\n\n${message}`,
+            to: `+63${contact_number.substring(1, 11)}`
+         }).then(message => console.log(message.to, message.body));
+      });
+      return res.sendStatus(200);
+   } catch(err) {
+      console.log(err);
+   }
+}
+
 module.exports.appointments = async (req, res) => {
    
    try {
@@ -26,7 +50,7 @@ module.exports.appointments = async (req, res) => {
          //    .orderBy(raw('UNIX_TIMESTAMP(appointment.date_time)'),'ASC');
 
          if(req.query.search) {
-            appointments = await Appointment.query().select('appointment.*', 'patient.name')
+            appointments = await Appointment.query().select('appointment.*', 'patient.name', 'patient.contact_number')
             .join('patient','patient.id', 'appointment.patient_id')
             .whereRaw(`LOWER(patient.name) like "%${req.query.search.toLowerCase()}%"`)
             .whereBetween('date_time', [req.query.startDate+' 00:00:00', req.query.endDate+' 23:59:59'])
@@ -34,7 +58,7 @@ module.exports.appointments = async (req, res) => {
          }
 
          else {
-            appointments = await Appointment.query().select('appointment.*', 'patient.name')
+            appointments = await Appointment.query().select('appointment.*', 'patient.name','patient.contact_number')
             .join('patient','patient.id', 'appointment.patient_id')
             .whereBetween('date_time', [req.query.startDate+' 00:00:00', req.query.endDate+' 23:59:59'])
             .orderBy('appointment.id', "DESC");
@@ -46,14 +70,14 @@ module.exports.appointments = async (req, res) => {
 
       else {
          if(req.query.search) {
-            appointments = await Appointment.query().select('appointment.*', 'patient.name')
+            appointments = await Appointment.query().select('appointment.*', 'patient.name', 'patient.contact_number')
             .join('patient','patient.id', 'appointment.patient_id')
             .whereRaw(`LOWER(patient.name) like "%${req.query.search.toLowerCase()}%"`)
             .orderBy('appointment.id', "DESC");
             
          }
          else {
-            appointments = await Appointment.query().select('appointment.*', 'patient.name')
+            appointments = await Appointment.query().select('appointment.*', 'patient.name', 'patient.contact_number')
                               .join('patient','patient.id', 'appointment.patient_id')
                               .orderBy('appointment.id', "DESC");
          }
