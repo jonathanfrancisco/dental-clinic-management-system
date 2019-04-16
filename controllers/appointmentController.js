@@ -3,7 +3,7 @@ const {raw} = require('objection');
 const moment = require('moment');
 const twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 const AWS = require('aws-sdk');
-AWS.config.update({region: 'us-east-1'});
+AWS.config.update({region: 'ap-southeast-1'});
 
 module.exports.createInPersonAppointment = async (req, res) => {
    const newAppointment = req.body;
