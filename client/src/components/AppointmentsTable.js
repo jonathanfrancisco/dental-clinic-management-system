@@ -47,6 +47,19 @@ class AppointmentsTable extends React.Component {
          this.props.getAppointments(value, this.state.rangeDate);
    }
 
+   handleNoContactNumber = (values) => {
+      confirm({
+         title: `Are you sure to ${values.type} this appointment?!`,
+         content: 'This patient does not have available contact number, therefore will not be notified through SMS.',
+         okText: 'Yes',
+         onOk: () => {
+            this.handleDeclineCancelAppointment(values);
+         },
+         onCancel() {
+         },
+       });
+   }
+
    handleDeclineCancelAppointment = (values) => {
       
       const hide = message.loading(`${values.type === 'cancel' ? 'Cancelling' : 'Declining'} appointment...`, 0);
@@ -81,10 +94,6 @@ class AppointmentsTable extends React.Component {
          hide();
          message.error('Something went wrong! Please, try again.');
       });
-   }
-
-   handleDeclineCancelAppointmentNoContact = () => {
-
    }
 
    onRadioChange = async (e) => {
@@ -189,7 +198,11 @@ class AppointmentsTable extends React.Component {
                         {record.contact_number ? <DeclineCancelAppointmentModal 
                                                    onDeclineCancel={this.handleDeclineCancelAppointment} 
                                                    appointment={{id: record.id, date_time: record.date_time, name: record.name, contact_number: record.contact_number}} type="decline" /> 
-                                                   :  'Decline appointment no contact number'} 
+                                                   :   <a
+                                                   onClick={() => this.handleNoContactNumber({id: record.id, date_time: record.date_time, name: record.name, contact_number: record.contact_number, type: 'decline'})} 
+                                                   target="_blank" rel="noopener noreferrer">
+                                                   Decline Appointment
+                                                </a>} 
                      </Menu.Item>
                   </Menu>
                ) : (
@@ -203,13 +216,16 @@ class AppointmentsTable extends React.Component {
                            <Menu.Item disabled> 
                               Cancel Appointment
                            </Menu.Item>
-   
                         ) : (
                            <Menu.Item>
                                {record.contact_number ? <DeclineCancelAppointmentModal 
                                                          onDeclineCancel={this.handleDeclineCancelAppointment} 
                                                          appointment={{id: record.id, date_time: record.date_time, name: record.name, contact_number: record.contact_number}} type="cancel" /> 
-                                                         :  'Cancel Appointment no contact number'} 
+                                                         :  <a
+                                                               onClick={() => this.handleNoContactNumber({id: record.id, date_time: record.date_time, name: record.name, contact_number: record.contact_number, type: 'cancel'})} 
+                                                               target="_blank" rel="noopener noreferrer">
+                                                               Cancel Appointment
+                                                            </a> } 
                            </Menu.Item>
                         )
                      }

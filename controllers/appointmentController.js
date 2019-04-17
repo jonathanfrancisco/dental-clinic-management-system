@@ -31,21 +31,23 @@ module.exports.declineCancelAppointment = async (req, res) => {
       }).then(() => {
 
          // // USING TWILIO SMS API
-         // twilio.messages.create({
-         //    from: '+1847906 2302',
-         //    body: `FROM: ANDRES DENTAL CLINIC\n\n${message}`,
-         //    to: `+63${contact_number.substring(1, 11)}`
-         // }).then(message => console.log(message.to, message.body));
+         // if(contact_number)
+         //    twilio.messages.create({
+         //       from: '+1847906 2302',
+         //       body: `FROM: ANDRES DENTAL CLINIC\n\n${message}`,
+         //       to: `+63${contact_number.substring(1, 11)}`
+         //    }).then(message => console.log(message.to, message.body));
 
          // USING AWS SNS SMS API
-         new AWS.SNS({apiVersion: '2010-03-31'}).publish({
-            Message: `FROM: ANDRES DENTAL CLINIC\n\n${message}`,
-            PhoneNumber: `+63${contact_number.substring(1, 11)}`
-         }).send((err, data) => {
-            console.log(data);
-            if(err)
-               throw new Error(err);
-         });
+         if(contact_number)
+            new AWS.SNS({apiVersion: '2010-03-31'}).publish({
+               Message: `FROM: ANDRES DENTAL CLINIC\n\n${message}`,
+               PhoneNumber: `+63${contact_number.substring(1, 11)}`
+            }).send((err, data) => {
+               console.log(data);
+               if(err)
+                  throw new Error(err);
+            });
 
       });
       return res.sendStatus(200);
