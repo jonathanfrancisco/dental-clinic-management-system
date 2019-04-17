@@ -1,11 +1,13 @@
 import React from 'react';
-import {message, Menu, Dropdown,Badge, Icon, Button, Table, Row, Col, Input, Typography, DatePicker, Radio, Divider} from 'antd';
+import {Modal, message, Menu, Dropdown,Badge, Icon, Button, Table, Row, Col, Input, Typography, DatePicker, Radio, Divider} from 'antd';
 import moment from 'moment';
 import DeclineCancelAppointmentModal from './DeclineCancelAppointmentModal';
 
 import CreateAppointmentModal from './CreateAppointmentModal';
 import axios from 'axios';
 
+
+const {confirm} = Modal;
 const {RangePicker} = DatePicker;;
 const {Search} = Input;
 const {Text} = Typography;
@@ -64,6 +66,26 @@ class AppointmentsTable extends React.Component {
      
    }
 
+   handleConfirmAppoinment = (values) => {
+      const hide = message.loading(`Confirming appointment...`, 0);
+      axios.post('/api/appointments/confirm',values)
+      .then((response) => {
+         if(response.status === 200) {
+            hide();
+            message.success(`Appointment Successfully Confirmed`);
+            this.props.getAppointments(this.state.search, this.state.rangeDate);
+         }
+      })
+      .catch((err) => {
+         console.log(err);
+         hide();
+         message.error('Something went wrong! Please, try again.');
+      });
+   }
+
+   handleDeclineCancelAppointmentNoContact = () => {
+
+   }
 
    onRadioChange = async (e) => {
       const {value: filterBy} = e.target;
@@ -153,13 +175,21 @@ class AppointmentsTable extends React.Component {
                const menu = record.status === 'pending' ? (
                   <Menu>
                      <Menu.Item> 
-                        Confirm Appointment
+                        <a 
+                           onClick={() => {
+                              this.handleConfirmAppoinment({id: record.id,
+                                 date_time: record.date_time,
+                                 name: record.name, contact_number:
+                                 record.contact_number
+                              });
+                           }}
+                           target="_blank" rel="noopener noreferrer" >Confirm Appointment</a>
                      </Menu.Item>
                      <Menu.Item>
                         {record.contact_number ? <DeclineCancelAppointmentModal 
                                                    onDeclineCancel={this.handleDeclineCancelAppointment} 
                                                    appointment={{id: record.id, date_time: record.date_time, name: record.name, contact_number: record.contact_number}} type="decline" /> 
-                                                   :  'No Contact Number Cancel?' } 
+                                                   :  'Decline appointment no contact number'} 
                      </Menu.Item>
                   </Menu>
                ) : (
@@ -179,7 +209,7 @@ class AppointmentsTable extends React.Component {
                                {record.contact_number ? <DeclineCancelAppointmentModal 
                                                          onDeclineCancel={this.handleDeclineCancelAppointment} 
                                                          appointment={{id: record.id, date_time: record.date_time, name: record.name, contact_number: record.contact_number}} type="cancel" /> 
-                                                         : 'No Contact Number' } 
+                                                         :  'Cancel Appointment no contact number'} 
                            </Menu.Item>
                         )
                      }

@@ -54,6 +54,38 @@ module.exports.declineCancelAppointment = async (req, res) => {
    }
 }
 
+module.exports.confirm = async (req, res) => {
+
+   const {id, name, contact_number} = req.body;
+   const appointmentDate = `${moment(req.body.date_time).format('MMMM DD, YYYY')} @ ${moment(req.body.date_time).format('h:mm A')}`
+   const message = `Hello, ${name}! Your request of appointment on ${appointmentDate} is confirmed. See you soon!`;
+   const confirmAppointment = await Appointment.query()
+   .patchAndFetchById(id, {status: 'confirmed'})
+   .then(() => {
+      
+      //   // USING TWILIO SMS API
+      //    if(contact_number)
+      //       twilio.messages.create({
+      //          from: '+1847906 2302',
+      //          body: `FROM: ANDRES DENTAL CLINIC\n\n${message}`,
+      //          to: `+63${contact_number.substring(1, 11)}`
+      //       }).then(message => console.log(message.to, message.body));
+
+         // USING AWS SNS SMS API
+         if(contact_number)
+            new AWS.SNS({apiVersion: '2010-03-31'}).publish({
+               Message: `FROM: ANDRES DENTAL CLINIC\n\n${message}`,
+               PhoneNumber: `+63${contact_number.substring(1, 11)}`
+            }).send((err, data) => {
+               console.log(data);
+               if(err)
+                  throw new Error(err);
+            });
+   });
+
+   return res.sendStatus(200);
+}
+
 module.exports.appointments = async (req, res) => {
    
    try {
