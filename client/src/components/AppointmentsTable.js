@@ -152,14 +152,17 @@ class AppointmentsTable extends React.Component {
             title: <Text strong>Status</Text>,
             dataIndex: 'status',
             filters: [{
+               text: 'Pending',
+               value: 'pending',
+             },{
                text: 'Confirmed',
                value: 'confirmed',
              }, {
                text: 'Cancelled',
                value: 'cancelled',
-             }, {
-               text: 'Pending',
-               value: 'pending',
+             },{
+               text: 'Declined',
+               value: 'declined'
              }],
             filterMultiple: false,
             onFilter: (value, record) => {
