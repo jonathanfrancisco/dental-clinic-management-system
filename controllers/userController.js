@@ -1,7 +1,25 @@
 const User = require('../models/User');
+const Patient = require('../models/Patient');
 const jwt = require('jsonwebtoken');
 const secret = require('../config').secret;
 const bcrypt = require('bcrypt');
+
+module.exports.validateUsername = async(req, res) => {
+   const {username} = req.params; 
+   console.log('gago');
+   try {
+      const users = await User.query().select('username');
+      const isExist = users.find((obj) => obj.username === username);
+      if(isExist)
+         return res.send({isValid: false});
+      return res.send({isValid: true});
+   }
+   catch(err) {
+      console.log(err);
+      return res.status(500).send({error: 'Internal server error'});
+   }
+
+}
 
 module.exports.users = async (req, res) => {
    const users = await User.query().orderBy('id', 'desc');
@@ -12,6 +30,33 @@ module.exports.getUserById = async (req, res) => {
    const id = req.params.id;
    const user = await User.query().findById(id);
    return res.send({user});
+}
+
+module.exports.register = async (req, res) => {
+   const newUser = req.body;
+   console.log(newUser);
+   try {
+      if(newUser.password !== newUser.confirm_password)
+         return res.status(500).send({error: 'Internal server error'});
+      delete newUser['confirm_password'];
+      const [patient] = await Patient.query().select('id').where('code', newUser.patient_code);
+      if(!patient)
+         return res.status(500).send({error: 'Internal server error'});
+      delete newUser.patient_code;
+      newUser.patient_id = patient.id;
+      newUser.role = 'patient';
+      const result = await User.register(newUser);
+      return res.sendStatus(200);
+   } catch(err) {
+      if(err.name ==='ValidationError') {
+         console.log(err);
+         return res.send({errors: err.data});
+      }
+      else {
+         console.error(err);
+         return res.status(500).send({error: 'Internal server error'});
+      }
+   }
 }
 
 module.exports.create = async (req, res) => {

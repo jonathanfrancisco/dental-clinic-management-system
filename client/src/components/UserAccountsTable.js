@@ -81,7 +81,7 @@ class UserAccountsTable extends React.Component {
             title: <Text strong>Role</Text>,
             dataIndex: 'role',
             render: (text, record) => {
-               return record.role === 'dentist' ? 'Dentist' : 'Dental Aide';
+               return record.role === 'dentist' ? 'Dentist' : record.role === 'dentalaide' ? 'Dental Aide' : 'Patient';
             }
          }, 
          {

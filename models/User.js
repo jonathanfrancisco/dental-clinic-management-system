@@ -17,7 +17,9 @@ class User extends Model {
             name: {type: 'string'},
             birthday: {type: 'date-time'},
             address: {type: 'string'},
-            role: {type: 'string'}
+            role: {type: 'string'},
+            emailaddress: {type: 'string'},
+            patient_id: {type: 'integer'}
          }
       };
    }

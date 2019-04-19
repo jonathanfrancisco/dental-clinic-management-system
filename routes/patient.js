@@ -5,6 +5,7 @@ Router.get('/', patientController.patients);
 Router.get('/:code', patientController.getPatientByCode);
 Router.post('/create', patientController.create);
 Router.patch('/:code/update', patientController.update);
+Router.post('/:code/validate', patientController.validatePatientCode);
 Router.get('/:id/childteethchart', patientController.childTeethChart);
 Router.patch('/:id/childteethchart', patientController.updateChildTeethChart);
 Router.get('/:id/adultteethchart', patientController.adultTeethChart);

@@ -1,7 +1,9 @@
 const Router = require('express').Router();
 const userController = require('../controllers/userController');
 const withAuth = require('../services/withAuth');
+Router.post('/:username/validate', userController.validateUsername);
 Router.get('/', withAuth,  userController.users);
+Router.post('/register', userController.register);
 Router.post('/create', withAuth, userController.create);
 Router.patch('/:id/update', withAuth, userController.update);
 Router.delete('/:id/delete', withAuth, userController.delete);

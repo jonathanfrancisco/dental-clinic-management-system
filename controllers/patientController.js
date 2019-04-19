@@ -5,6 +5,25 @@ const moment = require('moment');
 const generate = require('nanoid/generate');
 const {raw} = require('objection');
 
+module.exports.validatePatientCode = async (req, res) => {
+
+   const {code} = req.params; 
+   try {
+      const patients = await Patient.query().select('code');
+      const isExist = patients.find((obj) => obj.code === code);
+      if(!isExist)
+         return res.send({isValid: false});
+      return res.send({isValid: true});
+   }
+   catch(err) {
+      return res.status(500).send({error: 'Internal server error'});
+   }
+
+
+
+   return res.sendStatus(200);
+}
+
 module.exports.patients = async (req, res) => {
    let {search} = req.query;
    if(!search) 

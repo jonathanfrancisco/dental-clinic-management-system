@@ -19,6 +19,17 @@ const UpdateAccountForm = Form.create()(
          const {account} = this.props;
          const {form} = this.props;
          const { getFieldDecorator } = form;
+         const roleSelect = account.role === 'patient' ? (
+            <Select disabled>
+               <Option value="dentalaide">Dental Aide</Option>
+               <Option value="dentist">Dentist</Option>
+            </Select>
+         ) : (
+            <Select >
+               <Option value="dentalaide">Dental Aide</Option>
+               <Option value="dentist">Dentist</Option>
+            </Select>
+         );
          return (
             <React.Fragment>
                <Form layout="vertical" onSubmit={this.handleSubmit}>
@@ -60,11 +71,8 @@ const UpdateAccountForm = Form.create()(
                            {getFieldDecorator('role', {
                               rules: [{ required: true, message: 'Role is required' }],
                               initialValue: account.role || ''
-                           })(
-                           <Select>
-                              <Option value="dentalaide">Dental Aide</Option>
-                              <Option value="dentist">Dentist</Option>
-                           </Select>
+                           })( 
+                              roleSelect
                            )}
                         </Form.Item>
                      </Col>
