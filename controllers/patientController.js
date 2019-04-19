@@ -24,6 +24,18 @@ module.exports.validatePatientCode = async (req, res) => {
    return res.sendStatus(200);
 }
 
+module.exports.getPatientById = async (req, res) => {
+   const {patientId} = req.params;
+   try {
+      const [patient] = await Patient.query()
+                        .select('patient.*',
+                        raw(`(SELECT date_treated FROM treatment WHERE treatment.patient_id = patient.id ORDER BY UNIX_TIMESTAMP(date_treated) DESC LIMIT 1) as last_visit`))
+                        .where('patient.id', patientId);
+      return res.send({patient});
+   } catch(err) {
+      return res.status(500).send({error: 'Internal server error'});
+   }
+}
 module.exports.patients = async (req, res) => {
    let {search} = req.query;
    if(!search) 

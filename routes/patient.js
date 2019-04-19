@@ -4,6 +4,7 @@ const patientController = require('../controllers/patientController');
 Router.get('/', patientController.patients);
 Router.get('/:code', patientController.getPatientByCode);
 Router.post('/create', patientController.create);
+Router.post('/:patientId', patientController.getPatientById);
 Router.patch('/:code/update', patientController.update);
 Router.post('/:code/validate', patientController.validatePatientCode);
 Router.get('/:id/childteethchart', patientController.childTeethChart);

@@ -155,7 +155,8 @@ module.exports.login = async (req, res) => {
             id: user.id,
             username: user.username,
             name: user.name,
-            role: user.role
+            role: user.role,
+            patient_id: user.patient_id
          };
          const token = jwt.sign(payload, secret);
          res.cookie('token', token, {httpOnly: true}).status(200).send({user: payload});

@@ -110,7 +110,6 @@ class App extends Component {
     }
 
    render() {
-      console.log('APP.JS',this.state.user);
    const logoutMenu = (
       <Menu>
       <Menu.Item key="1" onClick={this.handleLogout}>
@@ -210,7 +209,7 @@ class App extends Component {
                                                 return <Redirect to="/dashboard"/>
                                              return <Redirect to="/home" />
                                           }} />
-                                          <ProtectedRoute exact path="/home" component={PatientHomePage} />
+                                          <ProtectedRoute exact path="/home" component={PatientHomePage} user={this.state.user} />
                                           <ProtectedRoute exact path="/settings" component={PatientAccountSettings} user={this.state.user} />
                                           <ProtectedRoute exact path="/dashboard" component={Dashboard} />
                                           <ProtectedRoute exact path="/dentalrecords" component={DentalRecords}  /> 
