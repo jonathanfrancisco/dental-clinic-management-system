@@ -42,6 +42,21 @@ class ProtectedRoute extends React.Component {
                      }/>
                   );
                }
+            else if(!this.state.redirect && this.state.role === 'patient' && 
+            (pathname === '/useraccounts' || pathname === '/dashboard' || pathname === '/transactionlog' 
+            || pathname === '/dentalrecords' || '/appointments' || '/sms' )) {
+                 {/*DO NOT ALLOW PATIENT TO GO ONE OF THESE ROUTES REDIRECT HIM TO / */}
+               return (
+                  <Redirect to={
+                     {
+                        pathname: "/",
+                        state: {
+                           from: props.location
+                        }
+                     }
+                  }/>
+               );
+            }
             else if(!this.state.redirect)
                return <Component {...props}/>
             return (

@@ -1,7 +1,8 @@
 import React from 'react';
-import {Row, Col, Card, Divider, Typography} from 'antd';
+import {Row, Col, Card, Divider, Typography, Icon} from 'antd';
 import LoginForm from '../components/LoginForm';
 import Background from '../isometric-bg.jpg';
+import {Link} from 'react-router-dom';
 
 const {Title} = Typography;
 
@@ -12,12 +13,11 @@ class Login extends React.Component {
             <Row type="flex" align="middle" style={{minHeight: '100vh'}}>
                <Col md={{span: 8, offset: 8}} sm={{span: 16, offset: 4}} xs={{span: 22, offset: 1}}>
                   <Card bordered={true} style={{boxShadow: '0px 3px 10px -4px #8c8c8c'}}>
-                     <Title style={{textAlign: 'center'}} level={4}>
-                        Andres Dental Clinic
-                        <br /> 
-                        Management System
+                     <Link to="/"><Icon type="arrow-left" /> Back to homepage</Link>
+                     <Title style={{textAlign: 'center', marginTop: 18, marginBottom: 0}} level={3}>
+                        Andres Dental Clinic Portal
                      </Title>
-                     <Divider />
+                     <Divider style={{margin: '6px 0 12px 0'}} />
                      <LoginForm handleLogin={this.props.handleLogin} />
                   </Card>          
                </Col>

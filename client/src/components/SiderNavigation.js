@@ -9,6 +9,28 @@ const SiderNavigation = withRouter((props) => {
    // get the basepath of the current url
    // to use as a selected key to correspond with the menu
    const selectedItem = `/${props.location.pathname.split('/')[1]}`; 
+
+   if(props.role === 'patient')
+      return (
+         <Menu theme="dark" mode="inline" selectedKeys={[selectedItem]}>
+            <Menu.Item key="/myBalances">
+               <Icon type="idcard" />
+               <span>My Balances</span>
+               <Link to="/myBalances"></Link>
+            </Menu.Item>
+            <Menu.Item key="/myAppointments">
+               <Icon type="idcard" />
+               <span>My Appointments</span>
+               <Link to="/myAppointments"></Link>
+            </Menu.Item>
+            <Menu.Item key="/myAccount">
+               <Icon type="idcard" />
+               <span>My Account</span>
+               <Link to="/myAccount"></Link>
+            </Menu.Item>
+         </Menu>
+      );
+
    return (
       <Menu theme="dark" mode="inline" selectedKeys={[selectedItem]}>
          {props.role === 'dentalaide' ? null : (

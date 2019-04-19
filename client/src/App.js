@@ -9,6 +9,7 @@ import SiderNavigation from './components/SiderNavigation';
 import SpinningComponent from './components/SpinningComponent';
 
 // PAGES 
+import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import DentalRecords from './pages/DentalRecords';
@@ -119,12 +120,27 @@ class App extends Component {
             
                   <React.Fragment>
                   {!this.state.authenticated ? (
+
+                     <Route render={({location}) => (
+                        <TransitionGroup>
+                        <CSSTransition
+                           onEnter={() => {
+                              window.scrollTo(0,0);
+                           }}
+                           key={location.key}
+                           timeout={500}
+                           classNames="move"
+                        >
+                           <Switch location={location}>
+                           <Route exact path="/" render={() => <HomePage handleLogin={this.handleLogin} />} />
+                           <Route exact path={["/","/login"]} render={(routeProps) => <Login {...routeProps} handleLogin={this.handleLogin}/>} />
+                           <Route render={() => <Redirect to="/"/>}/>
+                           </Switch>     
+                        </CSSTransition>
+                        </TransitionGroup>
+                     )} />
                     
-                     <Switch>
-                        <Route exact path={["/","/login"]} render={(routeProps) => <Login {...routeProps} handleLogin={this.handleLogin}/>} />
-                        <Route render={() => <Redirect to="/login"/>}/>
-                     </Switch>
-               
+                 
                   ) : this.state.loginLoading ? (
                         <SpinningComponent />
                   ) : (
