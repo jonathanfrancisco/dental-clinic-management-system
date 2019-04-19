@@ -66,8 +66,20 @@ const UpdateAccountForm = Form.create()(
                            )}
                         </Form.Item>
                      </Col>
-                     <Col span={12}>
-                        <Form.Item label="Role">
+                     <Col span={12}> 
+                     {
+                        account.role === 'patient' ? (
+                           <Form.Item label="Email Address">
+                              {getFieldDecorator('emailaddress', {
+                                 rules: [{ required: true, message: 'Email Address is required' }],
+                                 initialValue: account.emailaddress || ''
+                              })(
+                              <Input />
+                              )}
+                           </Form.Item>
+                        ) 
+                        : (
+                           <Form.Item label="Role">
                            {getFieldDecorator('role', {
                               rules: [{ required: true, message: 'Role is required' }],
                               initialValue: account.role || ''
@@ -75,6 +87,9 @@ const UpdateAccountForm = Form.create()(
                               roleSelect
                            )}
                         </Form.Item>
+                        ) 
+                     }
+                       
                      </Col>
                   </Row>      
                   <Button htmlType="submit">Update</Button>

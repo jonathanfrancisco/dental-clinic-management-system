@@ -13,20 +13,15 @@ const SiderNavigation = withRouter((props) => {
    if(props.role === 'patient')
       return (
          <Menu theme="dark" mode="inline" selectedKeys={[selectedItem]}>
-            <Menu.Item key="/myBalances">
-               <Icon type="idcard" />
-               <span>My Balances</span>
-               <Link to="/myBalances"></Link>
+            <Menu.Item key="/home">
+               <Icon type="home" />
+               <span>Home</span>
+               <Link to="/home"></Link>
             </Menu.Item>
-            <Menu.Item key="/myAppointments">
-               <Icon type="idcard" />
-               <span>My Appointments</span>
-               <Link to="/myAppointments"></Link>
-            </Menu.Item>
-            <Menu.Item key="/myAccount">
-               <Icon type="idcard" />
-               <span>My Account</span>
-               <Link to="/myAccount"></Link>
+            <Menu.Item key="/settings">
+               <Icon type="user" />
+               <span>Account Settings</span>
+               <Link to="/settings"></Link>
             </Menu.Item>
          </Menu>
       );

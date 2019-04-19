@@ -7,14 +7,14 @@ class ProtectedRoute extends React.Component {
    
    state = {
       redirect: false,
-      role: ''
+      user: ''
    };
 
    componentDidMount() {
       axios.get('/api/users/checkToken')
       .then((response) => {
          if(response.status === 200) {
-            this.setState({redirect: false, role:response.data.user.role});
+            this.setState({redirect: false, user:response.data.user});
          }
       }).catch((err) => {
          if(err)
@@ -24,45 +24,16 @@ class ProtectedRoute extends React.Component {
 
    
    render() {
-      const {component: Component,...rest} = this.props;
+      const {component: Component, user, ...rest} = this.props;
       const {pathname} = this.props.location;
       return (
          <Route {...rest} render={(props) => {
-            if(!this.state.redirect 
-               && this.state.role === 'dentalaide' && 
-               (pathname === '/useraccounts' || pathname === '/dashboard' || pathname === '/transactionlog')) {
-                  return (
-                     <Redirect to={
-                        {
-                           pathname: "/dentalrecords",
-                           state: {
-                              from: props.location
-                           }
-                        }
-                     }/>
-                  );
-               }
-            else if(!this.state.redirect && this.state.role === 'patient' && 
-            (pathname === '/useraccounts' || pathname === '/dashboard' || pathname === '/transactionlog' 
-            || pathname === '/dentalrecords' || '/appointments' || '/sms' )) {
-                 {/*DO NOT ALLOW PATIENT TO GO ONE OF THESE ROUTES REDIRECT HIM TO / */}
-               return (
-                  <Redirect to={
-                     {
-                        pathname: "/",
-                        state: {
-                           from: props.location
-                        }
-                     }
-                  }/>
-               );
-            }
-            else if(!this.state.redirect)
-               return <Component {...props}/>
+           if(!this.state.redirect)
+               return <Component user={user} {...props}/>
             return (
                <Redirect to={
                   {
-                     pathname: "/login",
+                     pathname: "/",
                      state: {
                         from: props.location
                      }
@@ -75,3 +46,44 @@ class ProtectedRoute extends React.Component {
 }
 
 export default ProtectedRoute;
+
+// if(!this.state.redirect 
+//    && this.state.role === 'dentalaide' && 
+//    (pathname === '/useraccounts' || pathname === '/dashboard' || pathname === '/transactionlog')) {
+//       return (
+//          <Redirect to={
+//             {
+//                pathname: "/",
+//                state: {
+//                   from: props.location
+//                }
+//             }
+//          }/>
+//       );
+//    }
+// else if(!this.state.redirect && this.state.role === 'patient' && 
+// (pathname === '/useraccounts' || pathname === '/dashboard' || pathname === '/transactionlog' 
+// || pathname === '/dentalrecords' || '/appointments' || '/sms' )) {
+//    return (
+//       <Redirect to={
+//          {
+//             pathname: "/",
+//             state: {
+//                from: props.location
+//             }
+//          }
+//       }/>
+//    );
+// }
+// else if(!this.state.redirect)
+//    return <Component {...props}/>
+// return (
+//    <Redirect to={
+//       {
+//          pathname: "/",
+//          state: {
+//             from: props.location
+//          }
+//       }
+//    }/>
+// );

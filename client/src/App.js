@@ -11,6 +11,8 @@ import SpinningComponent from './components/SpinningComponent';
 // PAGES 
 import HomePage from './pages/HomePage';
 import Login from './pages/Login';
+import PatientHomePage from './pages/PatientHomePage';
+import PatientAccountSettings from './pages/PatientAccountSettings';
 import Dashboard from './pages/Dashboard';
 import DentalRecords from './pages/DentalRecords';
 import Payments from './pages/Payments';
@@ -20,6 +22,7 @@ import UserAccounts from './pages/UserAccounts';
 
 import axios from 'axios';
 import Logo from './andres-logo.svg';
+
 
 const {Text} = Typography;
 const {Sider, Header} = Layout;
@@ -107,7 +110,7 @@ class App extends Component {
     }
 
    render() {
-
+      console.log('APP.JS',this.state.user);
    const logoutMenu = (
       <Menu>
       <Menu.Item key="1" onClick={this.handleLogout}>
@@ -203,8 +206,12 @@ class App extends Component {
                                           <Route exact path={["/","/login"]}  render={(props) => {
                                              if(this.state.user.role === 'dentalaide')
                                                 return <Redirect to="/dentalrecords" />
-                                             return <Redirect to="/dashboard"/>
-                                          }}/>
+                                             else if(this.state.user.role === 'dentist')
+                                                return <Redirect to="/dashboard"/>
+                                             return <Redirect to="/home" />
+                                          }} />
+                                          <ProtectedRoute exact path="/home" component={PatientHomePage} />
+                                          <ProtectedRoute exact path="/settings" component={PatientAccountSettings} user={this.state.user} />
                                           <ProtectedRoute exact path="/dashboard" component={Dashboard} />
                                           <ProtectedRoute exact path="/dentalrecords" component={DentalRecords}  /> 
                                           <ProtectedRoute exact path="/dentalrecords/:code" component={DentalRecords}  /> 
