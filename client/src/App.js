@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'antd/dist/antd.css';
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
-import { Layout, Icon, notification, Row, Col, Dropdown, Menu, Modal} from 'antd';
+import { Layout, Icon, notification, Row, Col, Dropdown, Menu, Modal, Typography} from 'antd';
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 // MY COMPONENTS
 import ProtectedRoute from './components/hoc/ProtectedRoute';
@@ -19,7 +19,9 @@ import SMSTextMessaging from './pages/SMSTextMessaging';
 import UserAccounts from './pages/UserAccounts';
 
 import axios from 'axios';
+import Logo from './andres-logo.svg';
 
+const {Text} = Typography;
 const {Sider, Header} = Layout;
 const {confirm} = Modal;
  
@@ -158,7 +160,11 @@ class App extends Component {
                            collapsedWidth={this.state.collapsedWidth}
                            style={{minHeight: '100vh', position: 'fixed', zIndex: 100, boxShadow: '3px 0px 15px 2px #8c8c8c'}}
                         >        
-                           <div className="logo" />
+                           <div className="logo">
+                              <img style={{width: '100%', maxWidth: '100px'}} src={Logo} />
+                              <br />
+                              <Text style={{color: '#fff'}}>Andres Dental<br />Clinic Portal</Text>
+                           </div>
                            <SiderNavigation role={this.state.user.role} />
                         </Sider>
                         <Layout>
