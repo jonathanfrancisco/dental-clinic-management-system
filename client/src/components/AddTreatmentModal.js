@@ -13,7 +13,7 @@ const AddTreatmentModal = Form.create()(
        };
 
       componentDidMount() {
-         axios.get('/api/users')
+         axios.get('/api/users/admins')
          .then((response) => {
             if(response.status === 200)
                this.setState({treatedBySelectOptions: response.data.users});

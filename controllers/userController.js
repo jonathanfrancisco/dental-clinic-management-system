@@ -18,11 +18,16 @@ module.exports.validateUsername = async(req, res) => {
       console.log(err);
       return res.status(500).send({error: 'Internal server error'});
    }
-
 }
 
 module.exports.users = async (req, res) => {
    const users = await User.query().orderBy('id', 'desc');
+   return res.send({users});
+}
+
+module.exports.admins = async (req, res) => {
+   const users = await User.query().whereIn('role', ['dentist', 'dentalaide']);
+   console.log(users);
    return res.send({users});
 }
 
