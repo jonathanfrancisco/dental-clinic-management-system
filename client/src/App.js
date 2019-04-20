@@ -187,7 +187,7 @@ class App extends Component {
                                  
                                     <a className="ant-dropdown-link" href="#">
                                     <Avatar style={{ backgroundColor: '#1890ff' }} icon="user" />
-                                    <Text> {'Logged in as '+ this.state.user.username} </Text>
+                                    <Text style={{color: '#1890ff'}}> {'Logged in as '+ this.state.user.username} </Text>
                                     <Icon type="down" />
                                     </a>
                                  </Dropdown>
