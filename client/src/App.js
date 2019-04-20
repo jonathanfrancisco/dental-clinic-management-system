@@ -61,10 +61,6 @@ class App extends Component {
             this.setState({authenticated: true, user: response.data.user});
             setTimeout(() => {
                this.setState({loginLoading: false});
-               notification['success']({
-                  message: 'System Message',
-                  description: 'Logged-in successfully!',
-               });
             },1000);
            
          }
@@ -165,7 +161,14 @@ class App extends Component {
                            <div className="logo">
                               <img style={{width: '100%', maxWidth: '100px'}} src={Logo} />
                               <br />
-                              <Text style={{color: '#fff'}}>Andres Dental<br />Clinic Portal</Text>
+                              {
+                                 this.state.user.role === 'patient' ? (
+                                    <Text style={{color: '#fff'}}>Andres Dental<br />Clinic Patient Portal</Text>
+                                 ) : (
+                                    <Text style={{color: '#fff'}}>Andres Dental Clinic Management System</Text>
+                                 )
+                              }
+                             
                            </div>
                            <SiderNavigation role={this.state.user.role} />
                         </Sider>
