@@ -208,6 +208,7 @@ class PatientHomePage extends React.Component {
                </TabPane>
                <TabPane tab="My Balances" key="2">
                   <Table
+                     locale={{emptyText: 'No Balances'}}
                      dataSource={this.state.balances}
                      size="medium"
                      columns={balancesColumns}
@@ -233,6 +234,7 @@ class PatientHomePage extends React.Component {
                      </Col>
                   </Row>
                   <Table
+                     locale={{emptyText: 'No Appointments'}}
                      loading={this.state.myAppointmentsLoading}
                      dataSource={this.state.myAppointments}
                      size="medium"
