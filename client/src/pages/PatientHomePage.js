@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dropdown, Button, Icon, Menu, Badge, Layout, Row,Tabs, Col, Typography, Table, Tag, message} from 'antd';
+import {Dropdown, Button, Icon, Menu, Badge, Layout, Row,Tabs, Col, Typography, Table, Tag, message, Popconfirm} from 'antd';
 import DescriptionItem from '../components/DescriptionItem';
 import axios from 'axios';
 import moment from 'moment';
@@ -122,18 +122,18 @@ class PatientHomePage extends React.Component {
             dataIndex: 'actions',
             render: (text, record) => {
                const isAppointmentPast = moment(record.date_time).format('X') < moment(Date.now()).format('X');
-               const disabledDropdown = (record.status === 'cancelled'
+               const disabled = (record.status === 'cancelled'
                                     || record.status === 'declined'
                                     || (record.status === 'pending' && isAppointmentPast)
                                     || (record.status === 'confirmed' && isAppointmentPast)
                ) ?  true : false;
               
                const cancelDeclineButton = record.status === 'pending' ? (
-                  <Button type="danger">
+                  <Button disabled={disabled} type="danger">
                      Cancel Appointment Request
                   </Button>
                ) : (
-                  <Button type="danger">Cancel Appointment</Button>
+                  <Button disabled={disabled} type="danger">Cancel Appointment</Button>
                );
 
                if(record.status === 'declined' || record.status === 'cancelled')
