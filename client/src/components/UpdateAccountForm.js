@@ -6,6 +6,10 @@ const {Option} = Select;
 const UpdateAccountForm = Form.create()(
    class extends React.Component {
 
+      state= {
+         selectedRole: ''
+      };
+
       handleSubmit = (e) => {
          e.preventDefault();
          this.props.form.validateFields((err, values) => {
@@ -13,6 +17,10 @@ const UpdateAccountForm = Form.create()(
                return
             this.props.onUpdate(values);
          });
+      }
+
+      handleSelectRoleChange = (value) => {
+         this.setState({selectedRole: value});
       }
 
       render() {
@@ -25,7 +33,7 @@ const UpdateAccountForm = Form.create()(
                <Option value="dentist">Dentist</Option>
             </Select>
          ) : (
-            <Select >
+            <Select onChange={this.handleSelectRoleChange}>
                <Option value="dentalaide">Dental Aide</Option>
                <Option value="dentist">Dentist</Option>
             </Select>
@@ -89,8 +97,22 @@ const UpdateAccountForm = Form.create()(
                         </Form.Item>
                         ) 
                      }
-                       
                      </Col>
+                     
+                     { (account.role === 'dentist' && this.state.selectedRole !== 'dentalaide') || this.state.selectedRole === 'dentist' ? (
+                           <Col span={24}>
+                              <Form.Item label="Email Address">
+                                    {getFieldDecorator('emailaddress', {
+                                       rules: [{ required: true, message: 'Email Address is required' }],
+                                       initialValue: account.emailaddress || ''
+                                    })(
+                                 <Input />
+                                 )}
+                              </Form.Item>
+                           </Col>
+                     ) : null}
+             
+
                   </Row>      
                   <Button htmlType="submit">Update</Button>
                </Form>

@@ -88,7 +88,6 @@ module.exports.create = async (req, res) => {
 }
 
 module.exports.update = async (req, res) => {
-   console.log(req.body);
    const id = req.params.id;
    let patchUser;
 
@@ -107,19 +106,13 @@ module.exports.update = async (req, res) => {
       patchUser = {
          username: req.body.username
       };
-   else if(req.body.role === 'patient') 
-      patchUser = {
-         name: req.body.name,
-         address: req.body.address,
-         birthday: req.body.birthday,
-         emailaddress: req.body.emailaddress
-      };
    else {
       patchUser = {
          name: req.body.name,
          address: req.body.address,
          birthday: req.body.birthday,
-         role: req.body.role
+         role: req.body.role,
+         emailaddress: req.body.role === 'dentalaide' ? '' : req.body.emailaddress
       };
    }
 
