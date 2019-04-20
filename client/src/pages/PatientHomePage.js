@@ -1,12 +1,12 @@
 import React from 'react';
-import {Button, Icon, Badge, Layout, Row,Tabs, Col, notification, Typography, Table, Tag, message, Popconfirm} from 'antd';
+import {Alert, Button, Icon, Badge, Layout, Row,Tabs, Col, notification, Typography, Table, Tag, message, Popconfirm} from 'antd';
 import DescriptionItem from '../components/DescriptionItem';
 import axios from 'axios';
 import moment from 'moment';
 import PatientCreateAppointmentModal from '../components/PatientCreateAppointmentModal';
 
 const {TabPane} = Tabs;
-const {Text} = Typography;
+const {Text, Title} = Typography;
 const {Content} = Layout;
 
 class PatientHomePage extends React.Component {
@@ -192,8 +192,13 @@ class PatientHomePage extends React.Component {
       return (
          <React.Fragment>
          <Content style={{margin: '24px 24px 24px 36px', padding: 24, background: '#fff'}}>
+            <Title level={4}>HOME</Title>
             <Tabs tabPosition="top">
                <TabPane tab="My Dental Record Info" key="1">
+                  <Alert style={{marginBottom: 11}} showIcon message="Note: You cannot edit or update any information on your Dental Record here except your contact number. In case of inaccurate information kindly contact us or visit us."/>
+                  {!this.state.dentalRecord.contact_number ? (
+                       <Alert style={{marginBottom: 11}} showIcon closable message="You have no provided contact number. Please, kindly provide one to be able to receive sms notifications (appointment reminder, promos, etc.)" type="warning" /> 
+                  ) : null} 
                   <Row type="flex">
                      <Col span={8}><DescriptionItem title="Code" content={this.state.dentalRecord.code} /></Col>
                      <Col span={8}><DescriptionItem title="Name" content={this.state.dentalRecord.name} /></Col>
@@ -228,7 +233,10 @@ class PatientHomePage extends React.Component {
                   />
                </TabPane>
                <TabPane tab="My Appointments" key="3">
-                  <Row>
+                  {!this.state.dentalRecord.contact_number ? (
+                       <Alert style={{marginBottom: 11}} showIcon closable message="You have no provided contact number on your Dental Record. Please, kindly provide one to be able to receive sms notifications (appointment confirmation, cancellation, reminder, etc.)" type="warning" /> 
+                  ) : null} 
+                  <Row style={{marginBottom: 12}}>
                      <Col align="right">
                         <PatientCreateAppointmentModal onCreate={this.handleCreateAppointment} patientId={this.props.user.patient_id} />
                      </Col>

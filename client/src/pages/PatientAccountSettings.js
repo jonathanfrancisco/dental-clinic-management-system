@@ -58,7 +58,7 @@ class PatientAccountSettings extends React.Component {
       return (
       <Content style={{margin: '24px 24px 24px 36px', padding: 24, background: '#fff'}}>
          <Title level={4}>ACCOUNT SETTINGS</Title>
-         <Tabs tabPosition="left" defaultActiveKey="1">
+         <Tabs tabPosition="top" defaultActiveKey="1">
             <TabPane tab="Personal Info" key="1">
                <UpdateAccountForm onUpdate={this.handleUpdate} account={this.state.account} />
             </TabPane>
