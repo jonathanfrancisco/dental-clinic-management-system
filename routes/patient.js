@@ -7,6 +7,7 @@ Router.post('/create', patientController.create);
 Router.post('/:patientId', patientController.getPatientById);
 Router.patch('/:code/update', patientController.update);
 Router.post('/:code/validate', patientController.validatePatientCode);
+Router.get('/:id/myBalances', patientController.getMyBalances);
 Router.get('/:id/childteethchart', patientController.childTeethChart);
 Router.patch('/:id/childteethchart', patientController.updateChildTeethChart);
 Router.get('/:id/adultteethchart', patientController.adultTeethChart);

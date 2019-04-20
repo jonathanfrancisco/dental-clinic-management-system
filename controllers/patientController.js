@@ -1,9 +1,31 @@
 const Patient = require('../models/Patient');
+const Treatment = require('../models/Treatment');
 const AdultTeethChart  =  require('../models/AdultTeethChart');
 const ChildTeethChart  =  require('../models/ChildTeethChart');
 const moment = require('moment');
 const generate = require('nanoid/generate');
 const {raw} = require('objection');
+
+
+module.exports.getMyBalances = async (req, res) => {
+   const {id} = req.params;
+   try {
+      const balances = await Treatment.query().select('treatment.description','treatment.date_treated',
+       raw(`(SELECT treatment.total_amount_to_pay - SUM(payment_transaction.amount_paid) FROM payment_transaction WHERE payment_transaction.treatment_id = treatment.id) as balance`))
+                        .where({
+                           patient_id: id,
+                           payment_type: 'installment'
+                        })
+                        .having('balance','>',0)
+                        .orderBy('date_treated','desc').orderBy('id', 'desc');
+      console.log(balances);
+      return res.status(200).send({balances});
+   } catch(err) {
+      console.log(err);
+      return res.status(500).send({error: 'Internal server error!'});
+   }
+}
+
 
 module.exports.validatePatientCode = async (req, res) => {
 

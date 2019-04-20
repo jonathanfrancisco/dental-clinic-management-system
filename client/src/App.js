@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'antd/dist/antd.css';
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
-import { Layout, Icon, notification, Row, Col, Dropdown, Menu, Modal, Typography} from 'antd';
+import { Layout, Icon, notification, Row, Col, Dropdown, Menu, Modal, Typography, Avatar} from 'antd';
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 // MY COMPONENTS
 import ProtectedRoute from './components/hoc/ProtectedRoute';
@@ -181,8 +181,11 @@ class App extends Component {
                                  </Col>
                                  <Col style={{paddingRight: 16}} align="right" span={12}>
                                  <Dropdown overlay={logoutMenu} trigger={['click']}>
+                                 
                                     <a className="ant-dropdown-link" href="#">
-                                    {this.state.user.name} <Icon type="down" />
+                                    <Avatar style={{ backgroundColor: '#1890ff' }} icon="user" />
+                                    <Text> {'Logged in as '+ this.state.user.username} </Text>
+                                    <Icon type="down" />
                                     </a>
                                  </Dropdown>
                                  </Col>
