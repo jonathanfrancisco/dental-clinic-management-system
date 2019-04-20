@@ -1,8 +1,9 @@
 import React from 'react';
-import {Dropdown, Button, Icon, Menu, Badge, Layout, Row,Tabs, Col, Typography, Table, Tag, message, Popconfirm} from 'antd';
+import {Button, Icon, Badge, Layout, Row,Tabs, Col, notification, Typography, Table, Tag, message, Popconfirm} from 'antd';
 import DescriptionItem from '../components/DescriptionItem';
 import axios from 'axios';
 import moment from 'moment';
+import PatientCreateAppointmentModal from '../components/PatientCreateAppointmentModal';
 
 const {TabPane} = Tabs;
 const {Text} = Typography;
@@ -66,6 +67,25 @@ class PatientHomePage extends React.Component {
       });
    }
    
+   handleCreateAppointment = (values) => {
+      values.date_time = values.date_time.format('YYYY-MM-DD HH:mm');
+      axios.post('/api/appointments/create/online', values)
+      .then((response) => {
+         if(response.status === 200) {
+            this.getMyAppointments(this.props.user.patient_id);
+            notification['info']({
+               message: 'Appointment Successfully Created',
+               description: 'You will be notified through SMS once your appointment is confirmed.',
+            });
+         }
+      })
+      .catch((err) => {
+         console.log(err);
+         message.error('Something went wrong! Please, try again.');
+      });
+      
+   }
+
    handleCancelAppointment = (appointmentId) => {
       axios.post(`/api/patients/${appointmentId}/cancelAppointment`)
       .then((response) => {
@@ -79,7 +99,6 @@ class PatientHomePage extends React.Component {
    }
 
    render() {
-
 
       const balancesColumns = [
          {
@@ -208,6 +227,11 @@ class PatientHomePage extends React.Component {
                   />
                </TabPane>
                <TabPane tab="My Appointments" key="3">
+                  <Row>
+                     <Col align="right">
+                        <PatientCreateAppointmentModal onCreate={this.handleCreateAppointment} patientId={this.props.user.patient_id} />
+                     </Col>
+                  </Row>
                   <Table
                      loading={this.state.myAppointmentsLoading}
                      dataSource={this.state.myAppointments}

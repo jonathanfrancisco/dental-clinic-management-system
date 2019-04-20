@@ -11,7 +11,19 @@ module.exports.createInPersonAppointment = async (req, res) => {
    newAppointment.status = 'confirmed';
    try {
       const appointment = await Appointment.query().insert(newAppointment);
-      console.log(appointment);
+      return res.sendStatus(200);
+   } catch(err) {
+      console.log(err);
+      return res.status(500).send({message: 'Internal server error'});
+   }
+}
+
+module.exports.createOnlineAppointment = async (req, res) => {
+   const newAppointment = req.body;
+   newAppointment.patient_id = parseInt(newAppointment.patient_id);
+   newAppointment.status = 'pending';
+   try {
+      const appointment = await Appointment.query().insert(newAppointment);
       return res.sendStatus(200);
    } catch(err) {
       console.log(err);

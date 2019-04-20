@@ -4,6 +4,7 @@ const appointmentController = require('../controllers/appointmentController');
 
 Router.get('/', appointmentController.appointments);
 Router.post('/create/in-person', appointmentController.createInPersonAppointment);
+Router.post('/create/online', appointmentController.createOnlineAppointment);
 Router.post('/confirm', appointmentController.confirm);
 Router.patch('/decline-cancel', appointmentController.declineCancelAppointment);
 
