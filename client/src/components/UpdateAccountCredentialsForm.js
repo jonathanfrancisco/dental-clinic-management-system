@@ -1,6 +1,6 @@
 import React from 'react';
-import {Form, Input,Row, Col, Button} from 'antd';
-
+import {Form, Input,Row, Col, Button, message} from 'antd';
+import axios from 'axios';
 
 const UpdateAccountCredentialsForm = Form.create()(
    class extends React.Component {
@@ -23,7 +23,6 @@ const UpdateAccountCredentialsForm = Form.create()(
            callback('Two passwords that you enter is inconsistent!');
          } 
          else if(form.getFieldValue('password') && !value) {
-            console.log('Hmmmm??');
             callback('Please confirm your password');
          }
          else {
@@ -40,6 +39,27 @@ const UpdateAccountCredentialsForm = Form.create()(
          callback();
       }
 
+      validateUsername = async (rule, value, callback) => {
+         const form = this.props.form;
+         if(value)
+            await axios.post(`/api/users/${value}/validate`)
+            .then((response) => {
+               if(response.status === 200) {
+                  if(!response.data.isValid && response.data.username !== this.props.account.username)
+                     callback('Username already taken!');
+                  else
+                     callback();
+               }
+            })
+            .catch((err) => {
+               console.log(err);
+               message.error('Internal server error!');
+            });
+         else
+            callback();
+         
+      }
+
       render() {
          const {account} = this.props;
          const {form} = this.props;
@@ -51,8 +71,12 @@ const UpdateAccountCredentialsForm = Form.create()(
                      <Col span={24}>
                         <Form.Item label="Username">
                            {getFieldDecorator('username', {
-                              rules: [{ required: true, message: 'Username is required' }],
-                              initialValue: account.username || ''
+                              rules: [
+                                 { required: true, message: 'Username is required' },
+                                 { validator: this.validateUsername }
+                              ],
+                              initialValue: account.username || '',
+                              
                            })(
                            <Input />
                            )}

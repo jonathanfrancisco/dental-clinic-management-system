@@ -11,8 +11,8 @@ module.exports.validateUsername = async(req, res) => {
       const users = await User.query().select('username');
       const isExist = users.find((obj) => obj.username === username);
       if(isExist)
-         return res.send({isValid: false});
-      return res.send({isValid: true});
+         return res.send({isValid: false, username});
+      return res.send({isValid: true, username});
    }
    catch(err) {
       console.log(err);

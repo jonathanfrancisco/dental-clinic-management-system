@@ -1,6 +1,7 @@
 import React from 'react';
-import {Modal, Form, Input,Row, Col, DatePicker, Select, Button, Icon} from 'antd';
+import {Modal, Form, Input,Row, Col, DatePicker, Select, Button, Icon, message} from 'antd';
 import moment from 'moment';
+import axios from 'axios';
 const {Option} = Select;
 
 const CreateAccountModal = Form.create()(
@@ -58,6 +59,27 @@ const CreateAccountModal = Form.create()(
          callback();
       }
 
+      validateUsername = async (rule, value, callback) => {
+         const form = this.props.form;
+         if(value)
+            await axios.post(`/api/users/${value}/validate`)
+            .then((response) => {
+               if(response.status === 200) {
+                  console.log(response.data.isValid);
+                  if(!response.data.isValid)
+                     callback('Username already taken!');
+                  else
+                     callback();
+               }
+            })
+            .catch((err) => {
+               console.log(err);
+               message.error('Internal server error!');
+            });
+         else
+            callback();
+         
+      }
 
       render() {
          const {form} = this.props;
@@ -111,7 +133,10 @@ const CreateAccountModal = Form.create()(
                      <Col span={12}>
                         <Form.Item label="Username">
                            {getFieldDecorator('username', {
-                              rules: [{ required: true, message: 'Username is required' }],
+                              rules: [
+                                 { required: true, message: 'Username is required' },
+                                 { validator: this.validateUsername }
+                           ],
                            })(
                            <Input />
                            )}
