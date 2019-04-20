@@ -1,5 +1,5 @@
 import React from 'react';
-import {Layout, Row,Tabs, Col, Typography, Table, Tag, message} from 'antd';
+import {Dropdown, Button, Icon, Menu, Badge, Layout, Row,Tabs, Col, Typography, Table, Tag, message} from 'antd';
 import DescriptionItem from '../components/DescriptionItem';
 import axios from 'axios';
 import moment from 'moment';
@@ -12,12 +12,7 @@ class PatientHomePage extends React.Component {
 
    state = {
       dentalRecord: {},
-      balances: [
-         {
-            description: 'Braces',
-            balance: 5000
-         }
-      ],
+      balances: [],
       myAppointments: [],
       dentistAppointments: []
    };
@@ -26,6 +21,7 @@ class PatientHomePage extends React.Component {
    componentDidMount() {
       this.getDentalRecord(this.props.user.patient_id);
       this.getMyBalances(this.props.user.patient_id);
+      this.getMyAppointments(this.props.user.patient_id);
    }
 
    getDentalRecord = (patientId) => {
@@ -52,11 +48,23 @@ class PatientHomePage extends React.Component {
       });
    }
 
+   getMyAppointments = (patientId) => {
+      axios.get(`/api/patients/${patientId}/myAppointments`)
+      .then((response) => {
+         if(response.status === 200)
+            this.setState({myAppointments: response.data.appointments});
+      })
+      .catch((err) => {
+         console.log(err);
+         message.error('Something went wrong! Please, try again.');
+      });
+   }
+   
    render() {
 
 
 
-      const columns = [
+      const balancesColumns = [
          {
             title: <Text strong>Date Treated</Text>,
             dataIndex: 'date_treated',
@@ -80,7 +88,61 @@ class PatientHomePage extends React.Component {
          }
       ];
 
+      const appointmentsColumns = [
+         {
+            title: <Text strong>Date and Time</Text>,
+            dataIndex: 'date_time',
+            render: (text, record) => {
+               return moment(record.date_time).format('MMMM DD, YYYY h:mm A');
+            }
+         },
+         {
+            title: <Text strong>Reason</Text>,
+            dataIndex: 'reason',
+            render: (text, record) => {
+               return record.reason;
+            }
+         },
+         {
+            title: <Text strong>Status</Text>,
+            dataIndex: 'status',
+            render: (text, record) => {
+               return record.status === 'confirmed' ? (<Badge status="success" text={<Text style={{color: '#73d13d'}}>Confirmed</Text>}/>) 
+               : record.status === 'pending' ? (    
+                  <Badge status="processing" text={<Text style={{color: '#108ee9'}}>Pending</Text>}/>
+               ) 
+               : record.status === 'declined' ? (
+                  (<Badge status="error" text={<Text style={{color: '#ff7875'}}>Declined</Text>}/>)
+               )
+               : (<Badge status="error" text={<Text style={{color: '#ff7875'}}>Cancelled</Text>}/>) 
+            }
+         },
+         {
+            title: <Text strong>Action(s)</Text>,
+            dataIndex: 'actions',
+            render: (text, record) => {
+               const isAppointmentPast = moment(record.date_time).format('X') < moment(Date.now()).format('X');
+               const disabledDropdown = (record.status === 'cancelled'
+                                    || record.status === 'declined'
+                                    || (record.status === 'pending' && isAppointmentPast)
+                                    || (record.status === 'confirmed' && isAppointmentPast)
+               ) ?  true : false;
+              
+               const cancelDeclineButton = record.status === 'pending' ? (
+                  <Button type="danger">
+                     Cancel Appointment Request
+                  </Button>
+               ) : (
+                  <Button type="danger">Cancel Appointment</Button>
+               );
 
+               if(record.status === 'declined' || record.status === 'cancelled')
+                  return null;
+             
+               return cancelDeclineButton;
+            }
+         }
+      ];
       const lastVisit = moment(this.state.dentalRecord.last_visit).format('MMMM DD, YYYY');
       const birthday = moment(this.state.dentalRecord.birthday).format('MMMM DD, YYYY');
       const age = moment().diff(this.state.dentalRecord.birthday, 'years');
@@ -105,7 +167,7 @@ class PatientHomePage extends React.Component {
                   <Table
                      dataSource={this.state.balances}
                      size="medium"
-                     columns={columns}
+                     columns={balancesColumns}
                      rowKey={(record) => record.id}
                      pagination={
                         {
@@ -122,7 +184,23 @@ class PatientHomePage extends React.Component {
                   />
                </TabPane>
                <TabPane tab="My Appointments" key="3">
-               
+                  <Table
+                     dataSource={this.state.myAppointments}
+                     size="medium"
+                     columns={appointmentsColumns}
+                     rowKey={(record) => record.id}
+                     pagination={
+                        {
+                           position: 'bottom',
+                           defaultCurrent: 1,
+                           pageSize: 8,
+                           showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} appointments`,
+                           onChange: (page, pageSize) => {
+
+                           }
+                        }
+                     }
+                  />
                </TabPane>
             </Tabs>
    

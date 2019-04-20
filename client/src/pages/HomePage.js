@@ -49,8 +49,8 @@ class HomePage extends React.Component {
                            <h2 style={{color: '#fff'}}>Your smile, your passion!</h2>
                            {/* <Button type="primary">My Patient Account</Button>
                            <a href="http://localhost:3000/" target="_blank">Link to System</a> */}
-                           <Button type="primary">
-                              Visit Us!
+                           <Button style={{borderRadius: 10}} ghost>
+                              Learn More
                            </Button>
                         
                         </Col>

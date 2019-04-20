@@ -1,5 +1,6 @@
 const Patient = require('../models/Patient');
 const Treatment = require('../models/Treatment');
+const Appointment = require('../models/Appointment');
 const AdultTeethChart  =  require('../models/AdultTeethChart');
 const ChildTeethChart  =  require('../models/ChildTeethChart');
 const moment = require('moment');
@@ -18,8 +19,18 @@ module.exports.getMyBalances = async (req, res) => {
                         })
                         .having('balance','>',0)
                         .orderBy('date_treated','desc').orderBy('id', 'desc');
-      console.log(balances);
       return res.status(200).send({balances});
+   } catch(err) {
+      console.log(err);
+      return res.status(500).send({error: 'Internal server error!'});
+   }
+}
+
+module.exports.getMyAppointments = async (req, res) => {
+   const {id} = req.params;
+   try {
+      const appointments = await Appointment.query().where('patient_id', id).orderBy('id','DESC');
+      return res.send({appointments});
    } catch(err) {
       console.log(err);
       return res.status(500).send({error: 'Internal server error!'});
