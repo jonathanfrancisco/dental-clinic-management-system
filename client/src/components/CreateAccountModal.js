@@ -8,7 +8,8 @@ const CreateAccountModal = Form.create()(
 
       state = {
          confirmDirty: false,
-         visible: false
+         visible: false,
+         selectedRole: ''
        };
 
       handleSubmit = (e) => {
@@ -34,6 +35,10 @@ const CreateAccountModal = Form.create()(
          const value = e.target.value;
          this.setState({ confirmDirty: this.state.confirmDirty || !!value });
        }
+
+      handleSelectRoleChange = (value) => {
+         this.setState({selectedRole: value});
+      }
 
       compareToFirstPassword = (rule, value, callback) => {
          const form = this.props.form;
@@ -119,7 +124,7 @@ const CreateAccountModal = Form.create()(
                               rules: [{ required: true, message: 'Role is required' }],
                               initialValue: 'dentalaide'
                            })(
-                           <Select>
+                           <Select onChange={this.handleSelectRoleChange}>
                               <Option value="dentalaide">Dental Aide</Option>
                               <Option value="dentist">Dentist</Option>
                            </Select>
@@ -152,6 +157,21 @@ const CreateAccountModal = Form.create()(
                            )}
                         </Form.Item>
                      </Col>
+                     
+                     {this.state.selectedRole === 'dentist' ? (
+                           <Col span={24}>
+                           <Form.Item label="Email Address">
+                              {getFieldDecorator('emailaddress', {
+                                 rules: [
+                                    { required: true, message: 'Email Address is required' },  
+                                 ],
+                              })(
+                              <Input />
+                              )}
+                           </Form.Item>
+                           </Col>
+                     ) : null}
+
                   </Row>
                   <Button hidden htmlType="submit"></Button>
                </Form>
