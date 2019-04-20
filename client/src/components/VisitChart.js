@@ -1,8 +1,10 @@
 import React from 'react';
 import {DatePicker, Select, Badge, Row, Col, Typography} from 'antd';
-import {ResponsiveContainer, BarChart, CartesianGrid, YAxis, XAxis, Tooltip, Bar, Legend} from 'recharts';
 import moment from 'moment';
 import axios from 'axios';
+
+import {Chart,Geom, Axis, Tooltip} from "bizcharts";
+
 
 const {RangePicker} = DatePicker;
 const {Title} = Typography;
@@ -105,7 +107,7 @@ class VisitChart extends React.Component {
    }
 
    render() {
-      
+    
    
       const data = [...this.state.visitsTrend].map((data) => {
          if(this.state.filterBy === 'month')
@@ -118,6 +120,8 @@ class VisitChart extends React.Component {
             "Number of Visits": data["Number of Visits"]
          };
       });
+      console.log('Visits Trend raw', this.state.visitsTrend)
+      console.log(data);
 
       let previousPosition;
       let visitsRanking = [...this.state.visitsRanking].map((obj, index, arr) => {
@@ -141,7 +145,12 @@ class VisitChart extends React.Component {
          };
       });
 
-   
+      const cols = {
+         numberofvisits: {
+           tickInterval: 20
+         }
+       };
+
       return (
          <div style={{padding: '12px 0px 24px 0px'}}>
             <Row gutter={32}>
@@ -157,16 +166,16 @@ class VisitChart extends React.Component {
                      </Col>
                   </Row>
                {/* <Title style={{textAlign: 'center', fontWeight: 'normal', fontSize: 18}}>January 1, 2019 ~ December 31, 2019</Title> */}
-                  <ResponsiveContainer width="100%" height={320}>
-                     <BarChart data={data}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="Number of Visits" fill="#69c0ff" />
-                     </BarChart>
-                  </ResponsiveContainer>
+               <Chart height={400} data={data} scale={cols} forceFit>
+                  <Axis name="name" />
+                  <Axis name="Number of Visits" />
+                  <Tooltip
+                     crosshairs={{
+                     type: "y"
+                     }}
+                  />
+                  <Geom type="interval" position="name*Number of Visits" />
+               </Chart>
                </Col>
                <Col span={6}>
                   <Title level={1} style={{marginTop: 0, marginBottom: 24,fontWeight: 'normal', fontSize: 14}}>Visits Ranking</Title>
