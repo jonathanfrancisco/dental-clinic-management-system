@@ -54,20 +54,10 @@ const CreateAppointmentModal = Form.create()(
          this.props.form.resetFields();
       }
 
-      range(start, end) {
-         const result = [];
-         for (let i = start; i < end; i++) {
-           result.push(i);
-         }
-         return result;
-       }
-       
 
-      disabledDateTime() {
+      disabledDateTime = () => {
          return {
-           disabledHours: () => this.range(0, 24).splice(4, 20),
-           disabledMinutes: () => this.range(30, 60),
-           disabledSeconds: () => [55, 56],
+           disabledHours: () => [0, 1, 2, 3, 4, 5, 6, 7, 18, 19, 20, 21, 22, 23],
          };
        }
      
@@ -93,7 +83,17 @@ const CreateAppointmentModal = Form.create()(
                            {getFieldDecorator('date_time', {
                               rules: [{ required: true, message: 'Date and Time is required.' }],
                            })(
-                              <DatePicker disabledDate={(current) => current && current < moment()} placeholder="Select date and time" style={{width: '100%'}} showTime={{use12Hours: true, format: 'HH:mm'}} format="MMMM DD, YYYY h:mm A" />
+                              <DatePicker 
+                                 disabledTime={this.disabledDateTime} 
+                                 disabledDate={(current) => current && current < moment() || moment(current).day() === 0} 
+                                 placeholder="Select date and time" style={{width: '100%'}} 
+                                 showTime={
+                                    {
+                                       use12Hours: true, format: 'h:mm',
+                                       defaultValue: moment('8:00', 'h:mm')
+                                    }
+                                 }
+                                  format="MMMM DD, YYYY h:mm A" />
                            )}
                         </Form.Item>
                      </Col>
