@@ -8,6 +8,8 @@ const generate = require('nanoid/generate');
 const {raw} = require('objection');
 
 
+
+
 module.exports.getMyBalances = async (req, res) => {
    const {id} = req.params;
    try {
@@ -37,6 +39,16 @@ module.exports.getMyAppointments = async (req, res) => {
    }
 }
 
+module.exports.cancelAppointment = async (req, res) => {
+   const {id: appointmentId} = req.params;
+   try {
+      const cancelAppointment = await Appointment.query().patchAndFetchById(appointmentId, {status: 'cancelled'}); 
+      return res.sendStatus(200);
+   } catch(err) {
+      console.log(err);
+      return res.status(500).send({error: 'Internal server error'});
+   }
+}
 
 module.exports.validatePatientCode = async (req, res) => {
 

@@ -14,6 +14,7 @@ class PatientHomePage extends React.Component {
       dentalRecord: {},
       balances: [],
       myAppointments: [],
+      myAppointmentsLoading: false,
       dentistAppointments: []
    };
 
@@ -49,10 +50,15 @@ class PatientHomePage extends React.Component {
    }
 
    getMyAppointments = (patientId) => {
+      this.setState({myAppointmentsLoading: true});
       axios.get(`/api/patients/${patientId}/myAppointments`)
       .then((response) => {
-         if(response.status === 200)
+         if(response.status === 200) {
             this.setState({myAppointments: response.data.appointments});
+            setTimeout(() => {
+               this.setState({myAppointmentsLoading: false});
+            }, 800);
+         }
       })
       .catch((err) => {
          console.log(err);
@@ -60,8 +66,19 @@ class PatientHomePage extends React.Component {
       });
    }
    
-   render() {
+   handleCancelAppointment = (appointmentId) => {
+      axios.post(`/api/patients/${appointmentId}/cancelAppointment`)
+      .then((response) => {
+         if(response.status === 200)
+            this.getMyAppointments(this.props.user.patient_id)
+      })
+      .catch((err) => {
+         console.log(err);
+         message.error('Something went wrong! Please, try again.');
+      });
+   }
 
+   render() {
 
 
       const balancesColumns = [
@@ -129,11 +146,18 @@ class PatientHomePage extends React.Component {
                ) ?  true : false;
               
                const cancelDeclineButton = record.status === 'pending' ? (
-                  <Button disabled={disabled} type="danger">
-                     Cancel Appointment Request
-                  </Button>
+                  <Popconfirm title="Are you sure?" okText="Yes" cancelText="No" onConfirm={() => this.handleCancelAppointment(record.id)}>
+                     <Button disabled={disabled}  okText="Yes" cancelText="No" type="danger">
+                        Cancel Appointment Request
+                     </Button>
+                  </Popconfirm>
+   
                ) : (
-                  <Button disabled={disabled} type="danger">Cancel Appointment</Button>
+                  <Popconfirm title="Are you sure?" onConfirm={() => this.handleCancelAppointment(record.id)}>
+                  <Button disabled={disabled} type="danger">
+                     Cancel Appointment
+                  </Button>
+               </Popconfirm>
                );
 
                if(record.status === 'declined' || record.status === 'cancelled')
@@ -185,6 +209,7 @@ class PatientHomePage extends React.Component {
                </TabPane>
                <TabPane tab="My Appointments" key="3">
                   <Table
+                     loading={this.state.myAppointmentsLoading}
                      dataSource={this.state.myAppointments}
                      size="medium"
                      columns={appointmentsColumns}
