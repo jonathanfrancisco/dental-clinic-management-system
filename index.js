@@ -1,7 +1,8 @@
 const express = require('express'),
       morgan = require('morgan');
       bodyParser = require('body-parser')
-      cookieParser = require('cookie-parser');
+      cookieParser = require('cookie-parser'),
+      path = require('path');
 const app = express();
 
 app.use(morgan('tiny'));
