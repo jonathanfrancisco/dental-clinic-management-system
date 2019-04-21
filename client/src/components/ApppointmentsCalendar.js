@@ -82,7 +82,7 @@ class AppointmentsCalendar extends React.Component {
                               height: 100,
                               cursor: 'pointer', 
                               border: 0, 
-                              boxShadow: '3px 3px 6px -4px #8c8c8c'
+                              boxShadow: '4px 4px 4px -4px #8c8c8c'
                            }
                         }
                      >
@@ -103,8 +103,8 @@ class AppointmentsCalendar extends React.Component {
                               textAlign: 'right',
                               height: 100,
                               cursor: 'pointer', 
-                              border: 0, 
-                              boxShadow: '3px 3px 6px -4px #8c8c8c'
+                              border: '1px solid 8c8c8c',
+                              boxShadow: '4px 4px 4px -4px #8c8c8c'
                            }
                         }
                      >
