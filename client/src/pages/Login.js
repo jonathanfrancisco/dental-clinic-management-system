@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row, Col, Card, Divider, Typography, Icon} from 'antd';
+import {Row, Col, Card, Divider, Typography, Icon, notification} from 'antd';
 import LoginForm from '../components/LoginForm';
 import Background from '../isometric-bg.jpg';
 import {Link} from 'react-router-dom';
@@ -7,6 +7,23 @@ import {Link} from 'react-router-dom';
 const {Title} = Typography;
 
 class Login extends React.Component {
+   componentDidMount() {
+      if(this.props.location.state) {
+         if(this.props.location.state.resetPasswordStatus)
+            notification['success']({
+               message: 'Password Reset Successful!',
+               description: 'Your password has been resetted sucessfully. You may now login with your new password.',
+               duration: 5
+            });
+         else if(this.props.location.state.resetPasswordStatus === false)
+            notification['error']({
+               message: 'Password Reset Error',
+               description: 'Expired or invalid reset password link.',
+               duration: 5
+            });
+      }
+      
+   }
    render() {
       return (
          <div style={{minHeight: '100vh', background: `url(${Background})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>

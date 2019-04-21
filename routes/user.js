@@ -14,7 +14,8 @@ Router.get('/checkToken', withAuth, (req, res) => {
    res.status(200).send({user: req.user});
 });
 Router.get('/:id', withAuth, userController.getUserById);
-
+Router.post('/forgotPassword', userController.forgotPassword);
+Router.post('/:token/resetPassword', userController.resetPassword);
 
 
 module.exports = Router;

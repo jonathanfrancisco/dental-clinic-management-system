@@ -3,10 +3,10 @@ const Patient = require('../models/Patient');
 const jwt = require('jsonwebtoken');
 const secret = require('../config').secret;
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
 
 module.exports.validateUsername = async(req, res) => {
    const {username} = req.params; 
-   console.log('gago');
    try {
       const users = await User.query().select('username');
       const isExist = users.find((obj) => obj.username === username);
@@ -39,7 +39,6 @@ module.exports.getUserById = async (req, res) => {
 
 module.exports.register = async (req, res) => {
    const newUser = req.body;
-   console.log(newUser);
    try {
       if(newUser.password !== newUser.confirm_password)
          return res.status(500).send({error: 'Internal server error'});
@@ -172,4 +171,78 @@ module.exports.login = async (req, res) => {
 module.exports.logout = (req, res) => {
    req.user = null;
    res.clearCookie('token').sendStatus(200);
+}
+
+
+module.exports.resetPassword = async (req, res) => {
+   const {token} = req.params;
+   try {
+      const decoded = jwt.decode(token);
+      const [user] = await User.query().select('password').where('emailaddress', decoded.emailaddress);
+      if(!user || user.password !== decoded.password)
+         return res.status(500).send({error: 'Internal server error'});        
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(decoded.password, saltRounds).then(hash => hash);
+      await User.query().patch({password: hashedPassword}).where('emailaddress', decoded.emailaddress);
+      return res.sendStatus(200); 
+   } catch(err) {
+      console.log(err);
+      res.status(500).send({error: 'Internal server error'});
+   }
+}
+
+module.exports.forgotPassword = async (req, res) => {
+ 
+   const {emailaddress, password, confirm_password} = req.body;
+
+
+   try {
+      const [user] = await User.query().select('id','password').where('emailaddress', emailaddress);
+      if(!user)
+         return  res.status(500).send({error: 'Internal server error!'});
+
+      const payload = {
+         id: user.id,
+         emailaddress,
+         password: user.password
+      }
+      
+      const token = jwt.sign(payload, user.password);
+
+      // create reusable transporter object using the default SMTP transport
+      const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true, // true for 465, false for other ports
+        auth: {
+          user: process.env.GMAIL_EMAIL, // REAL GMAIL EMAIL
+          pass: process.env.GMAIL_PASSWORD // REAL GMAIL PASSWORD
+        }
+      });
+
+      // send mail with defined transport object
+      const info = await transporter.sendMail({
+        to: `<${emailaddress}>`, // list of receivers
+        from: `Andres Dental Clinic <${process.env.GMAIL_EMAIL}>`,
+        subject: "Reset Password Link", // Subject line
+        html: `
+         <h1>Hello!</h1>
+         <p>You are receiving this email because we received a password reset request for your account.</p>
+         <p>If you did not request a password reset, no further action is required.</p>
+         <a href="http://localhost:3000/resetPassword/${token}">Click here to reset your password</a>
+         <br />
+         <p>Regards,</p>
+         <p>Andres Dental Clinic</p>
+        ` // html body
+     
+      });
+
+      console.log("Email sent: %s", info.messageId);
+      return res.sendStatus(200);
+
+   } catch(err) {
+      console.log(err);
+      return res.status(500).send({error: 'Internal server error!'});
+   }
+
 }

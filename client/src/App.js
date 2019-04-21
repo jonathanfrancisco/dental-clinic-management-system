@@ -22,6 +22,7 @@ import UserAccounts from './pages/UserAccounts';
 
 import axios from 'axios';
 import Logo from './andres-logo.svg';
+import ResetPasswordLinkPage from './pages/ResetPasswordLinkPage';
 
 
 const {Text} = Typography;
@@ -133,6 +134,7 @@ class App extends Component {
                         >
                            <Switch location={location}>
                            <Route exact path="/" render={() => <HomePage handleLogin={this.handleLogin} />} />
+                           <Route exact path="/resetPassword/:token" component={ResetPasswordLinkPage}/>
                            <Route exact path={["/","/login"]} render={(routeProps) => <Login {...routeProps} handleLogin={this.handleLogin}/>} />
                            <Route render={() => <Redirect to="/"/>}/>
                            </Switch>     
