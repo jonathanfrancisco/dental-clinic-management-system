@@ -66,6 +66,7 @@ class AppointmentsCalendar extends React.Component {
       return (
          <div style={{padding: 4}}>
             <AppointmentsPopoverDrawer
+               role={this.props.role}
                title={<Text strong>{date.format('MMMM DD')}</Text>}
                appointments={this.getAppointmentsDay(date)}
             >

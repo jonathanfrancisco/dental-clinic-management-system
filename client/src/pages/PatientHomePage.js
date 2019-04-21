@@ -3,7 +3,8 @@ import {Alert, Button, Icon, Badge, Layout, Row,Tabs, Col, notification, Typogra
 import DescriptionItem from '../components/DescriptionItem';
 import axios from 'axios';
 import moment from 'moment';
-import PatientCreateAppointmentModal from '../components/PatientCreateAppointmentModal';
+import PatientCreateAppointmentModal from '../components/PatientCreateAppointmentModal'
+import AppointmentsCalendar from '../components/ApppointmentsCalendar';
 
 const {TabPane} = Tabs;
 const {Text, Title} = Typography;
@@ -16,7 +17,7 @@ class PatientHomePage extends React.Component {
       balances: [],
       myAppointments: [],
       myAppointmentsLoading: false,
-      dentistAppointments: []
+      confirmedAppointments: []
    };
 
 
@@ -24,6 +25,7 @@ class PatientHomePage extends React.Component {
       this.getDentalRecord(this.props.user.patient_id);
       this.getMyBalances(this.props.user.patient_id);
       this.getMyAppointments(this.props.user.patient_id);
+      this.getConfirmedAppointments();
    }
 
    getDentalRecord = (patientId) => {
@@ -66,6 +68,20 @@ class PatientHomePage extends React.Component {
          message.error('Something went wrong! Please, try again.');
       });
    }
+
+   getConfirmedAppointments = () => {
+      axios.get(`/api/appointments`)
+      .then((response) => {
+         if(response.status === 200) {  
+               this.setState({confirmedAppointments: response.data.appointments});
+           
+         }
+      })
+      .catch((err) => {
+         console.log(err);
+         message.error('Something went wrong! Please, try again.');
+      });
+   }
    
    handleCreateAppointment = (values) => {
       values.date_time = values.date_time.format('YYYY-MM-DD HH:mm');
@@ -73,6 +89,7 @@ class PatientHomePage extends React.Component {
       .then((response) => {
          if(response.status === 200) {
             this.getMyAppointments(this.props.user.patient_id);
+            this.getConfirmedAppointments();
             notification['info']({
                message: 'Appointment Successfully Created',
                description: 'You will be notified through SMS once your appointment is confirmed.',
@@ -89,13 +106,19 @@ class PatientHomePage extends React.Component {
    handleCancelAppointment = (appointmentId) => {
       axios.post(`/api/patients/${appointmentId}/cancelAppointment`)
       .then((response) => {
-         if(response.status === 200)
+         if(response.status === 200) {
             this.getMyAppointments(this.props.user.patient_id)
+            this.getConfirmedAppointments();
+         }
       })
       .catch((err) => {
          console.log(err);
          message.error('Something went wrong! Please, try again.');
       });
+   }
+
+   handleSelectDate = (date) => {
+      console.log(date);
    }
 
    render() {
@@ -242,6 +265,7 @@ class PatientHomePage extends React.Component {
                      </Col>
                   </Row>
                   <Table
+                     scroll={{x: 700}}
                      locale={{emptyText: 'No Appointments'}}
                      loading={this.state.myAppointmentsLoading}
                      dataSource={this.state.myAppointments}
@@ -260,6 +284,9 @@ class PatientHomePage extends React.Component {
                         }
                      }
                   />
+               </TabPane>
+               <TabPane tab="Clinic's Appointments Calendar" key="4">
+                  <AppointmentsCalendar role={this.props.user.role} appointments={this.state.confirmedAppointments} /> 
                </TabPane>
             </Tabs>
    
