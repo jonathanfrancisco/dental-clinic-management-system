@@ -193,14 +193,24 @@ module.exports.logout = (req, res) => {
 module.exports.resetPassword = async (req, res) => {
    const {token} = req.params;
    try {
-      const decoded = jwt.decode(token);
-      const [user] = await User.query().select('password').where('emailaddress', decoded.emailaddress);
-      if(!user || user.password !== decoded.password)
-         return res.status(500).send({error: 'Internal server error'});        
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(decoded.password, saltRounds).then(hash => hash);
-      await User.query().patch({password: hashedPassword}).where('emailaddress', decoded.emailaddress);
-      return res.sendStatus(200); 
+      const decodeWithoutVerify = jwt.decode(token);
+      const [user] = await User.query().select('password').where('emailaddress', decodeWithoutVerify.emailaddress);
+
+      jwt.verify(token, user.password, async (err, decoded) => {
+
+         if(err) {
+            console.log(err);
+            return res.status(500).send({error: 'Internal server error'});        
+         }
+
+         else if(decoded) {
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(decoded.newPassword, saltRounds).then(hash => hash);
+            await User.query().patch({password: hashedPassword}).where('emailaddress', decoded.emailaddress);
+            return res.sendStatus(200); 
+         }
+
+      })
    } catch(err) {
       console.log(err);
       res.status(500).send({error: 'Internal server error'});
@@ -220,7 +230,7 @@ module.exports.forgotPassword = async (req, res) => {
       const payload = {
          id: user.id,
          emailaddress,
-         password: user.password
+         newPassword: password
       }
       
       const token = jwt.sign(payload, user.password);
