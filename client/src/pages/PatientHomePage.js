@@ -259,6 +259,14 @@ class PatientHomePage extends React.Component {
                   {!this.state.dentalRecord.contact_number ? (
                        <Alert style={{marginBottom: 11}} showIcon closable message="You have no provided contact number on your Dental Record. Please, kindly provide one to be able to receive sms notifications (appointment confirmation, cancellation, reminder, etc.)" type="warning" /> 
                   ) : null} 
+                   <Alert 
+                     style={{marginBottom: 11}} 
+                     showIcon 
+                     closable 
+                     message={
+                        (<React.Fragment><Text strong>Attention!</Text> Before you make an appoinment, kindly check the clinic's calendar for available time and day otherwise your appointment will be declined or ignored.</React.Fragment>)
+                     } 
+                     type="warning" /> 
                   <Row style={{marginBottom: 12}}>
                      <Col align="right">
                         <PatientCreateAppointmentModal onCreate={this.handleCreateAppointment} patientId={this.props.user.patient_id} />
