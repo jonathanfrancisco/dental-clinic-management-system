@@ -2,6 +2,7 @@ const Router = require('express').Router();
 const userController = require('../controllers/userController');
 const withAuth = require('../services/withAuth');
 Router.post('/:username/validate', userController.validateUsername);
+Router.post('/:email/validateEmail', userController.validateEmail);
 Router.get('/', withAuth,  userController.users);
 Router.get('/admins', withAuth, userController.admins);
 Router.post('/register', userController.register);

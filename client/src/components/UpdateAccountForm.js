@@ -1,6 +1,7 @@
 import React from 'react';
-import {Form, Input,Row, Col, DatePicker, Select, Button} from 'antd';
+import {message, Form, Input,Row, Col, DatePicker, Select, Button} from 'antd';
 import moment from 'moment';
+import axios from 'axios';
 const {Option} = Select;
 
 const UpdateAccountForm = Form.create()(
@@ -17,6 +18,27 @@ const UpdateAccountForm = Form.create()(
                return
             this.props.onUpdate(values);
          });
+      }
+
+      validateEmail = async (rule, value, callback) => {
+         const form = this.props.form;
+         if(value)
+            await axios.post(`/api/users/${value}/validateEmail`)
+            .then((response) => {
+               if(response.status === 200) {
+                  if(!response.data.isValid && response.data.email !== this.props.account.emailaddress)
+                     callback('Email Address already used!');
+                  else
+                     callback();
+               }
+            })
+            .catch((err) => {
+               console.log(err);
+               message.error('Internal server error!');
+            });
+         else
+            callback();
+         
       }
 
       handleSelectRoleChange = (value) => {
@@ -79,7 +101,10 @@ const UpdateAccountForm = Form.create()(
                         account.role === 'patient' ? (
                            <Form.Item label="Email Address">
                               {getFieldDecorator('emailaddress', {
-                                 rules: [{ required: true, message: 'Email Address is required' }],
+                                 rules: [
+                                    { required: true, message: 'Email Address is required' },
+                                    { validator: this.validateEmail}
+                                 ],
                                  initialValue: account.emailaddress || ''
                               })(
                               <Input />

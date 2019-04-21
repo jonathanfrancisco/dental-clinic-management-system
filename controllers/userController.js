@@ -20,6 +20,22 @@ module.exports.validateUsername = async(req, res) => {
    }
 }
 
+
+module.exports.validateEmail = async(req, res) => {
+   const {email} = req.params; 
+   try {
+      const users = await User.query().select('emailaddress');
+      const isExist = users.find((obj) => obj.emailaddress === email);
+      if(isExist)
+         return res.send({isValid: false, email});
+      return res.send({isValid: true, email});
+   }
+   catch(err) {
+      console.log(err);
+      return res.status(500).send({error: 'Internal server error'});
+   }
+}
+
 module.exports.users = async (req, res) => {
    const users = await User.query().orderBy('id', 'desc');
    return res.send({users});

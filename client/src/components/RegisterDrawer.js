@@ -66,7 +66,6 @@ import axios from 'axios';
          await axios.post(`/api/users/${value}/validate`)
          .then((response) => {
             if(response.status === 200) {
-               console.log(response.data.isValid);
                if(!response.data.isValid)
                   callback('Username already taken!');
                else
@@ -79,9 +78,29 @@ import axios from 'axios';
          });
       else
          callback();
+   }
+   
+   validateEmail = async (rule, value, callback) => {
+      const form = this.props.form;
+      if(value)
+         await axios.post(`/api/users/${value}/validateEmail`)
+         .then((response) => {
+            if(response.status === 200) {
+               console.log('email: ',response.data.isValid);
+               if(!response.data.isValid)
+                  callback('Email Address already used!');
+               else
+                  callback();
+            }
+         })
+         .catch((err) => {
+            console.log(err);
+            message.error('Internal server error!');
+         });
+      else
+         callback();
       
    }
- 
  
    onClose = () => {
      this.setState({
@@ -194,7 +213,10 @@ import axios from 'axios';
                         
                         <Form.Item label="Email Address">
                            {getFieldDecorator('emailaddress', {
-                              rules: [{ required: true, message: 'Email Address is required' }],
+                              rules: [
+                                 { required: true, message: 'Email Address is required' },
+                                 { validator: this.validateEmail}
+                           ],
                            })(<Input />)}
                         </Form.Item>
                      </Col>
