@@ -189,13 +189,13 @@ class PatientHomePage extends React.Component {
               
                const cancelDeclineButton = record.status === 'pending' ? (
                   <Popconfirm title="Are you sure?" okText="Yes" cancelText="No" onConfirm={() => this.handleCancelAppointment(record.id)}>
-                     <Button disabled={disabled}  okText="Yes" cancelText="No" type="danger">
+                     <Button disabled={disabled} type="danger">
                         Cancel Appointment Request
                      </Button>
                   </Popconfirm>
    
                ) : (
-                  <Popconfirm title="Are you sure?" onConfirm={() => this.handleCancelAppointment(record.id)}>
+                  <Popconfirm title="Are you sure?" okText="Yes" cancelText="No" onConfirm={() => this.handleCancelAppointment(record.id)}>
                   <Button disabled={disabled} type="danger">
                      Cancel Appointment
                   </Button>
