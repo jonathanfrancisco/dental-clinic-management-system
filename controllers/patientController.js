@@ -164,6 +164,18 @@ module.exports.update = async (req, res) => {
    }
 }
 
+module.exports.updateContactNumber  = async (req, res) => {
+   const patientId = req.params.id;
+   const {contact_number} = req.body;
+   try {
+      const result = await Patient.query().patchAndFetchById(patientId, {contact_number});
+      return res.sendStatus(200);
+   } catch(err) {
+      console.log(err);
+      return res.status(500).send({error: 'Internal server error'});
+   }
+}
+
 module.exports.childTeethChart = async (req, res) => {
    const {id} = req.params;
    try {

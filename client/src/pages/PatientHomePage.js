@@ -1,10 +1,11 @@
 import React from 'react';
-import {Alert, Button, Icon, Badge, Layout, Row,Tabs, Col, notification, Typography, Table, Tag, message, Popconfirm} from 'antd';
+import {Alert, Button, Badge, Layout, Row,Tabs, Col, notification, Typography, Table, Tag, message, Popconfirm} from 'antd';
 import DescriptionItem from '../components/DescriptionItem';
 import axios from 'axios';
 import moment from 'moment';
 import PatientCreateAppointmentModal from '../components/PatientCreateAppointmentModal'
 import AppointmentsCalendar from '../components/ApppointmentsCalendar';
+import UpdateContactForm from '../components/UpdateContactForm';
 
 const {TabPane} = Tabs;
 const {Text, Title} = Typography;
@@ -116,9 +117,22 @@ class PatientHomePage extends React.Component {
          message.error('Something went wrong! Please, try again.');
       });
    }
-
-   handleSelectDate = (date) => {
-      console.log(date);
+   
+   handleContactNumberUpdate = (values) => {
+      const hide = message.loading('Updating Contact Number...', 0);
+      axios.post(`/api/patients/${this.props.user.patient_id}/updateContactNumber`, values)
+      .then((response) => {
+         if(response.status === 200) {
+            hide();
+            message.success('Contact Number Updated Successfully');
+            this.getDentalRecord(this.props.user.patient_id);
+         }
+      })
+      .catch((err) => {
+         console.log(err);
+         hide();
+         message.error('Something went wrong! Please, try again.');
+      });
    }
 
    render() {
@@ -231,7 +245,9 @@ class PatientHomePage extends React.Component {
                      <Col span={8}><DescriptionItem title="Address" content={this.state.dentalRecord.address} /></Col>
                      <Col span={8}><DescriptionItem title="Occupation" content={this.state.dentalRecord.occupation}/></Col>
                      <Col span={8}><DescriptionItem title="Civil Status" content={this.state.dentalRecord.civil_status} /></Col>
-                     <Col span={8}><DescriptionItem title="Contact Number" content={this.state.dentalRecord.contact_number} /></Col>
+                     <Col span={8}>
+                        <UpdateContactForm onUpdateContactNumber={this.handleContactNumberUpdate} contactNumber={this.state.dentalRecord.contact_number} />
+                     </Col>
                   </Row>
                </TabPane>
                <TabPane tab="My Balances" key="2">
