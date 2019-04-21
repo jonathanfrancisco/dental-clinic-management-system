@@ -1,7 +1,7 @@
 const Patient = require('../models/Patient');
 const {raw} = require('objection');
 const moment = require('moment');
-const twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+const twilio = require('twilio')('ACe764d2a0e50b66bb9278ca26c7f17569', '2660d06148fce31e1fc1c70a1454d917');
 const AWS = require('aws-sdk');
 AWS.config.update({region: 'ap-southeast-1'});
 
