@@ -20,25 +20,34 @@ const UpdateAccountForm = Form.create()(
          });
       }
 
+      validateEmailFormat =(email) => {
+         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+         return re.test(String(email).toLowerCase());
+     }
+
       validateEmail = async (rule, value, callback) => {
          const form = this.props.form;
-         if(value)
-            await axios.post(`/api/users/${value}/validateEmail`)
-            .then((response) => {
-               if(response.status === 200) {
-                  if(!response.data.isValid && response.data.email !== this.props.account.emailaddress)
-                     callback('Email Address already used!');
-                  else
-                     callback();
-               }
-            })
-            .catch((err) => {
-               console.log(err);
-               message.error('Internal server error!');
-            });
-         else
-            callback();
-         
+         if(this.validateEmailFormat(value)) {
+            if(value) {
+               await axios.post(`/api/users/${value}/validateEmail`)
+               .then((response) => {
+                  if(response.status === 200) {
+                     if(!response.data.isValid && response.data.email !== this.props.account.emailaddress)
+                        callback('Email Address already used!');
+                     else
+                        callback();
+                  }
+               })
+               .catch((err) => {
+                  console.log(err);
+                  message.error('Internal server error!');
+               });
+            }
+         }
+         else if(!this.validateEmailFormat(value) && value !== '')  {
+            callback('Invalid Email Address format')
+         }
+         callback();         
       }
 
       handleSelectRoleChange = (value) => {
@@ -102,7 +111,7 @@ const UpdateAccountForm = Form.create()(
                            <Form.Item label="Email Address">
                               {getFieldDecorator('emailaddress', {
                                  rules: [
-                                    { required: true, message: 'Email Address is required' },
+                                    { required: true, message: 'Email Address is required. ' },
                                     { validator: this.validateEmail}
                                  ],
                                  initialValue: account.emailaddress || ''
