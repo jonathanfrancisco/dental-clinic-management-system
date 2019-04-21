@@ -122,12 +122,12 @@ module.exports.create = async (req, res) => {
    try {
       
       const newPatient = req.body;
-      const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const alphabet = '0123456789abcdefghjklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_';
       let newPatientCode, isUnique;
       const patients = await Patient.query();
 
       do {
-         newPatientCode = generate(alphabet, 8);
+         newPatientCode = generate(alphabet, 12);
          isUnique = true;
          patients.forEach((patient) => {
             if(newPatientCode === patient.code) 
