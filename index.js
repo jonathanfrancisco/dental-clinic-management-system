@@ -17,15 +17,13 @@ app.use('/api/paymentTransactions', require('./routes/paymentTransaction'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 
 
+if(process.env.NODE_ENV === 'production') {
+   app.use(express.static(path.join(__dirname,'/react-ui/build')));
+   app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '/react-ui/build','index.html'));
+   });
+}
 
-// PRODDUCTION
-// if(process.env.NODE_ENV === 'production') {
-//    app.use(express.static(path.join(__dirname,'/client/build')));
-//    app.get('*', (req, res) => {
-//       res.sendFile(path.join(__dirname, '/client/build','index.html'));
-//    });
-// }
-
-app.listen(5000, (req, res) => {
-   console.log('Started listening on PORT 5000');
+app.listen(process.env.PORT || 5000, (req, res) => {
+   console.log(`Started listening on PORT ${process.env.PORT || 5000}`);
 });

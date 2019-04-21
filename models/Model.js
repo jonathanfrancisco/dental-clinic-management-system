@@ -1,7 +1,7 @@
 const dbconfig = require('../knexfile');
 const {Model} = require('objection');
 const Knex = require('knex');
-const knex = Knex(dbconfig.development);
+const knex = Knex(dbconfig.production);
 
 Model.knex(knex)
 
