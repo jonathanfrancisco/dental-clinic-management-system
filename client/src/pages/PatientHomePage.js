@@ -91,10 +91,24 @@ class PatientHomePage extends React.Component {
          if(response.status === 200) {
             this.getMyAppointments(this.props.user.patient_id);
             this.getConfirmedAppointments();
-            notification['info']({
-               message: 'Appointment Successfully Created',
-               description: 'You will be notified through SMS once your appointment is confirmed.',
-            });
+            if(!this.state.dentalRecord.contact_number) {
+               notification['warning']({
+                  message: 'No Contact Number Available',
+                  description: 'You have no contact number available! therefore you will not be notified through SMS about your appointment status',
+                  duration: 0
+               });
+               notification['info']({
+                  message: 'Appointment Successfully Created',
+                  description: 'Kindly check the status of appointment here from time to time, since you do not have available Contact Number',
+                  duration: 0
+               });
+            }
+            else {
+               notification['info']({
+                  message: 'Appointment Successfully Created',
+                  description: 'You will be notified through SMS about your appointment status.',
+               });
+            }
          }
       })
       .catch((err) => {
@@ -273,7 +287,7 @@ class PatientHomePage extends React.Component {
                </TabPane>
                <TabPane tab="My Appointments" key="3">
                   {!this.state.dentalRecord.contact_number ? (
-                       <Alert style={{marginBottom: 11}} showIcon closable message="You have no provided contact number on your Dental Record. Please, kindly provide one to be able to receive sms notifications (appointment confirmation, cancellation, reminder, etc.)" type="warning" /> 
+                       <Alert style={{marginBottom: 11}} showIcon closable message="You have no provided contact number on your Dental Record. Please, kindly provide one to be able to receive sms notifications (appointment reminder, appointment status, etc.)" type="warning" /> 
                   ) : null} 
                    <Alert 
                      style={{marginBottom: 11}} 
