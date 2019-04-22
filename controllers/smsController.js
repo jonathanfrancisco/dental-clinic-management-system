@@ -2,8 +2,8 @@ const Patient = require('../models/Patient');
 const {raw} = require('objection');
 const moment = require('moment');
 const twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-const AWS = require('aws-sdk');
-AWS.config.update({region: 'ap-southeast-1'});
+// const AWS = require('aws-sdk');
+// AWS.config.update({region: 'ap-southeast-1'});
 
 
 module.exports.getRecipients = async (req, res) => {
