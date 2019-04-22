@@ -85,3 +85,16 @@ module.exports.add = async (req, res) => {
 
 
 }
+
+module.exports.delete  = async (req, res) => {
+   const {id} = req.params;
+   console.log(id);
+   try {
+      // delete PAYMENT TRANSACTION related to this treatment first.
+      const deletePaymentTransaction = await PaymentTransaction.query().delete().where('treatment_id', id);
+      const deleteTreatment = await Treatment.query().deleteById(id);
+      return res.sendStatus(200);
+   } catch(err) {
+      console.log(err);   // delete PAYMENT TRANSACTION related to this treatment first.server error!'});
+   }
+}

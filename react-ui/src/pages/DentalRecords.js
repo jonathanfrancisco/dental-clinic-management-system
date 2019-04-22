@@ -13,7 +13,7 @@ class DentalRecords extends React.Component {
       if(match)
          return (
             <Content style={{margin: '24px 24px 24px 36px', padding: 24, background: '#fff'}}>
-               <DentalRecord code={match} />
+               <DentalRecord role={this.props.user.role} code={match} />
             </Content>
          );
       return (

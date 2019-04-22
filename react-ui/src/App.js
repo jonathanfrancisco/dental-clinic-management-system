@@ -221,7 +221,7 @@ class App extends Component {
                                           <ProtectedRoute exact path="/settings" component={PatientAccountSettings} user={this.state.user} />
                                           <ProtectedRoute exact path="/dashboard" component={Dashboard} />
                                           <ProtectedRoute exact path="/dentalrecords" component={DentalRecords}  /> 
-                                          <ProtectedRoute exact path="/dentalrecords/:code" component={DentalRecords}  /> 
+                                          <ProtectedRoute exact path="/dentalrecords/:code" component={DentalRecords} user={this.state.user} /> 
                                           <ProtectedRoute exact path="/transactionlog" component={Payments} />
                                           <ProtectedRoute exact path="/appointments" component={Appointments}  />
                                           <ProtectedRoute exact path="/sms" component={SMSTextMessaging}  />

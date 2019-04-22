@@ -76,7 +76,6 @@ class DentalRecord extends React.Component {
    }
 
    render() {
-     
       const lastVisit = !this.state.patient.last_visit ? (<Tag color="geekblue">New Record</Tag>) : moment(this.state.patient.last_visit).format('MMMM, DD YYYY');
       const birthday = moment(this.state.patient.birthday).format('MMMM DD, YYYY');
       const age = moment().diff(this.state.patient.birthday, 'years');
@@ -107,7 +106,7 @@ class DentalRecord extends React.Component {
                   </Row>
                   <Tabs defaultActiveKey="2">
                       <TabPane tab="Treatments and/or Procedures" key="2">
-                        <TreatmentsTable getPatient={() => this.getRecordOnAddTreatment(this.props.code)} patientId={this.state.patient.id} />
+                        <TreatmentsTable role={this.props.role} getPatient={() => this.getRecordOnAddTreatment(this.props.code)} patientId={this.state.patient.id} />
                       </TabPane>
                       <TabPane tab="Dental Chart" key="3">
                          <Row>

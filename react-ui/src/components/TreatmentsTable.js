@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row, Col, Table, Dropdown, Menu, Button, Icon, message, Tag, Typography} from 'antd';
+import {Row, Col, Table, Dropdown, Menu, Button, Icon, message, Tag, Typography, Modal} from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 import AddTreatmentModal from './AddTreatmentModal';
@@ -8,6 +8,8 @@ import PayInstallmentModal from './PayInstallmentModal';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
+
+const {confirm} = Modal;
 const {Text} = Typography;
 
 const balanceStatus = (paymentType, balance) => {
@@ -87,6 +89,31 @@ class TreatmentsTable extends React.Component {
       });
    }
 
+   handleDeleteTreatment = (id) => {
+      confirm({
+         title: 'Are you sure?',
+         content: 'Are you sure to delete this treatment? This action cannot be undone.',
+         onOk: () => {
+            const hide = message.loading('Deleting Treatment...', 0);
+            // values.date_paid = values.date_paid.format('YYYY-MM-DD');
+            axios.delete(`/api/treatments/${id}/delete`)
+            .then((response) => {
+               if(response.status === 200) {
+                  hide();
+                  message.success('Treatment Deleted Sucessfully');
+                  this.getTreatments();
+               }
+            })
+            .catch((err) => {
+               console.log(err);
+               hide();
+               message.error('Someting went wrong! Please, try again');
+            });
+         },
+         onCancel() {},
+       });
+   }
+
 
    // PRINT PAYMENT RECEIPT FOR FULLY PAID TREATMENT
    handlePrintPaymentReceipt = (treatment) => {
@@ -129,7 +156,6 @@ class TreatmentsTable extends React.Component {
    }
    
    render() {
-   
       const columns = [
          {
             title: <Text strong>Description</Text>,
@@ -207,13 +233,20 @@ class TreatmentsTable extends React.Component {
             fixed: 'right',
             dataIndex: 'actions',
             render: (text, record) => {
-
                if(record.payment_type !== 'installment') {
                   const fullyPaidMenu = (
                      <Menu>
                         <Menu.Item>
-                              <a onClick={() => this.handlePrintPaymentReceipt(record)} target="_blank" rel="noopener noreferrer"><Icon type="printer" /> Print Receipt</a>
-                           </Menu.Item>
+                           <a onClick={() => this.handlePrintPaymentReceipt(record)} target="_blank" rel="noopener noreferrer"><Icon type="printer" /> Print Receipt</a>
+                        </Menu.Item>
+                        {
+                           this.props.role === 'dentist' ? (
+                              <Menu.Item>
+                                 <a onClick={() => this.handleDeleteTreatment(record.id)} target="_blank" rel="noopener noreferrer">Delete Treatment</a>
+                              </Menu.Item>
+                           ) : (null)
+                        }
+                       
                      </Menu>
                   );
                   return (
