@@ -5,6 +5,8 @@ import moment from 'moment';
 import AddTreatmentModal from './AddTreatmentModal';
 import InstallmentPaymentsHistoryModal from './InstallmentPaymentsHistoryModal';
 import PayInstallmentModal from './PayInstallmentModal';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const {Text} = Typography;
 
@@ -84,6 +86,47 @@ class TreatmentsTable extends React.Component {
          message.error('Someting went wrong! Please, try again');
       });
    }
+
+
+   // PRINT PAYMENT RECEIPT FOR FULLY PAID TREATMENT
+   handlePrintPaymentReceipt = (treatment) => {
+      const doc = new jsPDF({
+         format: [612, 792]
+      });
+
+      const pageSize = doc.internal.pageSize;
+      const pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+      const pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+
+      doc.setFontSize(10);
+      doc.setFontStyle('bold');
+      doc.text('Andres Dental Clinic', 15, 10);
+      doc.setFontSize(8);
+      doc.setTextColor(53, 53, 53);
+      doc.setFontStyle('normal');
+      doc.text('One.O.5ive Department Store', 15, 13);
+      doc.text('J. P. Rizal Street, Barangay 18', 15, 16);
+      doc.text('Laoag City, 2900 Ilocos Norte', 15, 19);
+      doc.text('09212451903', 15, 22);
+      doc.setTextColor(0,0,0);
+      doc.setFontSize(11);
+      doc.text(`Receipt #: ${treatment.id+'00'}`, 15, 28);
+      doc.text(`Date: ${moment(treatment.date_treated).format('MMMM DD, YYYY')}`, 15, 32);
+      doc.text(`Payment Type: ${treatment.payment_type}`, 15, 36);
+      doc.text(`For: ${treatment.description}`, 15, 40);
+      doc.setFontStyle('bold');
+
+      doc.line(15, 42, 100, 42); // horizontal line 
+      doc.text(`Amount Paid: P${treatment.total_amount_to_pay.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`, 15, 46);
+      doc.line(15, 49, 100, 49); // horizontal line 
+
+
+
+
+      doc.autoPrint();
+      window.open(doc.output('bloburl'), '_blank'); 
+      
+   }
    
    render() {
    
@@ -150,7 +193,6 @@ class TreatmentsTable extends React.Component {
                if(value === 'balance')
                   return record.balance > 0
                else if(value === 'fully-paid') {
-                  console.log('Fully paid gago', record.balance, record.payment_type);
                   return record.balance == 0;
                }
                return !record.balance && record.payment_type === 'no-charge'
@@ -166,9 +208,27 @@ class TreatmentsTable extends React.Component {
             dataIndex: 'actions',
             render: (text, record) => {
 
+               if(record.payment_type !== 'installment') {
+                  const fullyPaidMenu = (
+                     <Menu>
+                        <Menu.Item>
+                              <a onClick={() => this.handlePrintPaymentReceipt(record)} target="_blank" rel="noopener noreferrer"><Icon type="printer" /> Print Receipt</a>
+                           </Menu.Item>
+                     </Menu>
+                  );
+                  return (
+                     <Dropdown overlay={fullyPaidMenu}>
+                        <Button>
+                           Actions <Icon type="down" />
+                        </Button>
+                     </Dropdown>
+                  );
+               }
+
                const disabled = parseInt(record.balance) === 0 ? true : false;
 
-               const menu = (
+               // INSTALLMENT PAYMENT TYPE ACTIONS
+               const installmentMenu = (
                   <Menu>
                      { disabled ? (
                         <Menu.Item disabled> 
@@ -181,20 +241,13 @@ class TreatmentsTable extends React.Component {
                      )}
                     
                      <Menu.Item>
-                        <InstallmentPaymentsHistoryModal treatmentId={record.id} />
+                        <InstallmentPaymentsHistoryModal treatment={record} treatmentId={record.id} />
                      </Menu.Item>
                   </Menu>
                );
-               if(record.payment_type !== 'installment')
-                  return (
-                     <Dropdown disabled>
-                        <Button>
-                           Actions <Icon type="down" />
-                        </Button>
-                     </Dropdown>
-                  );
+
                return (
-                  <Dropdown overlay={menu} trigger={['click']}>
+                  <Dropdown overlay={installmentMenu} trigger={['click']}>
                      <Button>
                         Actions <Icon type="down" />
                      </Button>
