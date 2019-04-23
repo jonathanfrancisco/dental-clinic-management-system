@@ -154,6 +154,31 @@ class TreatmentsTable extends React.Component {
       window.open(doc.output('bloburl'), '_blank'); 
       
    }
+
+   handleVoidLastPaymentTransaction = (id) => {
+      confirm({
+         title: 'Are you sure?',
+         content: 'Are you sure to void the last payment transaction made on this treatment? This action cannot be undone.',
+         onOk: () => {
+            const hide = message.loading('Voiding Last Payment Transaction...', 0);
+            // values.date_paid = values.date_paid.format('YYYY-MM-DD');
+            axios.delete(`/api/treatments/${id}/voidLastPaymentTransaction`)
+            .then((response) => {
+               if(response.status === 200) {
+                  hide();
+                  message.success('Last Payment Transaction Voided Successfully');
+                  this.getTreatments();
+               }
+            })
+            .catch((err) => {
+               console.log(err);
+               hide();
+               message.error('Someting went wrong! Please, try again');
+            });
+         },
+         onCancel() {},
+       });
+   }
    
    render() {
       const columns = [
@@ -284,7 +309,7 @@ class TreatmentsTable extends React.Component {
                         </Menu.Item>
                      ) : this.props.role === 'dentist' && record.transaction_count > 1 ? (
                         <Menu.Item>
-                           <a onClick={() => alert('Void it!')}target="_blank" rel="noopener noreferrer">Void Last Payment Transaction</a>
+                           <a onClick={() => this.handleVoidLastPaymentTransaction(record.id)}target="_blank" rel="noopener noreferrer">Void Last Payment Transaction</a>
                         </Menu.Item>
                      ) : (null)}
                   </Menu>

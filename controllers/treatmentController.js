@@ -96,6 +96,19 @@ module.exports.delete  = async (req, res) => {
       return res.sendStatus(200);
    } catch(err) {
       console.log(err);   // delete PAYMENT TRANSACTION related to this treatment first.server error!'});
+      return res.status(500).send({message: 'Internal server error!'});
    }
 }
 
+module.exports.voidLastPaymentTransaction = async (req, res) => {
+   const {id} = req.params;
+   try {
+      console.log('Treatment ID: ', id);
+      const [lastTransaction] = await PaymentTransaction.query().where('treatment_id', id).orderBy('date_paid', 'DESC').orderBy('id', 'DESC').limit(1);
+      const deleteLastTransaction = await PaymentTransaction.query().delete().where('id', lastTransaction.id);
+      return res.sendStatus(200);
+   } catch(err) {
+      console.log(err);
+      return res.status(500).send({message: 'Internal server error!'});
+   }
+}
