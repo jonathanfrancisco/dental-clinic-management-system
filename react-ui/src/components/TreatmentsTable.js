@@ -233,6 +233,7 @@ class TreatmentsTable extends React.Component {
             fixed: 'right',
             dataIndex: 'actions',
             render: (text, record) => {
+               console.log(record.transaction_count);
                if(record.payment_type !== 'installment') {
                   const fullyPaidMenu = (
                      <Menu>
@@ -276,6 +277,16 @@ class TreatmentsTable extends React.Component {
                      <Menu.Item>
                         <InstallmentPaymentsHistoryModal treatment={record} treatmentId={record.id} />
                      </Menu.Item>
+
+                     {this.props.role === 'dentist' && record.transaction_count === 1 ? (
+                         <Menu.Item>
+                           <a onClick={() => this.handleDeleteTreatment(record.id)} target="_blank" rel="noopener noreferrer">Delete Treatment</a>
+                        </Menu.Item>
+                     ) : this.props.role === 'dentist' && record.transaction_count > 1 ? (
+                        <Menu.Item>
+                           <a onClick={() => alert('Void it!')}target="_blank" rel="noopener noreferrer">Void Last Payment Transaction</a>
+                        </Menu.Item>
+                     ) : (null)}
                   </Menu>
                );
 

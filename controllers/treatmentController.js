@@ -10,9 +10,11 @@ module.exports.getTreatmentsById = async (req, res) => {
    const {id} = req.params;
    try {
       const treatments = await Treatment.query().select('treatment.*', 'user.name as treated_by',
-       raw(`(SELECT treatment.total_amount_to_pay - SUM(payment_transaction.amount_paid) FROM payment_transaction WHERE payment_transaction.treatment_id = treatment.id) as balance`))
-                        .join('user', 'treatment.user_id', 'user.id')
-                        .where('treatment.patient_id', id).orderBy('date_treated','desc').orderBy('id', 'desc');
+         raw(`(SELECT treatment.total_amount_to_pay - SUM(payment_transaction.amount_paid) FROM payment_transaction WHERE payment_transaction.treatment_id = treatment.id) as balance`),
+         raw(`(SELECT COUNT(*) FROM payment_transaction WHERE payment_transaction.treatment_id = treatment.id) as transaction_count`)
+      )
+      .join('user', 'treatment.user_id', 'user.id')
+      .where('treatment.patient_id', id).orderBy('date_treated','desc').orderBy('id', 'desc');
       if(balance) {
          const filteredTreatments = treatments.filter((treatment) => treatment.balance > 0);
          return res.status(200).send({treatments: filteredTreatments});
@@ -26,7 +28,6 @@ module.exports.getTreatmentsById = async (req, res) => {
 
 module.exports.getTreatmentsByToothPosition = async (req, res) => {
    const {toothPosition, patientId} = req.params;
-   console.log(toothPosition);
    try {
       const treatments = await Treatment.query().where('tooth_affected_no', toothPosition).where('treatment.patient_id', patientId).orderBy('date_treated', 'DESC');
       res.status(200).send({treatments});
@@ -88,7 +89,6 @@ module.exports.add = async (req, res) => {
 
 module.exports.delete  = async (req, res) => {
    const {id} = req.params;
-   console.log(id);
    try {
       // delete PAYMENT TRANSACTION related to this treatment first.
       const deletePaymentTransaction = await PaymentTransaction.query().delete().where('treatment_id', id);
@@ -98,3 +98,4 @@ module.exports.delete  = async (req, res) => {
       console.log(err);   // delete PAYMENT TRANSACTION related to this treatment first.server error!'});
    }
 }
+
