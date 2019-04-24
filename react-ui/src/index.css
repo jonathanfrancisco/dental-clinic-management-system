@@ -30,11 +30,21 @@ code {
 } 
 
 #header-img {
-   height: 460px;
-   background-image: linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)), url('./isometric-bg.jpg');
+   height: 535px;
+   background-image: linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.65)), url('./andres-dental-clinic.jpg');
    background-attachment: fixed;
    background-position: center;
    background-repeat: no-repeat;
    background-size: cover;
    
+}
+
+
+#working-photo-strip {
+   height: 250px;
+   background-image: url('./andres-dental-clinic-working.jpg');
+   background-attachment: fixed;
+   background-repeat: no-repeat;
+   background-size: cover;
+   background-position: 0% 0%;
 }
