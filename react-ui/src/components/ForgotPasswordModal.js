@@ -79,6 +79,7 @@ const ForgotPasswordModal = Form.create()(
                   onCancel={this.hideModal}
                   onOk={this.handleSubmit}
                   okButtonProps={{ loading: this.state.sending }}
+                  style={{ top: 40 }}
                >
                {
                   

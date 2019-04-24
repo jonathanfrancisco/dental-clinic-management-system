@@ -2,7 +2,9 @@ import React from 'react';
 import { Icon, Layout, Menu, Row, Col, Typography, Button, Divider} from 'antd';
 import {Link} from 'react-router-dom';
 import { Link as ScrollLink, Events, scrollSpy} from 'react-scroll'
+import MediaQuery from 'react-responsive';
 
+import RegisterModal from '../components/RegisterModal';
 import RegisterDrawer from '../components/RegisterDrawer'; 
 import Logo from '../andres-logo.svg';
 import DentalFilling from '../dental-filling.svg';
@@ -41,11 +43,13 @@ class HomePage extends React.Component {
                   <Row>
                      <Col span={12}>
                         <img style={{height: '100%', maxHeight: '50px'}} src={Logo} />
-                        <h1 style={{display: 'inline-block', margin: 0}}>
-                           <span style={{color: '#0050b3'}}>Andres</span> 
-                           <span style={{color: '#fff'}}> Dental</span>
-                           <span style={{color: '#0050b3'}}> Clinic</span>
-                        </h1>
+                        <MediaQuery minWidth={720}>
+                           <h1 style={{display: 'inline-block', margin: 0}}>
+                              <span style={{color: '#0050b3'}}>Andres</span> 
+                              <span style={{color: '#fff'}}> Dental</span>
+                              <span style={{color: '#0050b3'}}> Clinic</span>
+                           </h1>
+                        </MediaQuery>
                      </Col>
                      <Col span={12} align="right">
                      <Menu
@@ -55,7 +59,17 @@ class HomePage extends React.Component {
                         style={{ lineHeight: '64px'}}
                         >
                         <Menu.Item><Link to="/login">Login</Link></Menu.Item>
-                        <Menu.Item><RegisterDrawer /></Menu.Item>
+
+
+                        <Menu.Item>
+                            <MediaQuery maxWidth={900}>
+                              <RegisterModal />
+                           </MediaQuery>
+                           <MediaQuery minWidth={900}>
+                              <RegisterDrawer />
+                           </MediaQuery>
+                        </Menu.Item>
+                        
                   
                      </Menu>
                      </Col>
@@ -66,13 +80,20 @@ class HomePage extends React.Component {
 
                      <Row style={{height: '100%'}} align="middle" justify="center" type="flex">
                         <Col style={{textAlign: 'center'}}>
-                           <Title style={{color: '#fff', fontSize: 65, marginBottom: 0}} level={1}>
-                           Andres Dental Clinic
-                           </Title>
+                           <MediaQuery maxWidth={720}>
+                              <Title style={{color: '#fff'}} level={1}>
+                                 Andres Dental Clinic
+                              </Title>
+                           </MediaQuery>
+                           <MediaQuery minWidth={720}>
+                              <Title style={{color: '#fff', fontSize: 65, marginBottom: 0}} level={1}>
+                                 Andres Dental Clinic
+                              </Title>
+                           </MediaQuery>
                            <h2 style={{color: '#fff'}}>Your smile, your passion!</h2>
                            {/* <Button type="primary">My Patient Account</Button>
                            <a href="http://localhost:3000/" target="_blank">Link to System</a> */}
-                           <Button style={{borderRadius: 10}} ghost>
+                           <Button style={{borderRadius: 10, marginTop: 16}} ghost>
                               <ScrollLink activeClass="active" to="learnmore" spy={true} smooth={true} offset={50} duration={500}>
                                 Learn More
                               </ScrollLink>
@@ -112,7 +133,7 @@ class HomePage extends React.Component {
                         <Title level={2}>How can we help</Title>
                         <Text strong>We offer wide range of procedures to help you get that perfect smile. Visit us today!</Text>
                      </div>
-                     <Row style={{padding: '1.5em 3em'}} gutter={100}>
+                     <Row style={{padding: '1.5em 3em'}} gutter={32}>
                         <Col sm={24} md={12}>
                            <Divider orientation="left"><Text strong>ANDRES DENTAL CLINIC</Text></Divider>
                            <Row style={{paddingLeft: '3em'}}>
