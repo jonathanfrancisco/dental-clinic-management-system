@@ -693,7 +693,7 @@ class Dashboard extends React.Component {
                      <TabPane tab={<Text style={{fontSize: 18}}><Icon type="bar-chart" /> Visits</Text>} key="1">
                         <VisitChart />
                      </TabPane>
-                     <TabPane tab={<Text style={{fontSize: 18}}><Icon type="line-chart" /> Finances</Text>} key="2">Content of Tab Pane 2</TabPane>
+                     {/* <TabPane tab={<Text style={{fontSize: 18}}><Icon type="line-chart" /> Finances</Text>} key="2">Content of Tab Pane 2</TabPane> */}
                   </Tabs>
                </Col>
             </Row>
