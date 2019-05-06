@@ -1,15 +1,17 @@
 import React from 'react';
-import { Table, Button, Icon, Row, Col, message, Typography, Popconfirm} from 'antd';
+import { Table, Button, Icon, Row, Col, message, Typography, Popconfirm, Input} from 'antd';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import CreateAccountModal from './CreateAccountModal';
 
+const {Search} = Input;
 const {Title, Text} = Typography;
 
 class UserAccountsTable extends React.Component {
 
    state ={
       loading: false,
+      searchInput: '',
       users: []
    };
 
@@ -17,18 +19,41 @@ class UserAccountsTable extends React.Component {
       this.getUsers();
    }
 
-   getUsers() {
+   getUsers(searchValue) {
       this.setState({loading: true});
-      axios.get('/api/users/')
-      .then((response) => {
-         this.setState({users: response.data.users, loading: false});
-         setTimeout(() => {
-            this.setState({loading: false});
-         },500);
-      })
-      .catch((err) => {
-         console.log(err);
-      }) ;
+
+
+      if(searchValue) {
+         const hide = message.loading('Searching...', 0);
+         axios.get('/api/users/', {
+            params: {search: searchValue}
+         })
+         .then((response) => {
+            this.setState({users: response.data.users, loading: false});
+            setTimeout(() => {
+               this.setState({loading: false});
+               message.info(`${response.data.users.length} user(s) found`);
+               hide();
+            },500);
+         })
+         .catch((err) => {
+            console.log(err);
+         }) ;
+      }
+
+      else {
+         axios.get('/api/users/')
+         .then((response) => {
+            this.setState({users: response.data.users, loading: false});
+            setTimeout(() => {
+               this.setState({loading: false});
+            },500);
+         })
+         .catch((err) => {
+            console.log(err);
+         }) ;
+      }
+
    }
 
    handleCreate = (values) => {
@@ -67,9 +92,22 @@ class UserAccountsTable extends React.Component {
    }
 
 
+   handleSearchErased = (e) => {
+      const {value} = e.target;
+     if(value === '')
+      this.getUsers(value);
+   }
+
    render() {
 
       const columns = [
+         {
+            title: <Text strong>Account Username</Text>,
+            dataIndex: 'username',
+            render:(text, record) => {
+               return record.username;
+            }
+         },
          {
             title: <Text strong>Name</Text>,
             dataIndex: 'name',
@@ -109,6 +147,17 @@ class UserAccountsTable extends React.Component {
                </Col>
                <Col align="right" span={24}>
                   <CreateAccountModal onCreate={this.handleCreate} />
+               </Col>
+            </Row>
+            <Row style={{marginTop: 8}}>
+               <Col span={24}>
+                  <Search 
+                    style={{width: '100%', zIndex: -999}}
+                    placeholder="search user account by name or username"
+                    enterButton
+                    onSearch={(value) => this.getUsers(value)}
+                    onChange={this.handleSearchErased}
+                  />     
                </Col>
             </Row>
             <Table

@@ -37,7 +37,15 @@ module.exports.validateEmail = async(req, res) => {
 }
 
 module.exports.users = async (req, res) => {
-   const users = await User.query().orderBy('id', 'desc');
+
+   const {search} = req.query;
+
+   let users;
+   if(!search)
+      users = await User.query().orderBy('id', 'desc');
+   else {
+      users = await User.query().whereRaw(`LOWER(name) like "%${search.toLowerCase()}%" OR LOWER(username) like "%${search.toLowerCase()}%"`).orderBy('id', 'desc');
+   }
    return res.send({users});
 }
 
