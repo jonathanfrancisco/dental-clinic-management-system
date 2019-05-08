@@ -144,7 +144,7 @@ class App extends Component {
                     
                  
                   ) : this.state.loginLoading ? (
-                        <SpinningComponent />
+                        <SpinningComponent message="Logging-in" />
                   ) : (
                      <Layout>
                         <Sider
