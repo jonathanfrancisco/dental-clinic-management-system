@@ -263,7 +263,7 @@ module.exports.forgotPassword = async (req, res) => {
          <h1>Hello!</h1>
          <p>You are receiving this email because we received a password reset request for your account.</p>
          <p>If you did not request a password reset, no further action is required.</p>
-         <a href="http://localhost:3000/resetPassword/${token}">Click here to reset your password</a>
+         <a href="http://andresdentalclinic.herokuapp.com/resetPassword/${token}">Click here to reset your password</a>
          <br />
          <p>Regards,</p>
          <p>Andres Dental Clinic</p>
