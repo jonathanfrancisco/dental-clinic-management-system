@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 module.exports = {
-  secret: 'thesis',
+  secret: process.env.COOKIES_SECRET,
   port: process.env.PORT,
   twilioAccountSid: process.env.TWILIO_ACCOUNT_SID,
   twiliAuthToken: process.env.TWILIO_AUTH_TOKEN,
