@@ -16,6 +16,4 @@ Router.patch('/:id/childteethchart', patientController.updateChildTeethChart);
 Router.get('/:id/adultteethchart', patientController.adultTeethChart);
 Router.patch('/:id/adultteethchart', patientController.updateAdultTeethChart);
 
-
-
 module.exports = Router;
