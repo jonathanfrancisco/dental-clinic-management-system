@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 module.exports = {
+  nodeEnv: process.env.NODE_ENV,
   secret: process.env.COOKIES_SECRET,
   port: process.env.PORT,
   twilioAccountSid: process.env.TWILIO_ACCOUNT_SID,

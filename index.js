@@ -17,7 +17,7 @@ app.use('/api/treatments', require('./routes/treatment'));
 app.use('/api/paymentTransactions', require('./routes/paymentTransaction'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 
-if (process.env.NODE_ENV === 'production') {
+if (config.nodeEnv === 'production') {
   app.use(express.static(path.join(__dirname, '/react-ui/build')));
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/react-ui/build', 'index.html'));
