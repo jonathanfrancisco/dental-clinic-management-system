@@ -2,7 +2,9 @@
 
 Our Capstone Project as one of the final requirements in the Degree of Bachelor of Science in Information Technology
 
-# Project Started @ February 19, 2019October 24 Update
+# Project Started @ February 19, 2019
+
+## October 24, 2021 Updates:
 
 Environment Variables
 
