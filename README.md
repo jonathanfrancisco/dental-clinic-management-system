@@ -29,4 +29,5 @@ Running the app
 2. Running the Backend server.
    - Go to the root directory of the project then run `npm install`
    - After installing the dependencies. Run knex latest migrations by using this command `knex migrate:latest`
+   - Then seed an admin account by using this command `knex seed:run`
    - Then run the server `npm start`
