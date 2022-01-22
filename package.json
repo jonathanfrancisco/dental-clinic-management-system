@@ -29,7 +29,7 @@
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
     "mysql2": "^1.7.0",
-    "nanoid": "^2.0.1",
+    "nanoid": "^3.1.31",
     "nodemailer": "^6.1.1",
     "objection": "^1.6.0",
     "pg": "^8.0.3",
